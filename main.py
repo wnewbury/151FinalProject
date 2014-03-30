@@ -1,13 +1,17 @@
+from gameBoard import gameBoard
+
 class runGame:
-    def __init__(mapName):
+    def __init__(self, mapName):
         self.mapBoard = self.generateBoard(mapName)
         self.mapCharacters = self.generateCharacters(mapName)
-        self.height = len(self.board)
-        self.width = len(self.board(1))
+        self.height = len(self.mapBoard)
+        self.width = len(self.mapBoard[0])
+        self.gameBoard = gameBoard(self.mapBoard, self.mapCharacters,
+                                   self.height, self.width, self.mapLords)
 
     def generateBoard(self, mapName):
         mapBoard = [[]]
-        if mapName = "bom":
+        if mapName == "bom":
             mapBoard = [[0,0,0,0,0,1,0,0,0,2,0,0,0,0,3],
                     [0,1,1,1,0,0,0,0,2,0,0,1,1,1,0],
                     [0,1,1,1,0,1,0,0,0,0,0,1,0,1,1],
@@ -18,13 +22,26 @@ class runGame:
                     [0,0,0,0,0,0,0,1,0,0,1,0,1,0,1],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0,0,2],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0,2,2]]
-        else:
-            continue
 
         return mapBoard
 
     def generateCharacters(self, mapName):
-        mapBoard = [[]]
-        if mapName = "bom":
-            
-        
+        mapCharacters = [[]]
+        if mapName == "bom":
+            mapCharacters = [[None for i in xrange(15)] for j in xrange(10)]
+            self.mapLords = 1
+
+            #Need to implement characters first
+            #mapCharacters[5][5] = 4
+
+        return mapCharacters
+
+
+def main():
+    game = runGame("bom")
+    game.gameBoard.Display()
+    
+    
+
+if __name__ == "__main__":
+    main()
