@@ -76,6 +76,9 @@ class gameSpace:
         else:
             return False
 
+    def isFilled(self)
+        return self.character == None
+
     def hasLord(self):
         return self.character.isLord()
 
