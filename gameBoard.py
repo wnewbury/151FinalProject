@@ -82,4 +82,6 @@ class gameSpace:
 
     def hasEnemy(self):
         return self.character.isEnemy()
+
+    #def hasBoss
     
