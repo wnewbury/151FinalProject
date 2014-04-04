@@ -45,44 +45,55 @@ class runGame:
             ironBow = weapon("Iron Bow", "bow", 6, .85, 0, 2, 5)
 
             #characters
-            #lynStats = stats(FIX)
-            #lyn = character("Lyn", "Lord", maniKatti, None, False, lynStats, FIX)
+            lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
+            lyn = character("Lyn", "Lord", maniKatti, None, False, lynStats, 17)
 
-            #kentStats = stats(FIX)
-            #kent = character("Kent", "Cavalier", ironSword, ironLance, False, kentStats, FIX)
+            kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
+            kent = character("Kent", "Cavalier", ironSword, ironLance, False, kentStats, 21)
 
-            #sainStats = stats(FIX)
-            #kent = character("Sain", "Cavalier", ironSword, ironLance, False, sainStats, FIX)
+            sainStats = stats(20, 8, 5, 7, 4, 6, 0, 9, 7)
+            sain = character("Sain", "Cavalier", ironSword, ironLance, False, sainStats, 20)
 
-            #wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-            #kent = character("Wil", "Archer", ironBow, None, False, wilStats, 20)
+            wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
+            wil = character("Wil", "Archer", ironBow, None, False, wilStats, 20)
 
-            #florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
-            #florina = character("Florina", "PegKnight", slimLance, None, False, florinaStats, 17)
+            florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
+            florina = character("Florina", "PegKnight", slimLance, None, False, florinaStats, 17)
 
             #enemies
-            #L1BrigandStats = stats(FIX)
-            #brigand1 = character("Brigand1", "Brigand", ironAxe, None, True, L1BrigandStats, FIX)
+            L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
+            brigand1 = character("Brigand1", "Brigand", ironAxe, None, True, L1BrigandStats, 20)
 
-            #L2BrigandStats = stats(FIX)
-            #brigand2 = character("Brigand2", "Brigand", ironAxe, None, True, L2BrigandStats, FIX)
-            #brigand3 = character("Brigand3", "Brigand", ironAxe, None, True, L2BrigandStats, FIX)
+            L2BrigandStats = L1BrigandStats
+            brigand2 = character("Brigand2", "Brigand", ironAxe, None, True, L2BrigandStats, 20)
+            brigand3 = character("Brigand3", "Brigand", ironAxe, None, True, L2BrigandStats, 20)
 
-            #mercenayStats = stats(FIX)
-            #merc1 = character("Merc1", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
-            #merc2 = character("Merc2", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
-            #merc3 = character("Merc3", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
+            mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
+            merc1 = character("Merc1", "Mercenary", ironSword, None, True, mercenaryStats, 16)
+            merc2 = character("Merc2", "Mercenary", ironSword, None, True, mercenaryStats, 16)
 
-            #archerStats = stats(FIX)
-            #archer1 = character("Archer1", "Archer", ironBow, None, True, archerStats, FIX)
-            #archer2 = character("Archer2", "Archer", ironBow, None, True, archerStats, FIX)
+            archerStats = stats(17, 3, 3, 3, 0, 3, 0, 6, 5)
+            archer1 = character("Archer1", "Archer", ironBow, None, True, archerStats, 17)
+            archer2 = character("Archer2", "Archer", ironBow, None, True, archerStats, 17)
 
             migalStats = stats(25, 7, 3, 5, 2, 5, 0, 12, 5)
             migal = character("Migal", "Brigand", steelAxe, None, True, migalStats, 25)
 
 
-            #Need to implement characters first
-            mapCharacters[5][5] = migal
+            #initialize characters on map
+            mapCharacters[9][2] = kent
+            mapCharacters[8][4] = sain
+            mapCharacters[6][3] = lyn
+            mapCharacters[6][5] = wil
+            mapCharacters[4][4] = florina
+
+            mapCharacters[7][8] = archer1
+            mapCharacters[4][8] = brigand1
+            mapCharacters[8][13] = brigand2
+            mapCharacters[3][11] = archer2
+            mapCharacters[2][12] = brigand3
+            mapCharacters[0][11] = merc2
+            mapCharacters[0][13] = migal
 
         return mapCharacters
 

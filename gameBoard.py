@@ -54,7 +54,7 @@ class gameBoard:
             for i in self.board[x]:
                 character = i.getCharacter()
                 if character != False:
-                    sys.stdout.write("migal" + " ")
+                    sys.stdout.write(character.name + " ")
                 else:
                     sys.stdout.write(str(i.getTerrain()) + " ")
                 sys.stdout.flush()
