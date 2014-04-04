@@ -38,4 +38,4 @@ class weapon:
         self.hit = hit
         self.crit = crit
         self.rng = rng
-        self.weight
+        self.weight = weight

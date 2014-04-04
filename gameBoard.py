@@ -10,8 +10,6 @@ class gameBoard:
         for x in range(height):
             for y in range(width):
                 self.board[x][y] = gameSpace(characters[x][y], board[x][y])
-                
-
     
     def getTerrain(self, x, y):
         return self.board[x][y].getTerrain()
@@ -56,7 +54,7 @@ class gameBoard:
             for i in self.board[x]:
                 character = i.getCharacter()
                 if character != False:
-                    sys.stdout.write("person\t")
+                    sys.stdout.write("migal" + " ")
                 else:
                     sys.stdout.write(str(i.getTerrain()) + " ")
                 sys.stdout.flush()
@@ -76,7 +74,7 @@ class gameSpace:
         else:
             return False
 
-    def isFilled(self)
+    def isFilled(self):
         return self.character == None
 
     def hasLord(self):
