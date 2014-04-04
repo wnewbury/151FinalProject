@@ -1,6 +1,8 @@
 ALIVE = 1
 DEAD = 0
 
+from random import randrange
+
 class character:
     def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health):
         self.name = name
@@ -33,14 +35,115 @@ class character:
     def getName(self):
         return self.name
 
+    def getSpeed(self):
+        return self.stats.getSpeed()
+
+    def getWeaponType(self):
+        return self.primWeapon.getType()
+
+    def getClass(self):
+        return self.getClass
+
     def getRange(self):
         return self.stats.getRange()
 
     def isAlive(self):
         return self.status
 
-    def fight(self, character):
+    def attackSpeed(self):
+        return self.stats.getCon() - self.primWeapon.getWeight()
+
+    def hitRate(self):
+        return self.primWeapon.getHit() + (self.stats.getSkill() * 2) + (self.stats.getLuck() / 2)
+
+    def evade(self):
+        #Need terrain at some point
+        return (self.attackSpeed() * 2) + self.stats.getLuck()
+
+    def accuracy(self, enemyEvade, enemyWeap):
+        bonus = self.weaponTriangle(enemyWeap)
+        return self.hitRate() - enemyEvade + (bonus * .15)
+
+    def weaponTriangle(self, enemyWeap):
+        bonus = 0
+        if self.getWeaponType() == "axe" and enemyWeap == "lance":
+            bonus = 1
+        elif self.getWeaponType() == "axe" and enemyWeap == "sword":
+            bonus = -1
+        elif self.getWeaponType() == "lance" and enemyWeap == "sword":
+            bonus = 1
+        elif self.getWeaponType() == "lance" and enemyWeap == "axe":
+            bonus = -1
+        elif self.getWeaponType() == "sword" and enemyWeap == "axe":
+            bonus = 1
+        elif self.getWeaponType() == "sword" and enemyWeap == "lance":
+            bonus = -1
+
+        return bonus
+
+    def attackPower(self, enemyClass, enemyWeap):
+        if self.getWeaponType() == "bow" and enemyClass == "pegKnight":
+            modifier = 3
+        else:
+            modifier = 1
+        bonus = self.weaponTriangle(enemyWeap)
+        
+        return ((self.stats.getStrength() + bonus + self.primWeapon.getMight()) * modifier)
+
+    def defense(self):
+        #need terrain
+        return self.stats.getDefense()
+
+    def damage(self, enemyClass, enemyWeap, enemyDefense):
+        return self.attackPower(enemyClass, enemyWeap) - enemyDefense
+
+    def isValidAttack(self, distance):
+        if self.getWeaponType() == "bow" and distance == 1:
+            return False
+        elif self.weapRange() < distance:
+            return False
+        else:
+            return True
+
+    def performAttack(self, accuracy, damage):
+        hit = randrange(1, 100)
+        if hit <= (accuracy * 100):
+            self.curhealth -= damage
+        else:
+            print "miss"
+
+        if self.curhealth <= 0:
+            self.status = DEAD
+        
+
+    def fight(self, enemy, distance):
+        print "attacker health: " + str(self.curhealth)
+        print "enemy health: " + str(enemy.curhealth)
+
+        enemyWeap = enemy.getWeaponType()
+        enemyClass = enemy.getClass()
+        enemyDefense = enemy.defense()
+        enemyEvade = enemy.evade()
+
+        accuracy = self.accuracy(enemyEvade, enemyWeap)
+        damage = self.damage(enemyClass, enemyWeap, enemyDefense)
+
+        enemyAccuracy = enemy.accuracy(self.evade(), self.getWeaponType())
+        enemyDamage = enemy.damage(self.getClass(), self.getWeaponType(), 
+                                   self.defense())
+
+        enemy.performAttack(accuracy, damage)
+
+        if enemy.isValidAttack(distance) and enemy.isAlive():
+            self.performAttack(enemyAccuracy, enemyDamage)
+
+        if self.attackSpeed() >= (enemy.attackSpeed() + 4):
+            enemy.performAttack(accuracy, damage)
+
         print "FIGHTING"
+
+        print "attacker health: " + str(self.curhealth)
+        print "enemy health: " + str(enemy.curhealth)
 
     def __eq__(self, other):
         if isinstance(other, character):
@@ -59,6 +162,24 @@ class stats:
         self.con = con
         self.move = move
 
+    def getSpeed(self):
+        return self.speed
+
+    def getDefense(self):
+        return self.defense
+
+    def getStrength(self):
+        return self.strength
+
+    def getSkill(self):
+        return self.skill
+
+    def getLuck(self):
+        return self.lck
+
+    def getCon(self):
+        return self.con
+
     def getRange(self):
         return self.move
 
@@ -72,6 +193,18 @@ class weapon:
         self.crit = crit
         self.rng = rng
         self.weight = weight
+
+    def getMight(self):
+        return self.might
+
+    def getType(self):
+        return self.type
+
+    def getHit(self):
+        return self.hit
+
+    def getWeight(self):
+        return self.weight
 
     def getRange(self):
         return self.rng

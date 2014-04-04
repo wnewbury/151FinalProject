@@ -29,8 +29,10 @@ class gameBoard:
 
     def obtainBestMove(self, character, position):
         #Insert heuristic!!! (Call out to another class, probably?)
+        print "meh"
 
     def fight(self, character1, character2):
+        #NOTE: does not currently account for terrain
         p1x, p2x, p2y, p1y = 0, 0, 0, 0
         for x in range(self.height):
             for y in range(self.width):
@@ -41,8 +43,9 @@ class gameBoard:
                 if character == character2:
                     p2x = x
                     p2y = y
-        if self.manhattanDistance(p1x, p1y, p2x, p2y) <= character1.weapRange():
-            character1.fight(character2)
+        dist = self.manhattanDistance(p1x, p1y, p2x, p2y)
+        if dist <= character1.weapRange():
+            character1.fight(character2, dist)
         else:
             print "invalid fight"
 
