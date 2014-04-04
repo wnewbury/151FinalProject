@@ -70,7 +70,6 @@ class runGame:
             mercenayStats = stats(FIX)
             merc1 = character("Merc1", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
             merc2 = character("Merc2", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
-            merc3 = character("Merc3", "Mercenary", ironSword, None, True, mercenaryStats, FIX)
 
             archerStats = stats(FIX)
             archer1 = character("Archer1", "Archer", ironBow, None, True, archerStats, FIX)
