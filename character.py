@@ -2,12 +2,13 @@ ALIVE = 1
 DEAD = 0
 
 class character:
-    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, stats, health):
+    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health):
         self.name = name
         self.charClass = charClass
         self.primWeapon = primWeapon
         self.secWeapon = secWeapon
         self.enemy = enemy
+        self.boss = boss
         self.stats = stats
         self.maxhealth = health
         self.curhealth = health
@@ -16,8 +17,15 @@ class character:
     def isEnemy(self):
         return self.enemy
 
-    def isBoss(self):
-        return self.name == "Migal"
+    def weapRange(self):
+        #FIXME MAKE IT ALWAYS HAVE A WEAPON, EVEN IF NONE
+        if self.secWeapon != None:
+            return max(self.primWeapon.getRange(), self.secWeapon.getRange())
+        else:
+            return self.primWeapon.getRange()
+
+    def isBoss():
+        return self.boss
 
     def isLord(self):
         return self.charClass == "Lord"
@@ -30,6 +38,9 @@ class character:
 
     def isAlive(self):
         return self.status
+
+    def fight(self, character):
+        print "FIGHTING"
 
     def __eq__(self, other):
         if isinstance(other, character):
@@ -61,3 +72,6 @@ class weapon:
         self.crit = crit
         self.rng = rng
         self.weight = weight
+
+    def getRange(self):
+        return self.rng

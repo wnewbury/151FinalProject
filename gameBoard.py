@@ -28,7 +28,20 @@ class gameBoard:
         print "No such character to move"
 
     def fight(self, character1, character2):
-        print "meh"
+        p1x, p2x, p2y, p1y = 0, 0, 0, 0
+        for x in range(self.height):
+            for y in range(self.width):
+                character = self.board[x][y].getCharacter()
+                if character == character1:
+                    p1x = x
+                    p1y = y
+                if character == character2:
+                    p2x = x
+                    p2y = y
+        if self.manhattanDistance(p1x, p1y, p2x, p2y) <= character1.weapRange():
+            character1.fight(character2)
+        else:
+            print "invalid fight"
 
     def isValidMove(self, p1x, p1y, p2x, p2y, charRange):
         inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
@@ -113,5 +126,6 @@ class gameSpace:
     def hasEnemy(self):
         return self.character.isEnemy()
 
-    #def hasBoss
+    def hasBoss(self):
+        return self.character.isBoss()
     
