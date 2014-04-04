@@ -1,10 +1,11 @@
 class character:
-    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, stats, health):
+    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health):
         self.name = name
         self.charClass = charClass
         self.primWeapon = primWeapon
         self.secWeapon = secWeapon
         self.enemy = enemy
+        self.boss = boss
         self.stats = stats
         self.health = health
 
@@ -12,7 +13,7 @@ class character:
         return self.enemy
 
     def isBoss():
-        return self.name == "Migal"
+        return self.boss
 
     def isLord():
         return self.charClass == "Lord"

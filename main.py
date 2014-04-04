@@ -46,38 +46,38 @@ class runGame:
 
             #characters
             lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
-            lyn = character("Lyn", "Lord", maniKatti, None, False, lynStats, 17)
+            lyn = character("Lyn", "Lord", maniKatti, None, False, False, lynStats, 17)
 
             kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
-            kent = character("Kent", "Cavalier", ironSword, ironLance, False, kentStats, 21)
+            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21)
 
             sainStats = stats(20, 8, 5, 7, 4, 6, 0, 9, 7)
-            sain = character("Sain", "Cavalier", ironSword, ironLance, False, sainStats, 20)
+            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20)
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-            wil = character("Wil", "Archer", ironBow, None, False, wilStats, 20)
+            wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20)
 
             florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
-            florina = character("Florina", "PegKnight", slimLance, None, False, florinaStats, 17)
+            florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17)
 
             #enemies
             L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
-            brigand1 = character("Brigand1", "Brigand", ironAxe, None, True, L1BrigandStats, 20)
+            brigand1 = character("Brigand1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20)
 
             L2BrigandStats = L1BrigandStats
-            brigand2 = character("Brigand2", "Brigand", ironAxe, None, True, L2BrigandStats, 20)
-            brigand3 = character("Brigand3", "Brigand", ironAxe, None, True, L2BrigandStats, 20)
+            brigand2 = character("Brigand2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
+            brigand3 = character("Brigand3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
 
             mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
-            merc1 = character("Merc1", "Mercenary", ironSword, None, True, mercenaryStats, 16)
-            merc2 = character("Merc2", "Mercenary", ironSword, None, True, mercenaryStats, 16)
+            merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16)
+            merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16)
 
             archerStats = stats(17, 3, 3, 3, 0, 3, 0, 6, 5)
-            archer1 = character("Archer1", "Archer", ironBow, None, True, archerStats, 17)
-            archer2 = character("Archer2", "Archer", ironBow, None, True, archerStats, 17)
+            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17)
+            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17)
 
             migalStats = stats(25, 7, 3, 5, 2, 5, 0, 12, 5)
-            migal = character("Migal", "Brigand", steelAxe, None, True, migalStats, 25)
+            migal = character("Migal", "Brigand", steelAxe, None, True, True, migalStats, 25)
 
 
             #initialize characters on map
