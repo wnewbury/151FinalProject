@@ -27,6 +27,9 @@ class gameBoard:
                         print "invalid move"
         print "No such character to move"
 
+    def obtainBestMove(self, character, position):
+        #Insert heuristic!!! (Call out to another class, probably?)
+
     def fight(self, character1, character2):
         p1x, p2x, p2y, p1y = 0, 0, 0, 0
         for x in range(self.height):
