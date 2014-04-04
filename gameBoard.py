@@ -10,7 +10,32 @@ class gameBoard:
         for x in range(height):
             for y in range(width):
                 self.board[x][y] = gameSpace(characters[x][y], board[x][y])
-    
+
+    def manhattanDistance(self, p1x, p1y, p2x, p2y):
+        return abs(p1x - p2x) + abs(p1y - p2y)
+
+    def moveCharacter(self, inputChar, newx, newy):
+        for x in range(self.height):
+            for y in range(self.width):
+                character = self.board[x][y].getCharacter()
+                if character != False and inputChar == character:
+                    if self.isValidMove(x, y, newx, newy, character.getRange()):
+                        self.board[x][y].changeCharacter(None)
+                        self.board[newx][newy].changeCharacter(character)
+                        return
+                    else:
+                        print "invalid move"
+        print "No such character to move"
+
+    def fight(self, character1, character2):
+        print "meh"
+
+    def isValidMove(self, p1x, p1y, p2x, p2y, charRange):
+        inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
+        validTerrain = self.board[p2x][p2y].isValidTerrain()
+        isempty = self.board[p2x][p2y].getCharacter() == False
+        return inrange and validTerrain
+
     def getTerrain(self, x, y):
         return self.board[x][y].getTerrain()
 
@@ -24,7 +49,6 @@ class gameBoard:
 
         return characters
                 
-
     def isLose(self):
         lords = 0
         for x in range(height):
@@ -53,8 +77,8 @@ class gameBoard:
         for x in xrange(self.height):
             for i in self.board[x]:
                 character = i.getCharacter()
-                if character != False:
-                    sys.stdout.write("migal" + " ")
+                if character != False and character.isAlive():
+                    sys.stdout.write(character.getName() + " ")
                 else:
                     sys.stdout.write(str(i.getTerrain()) + " ")
                 sys.stdout.flush()
@@ -68,11 +92,17 @@ class gameSpace:
     def getTerrain(self):
         return self.terrain
 
+    def isValidTerrain(self):
+        return self.terrain == 0 or self.terrain == 2
+
     def getCharacter(self):
         if self.character != None:
             return self.character
         else:
             return False
+
+    def changeCharacter(self, character):
+        self.character = character
 
     def isFilled(self):
         return self.character == None

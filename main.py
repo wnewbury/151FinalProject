@@ -7,7 +7,7 @@ class runGame:
         self.mapCharacters = self.generateCharacters(mapName)
         self.height = len(self.mapBoard)
         self.width = len(self.mapBoard[0])
-        self.gameBoard = gameBoard(self.mapBoard, self.mapCharacters,
+        self.gameboard = gameBoard(self.mapBoard, self.mapCharacters,
                                    self.height, self.width, self.mapLords)
 
     def generateBoard(self, mapName):
@@ -54,11 +54,11 @@ class runGame:
             #sainStats = stats(FIX)
             #kent = character("Sain", "Cavalier", ironSword, ironLance, False, sainStats, FIX)
 
-            #wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-            #kent = character("Wil", "Archer", ironBow, None, False, wilStats, 20)
+            wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
+            wil = character("Wil", "Archer", ironBow, None, False, wilStats, 20)
 
-            #florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
-            #florina = character("Florina", "PegKnight", slimLance, None, False, florinaStats, 17)
+            florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
+            florina = character("Florina", "PegKnight", slimLance, None, False, florinaStats, 17)
 
             #enemies
             #L1BrigandStats = stats(FIX)
@@ -84,12 +84,48 @@ class runGame:
             #Need to implement characters first
             mapCharacters[5][5] = migal
 
+            mapCharacters[7][5] = florina
+
         return mapCharacters
+
+    def getCharacterAtPosition(self, position):
+        characters = self.gameboard.getCharacters()
+
+        for characterTuple in characters:
+            if characterTuple[1] == position:
+                return characterTuple[0]
+            else:
+                print "no character at position"
+
+    def getCharacterByName(self, name):
+        characters = self.gameboard.getCharacters()
+
+        for characterTuple in characters:
+            if characterTuple[0].getName() == name:
+                return characterTuple[0]
+            else:
+                print "character does not exist"
+
+    #def playPlayTurn():
+        #self.gameboard.getCharacters()
+
+        #self.getCharacterByName("Lyn")
+
+        #kent
 
 
 def main():
     game = runGame("bom")
-    game.gameBoard.Display()
+    gameboard = game.gameboard
+
+
+    gameboard.Display()
+    migal = game.getCharacterAtPosition((5, 5))
+
+    print "______________________________"
+
+    gameboard.moveCharacter(migal, 6, 5)
+    gameboard.Display()
     
     
 
