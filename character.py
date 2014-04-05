@@ -109,16 +109,21 @@ class character:
         hit = randrange(1, 100)
         if hit <= (accuracy * 100):
             self.curhealth -= damage
+
+            if self.curhealth <= 0:
+                self.status = DEAD
+
+            return damage
         else:
             print "miss"
 
-        if self.curhealth <= 0:
-            self.status = DEAD
+            return 0
+
+
         
 
     def fight(self, enemy, distance):
-        print "attacker health: " + str(self.curhealth)
-        print "enemy health: " + str(enemy.curhealth)
+        print self.name + " attacking " + enemy.getName() 
 
         enemyWeap = enemy.getWeaponType()
         enemyClass = enemy.getClass()
@@ -132,21 +137,23 @@ class character:
         enemyDamage = enemy.damage(self.getClass(), self.getWeaponType(), 
                                    self.defense())
 
-        enemy.performAttack(accuracy, damage)
+
+        damageInf = 0
+        damageTak = 0
+
+        damageInf += enemy.performAttack(accuracy, damage)
 
         if enemy.isValidAttack(distance) and enemy.isAlive():
-            self.performAttack(enemyAccuracy, enemyDamage)
+            damageTak += self.performAttack(enemyAccuracy, enemyDamage)
 
         if self.attackSpeed() >= (enemy.attackSpeed() + 4):
-            enemy.performAttack(accuracy, damage)
+            damageInf += enemy.performAttack(accuracy, damage)
 
         if enemy.attackSpeed() >= (self.attackSpeed() + 4):
-            enemy.performAttack(accuracy, damage)
+            damageTak += enemy.performAttack(accuracy, damage)
 
-        print "FIGHTING"
-
-        print "attacker health: " + str(self.curhealth)
-        print "enemy health: " + str(enemy.curhealth)
+        print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
+        print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
 
     def __eq__(self, other):
         if isinstance(other, character):

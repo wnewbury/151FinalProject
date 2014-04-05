@@ -103,7 +103,7 @@ class gameBoard:
                     sys.stdout.write(str(i.getTerrainDisplay()) + "\t")
                 sys.stdout.flush()
             print "\n"
-        print "--------"*15
+        print "--------"*15 + "\n"
 
 class gameSpace:
     def __init__(self, character, terrain):
