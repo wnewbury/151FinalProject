@@ -46,7 +46,7 @@ class runGame:
 
             #characters
             lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
-            lyn = character("Lyn", "Lord", maniKatti, None, False, False, lynStats, 17)
+            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17)
 
             kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
             kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21)
@@ -134,6 +134,8 @@ def main():
 
     gameboard.moveCharacter(sain, 8, 8)
 
+    gameboard.moveCharacter(sain, 7, 8)
+
     archer = game.getCharacterAtPosition((7, 8))
 
     gameboard.Display()
@@ -146,8 +148,11 @@ def main():
 
     gameboard.fight(sain, archer)
 
-    gameboard.Display()
-    
+    gameboard.endTurn()
+
+    gameboard.fight(sain, archer)  
+
+    gameboard.Display() 
     
 
 if __name__ == "__main__":

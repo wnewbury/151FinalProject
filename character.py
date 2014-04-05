@@ -15,22 +15,23 @@ class character:
         self.maxhealth = health
         self.curhealth = health
         self.status = ALIVE
+        self.moveAction =  True
+        self.attackAction = True
 
     def isEnemy(self):
         return self.enemy
 
     def weapRange(self):
-        #FIXME MAKE IT ALWAYS HAVE A WEAPON, EVEN IF NONE
-        if self.secWeapon != None:
-            return max(self.primWeapon.getRange(), self.secWeapon.getRange())
-        else:
-            return self.primWeapon.getRange()
+        return self.primWeapon.getRange()
 
     def isBoss():
         return self.boss
 
     def isLord(self):
         return self.charClass == "Lord"
+
+    def isFlying(self):
+        return self.charClass == "pegKnight"
 
     def getName(self):
         return self.name
@@ -50,15 +51,37 @@ class character:
     def isAlive(self):
         return self.status
 
+    #Stuff necessary for limiting actions per turn
+    def moveUsed(self):
+        self.moveAction = False
+
+    def attackUsed(self):
+        self.attackAction = False
+    
+    def resetActions(self):
+        self.moveAction = True
+        self.attackAction = True
+
+    def moveable(self):
+        return self.moveAction
+
+    def canAttack(self):
+        return self.attackAction
+
+    # Thus starts the Battle stats
     def attackSpeed(self):
         return self.stats.getCon() - self.primWeapon.getWeight()
 
     def hitRate(self):
         return self.primWeapon.getHit() + (self.stats.getSkill() * 2) + (self.stats.getLuck() / 2)
 
-    def evade(self):
-        #Need terrain at some point
-        return (self.attackSpeed() * 2) + self.stats.getLuck()
+    def evade(self, terrain):
+        tbonus = 0
+        if terrain == 2:
+            tbonus = 20
+        elif terrain == 3:
+            tbonus = 30
+        return (self.attackSpeed() * 2) + self.stats.getLuck() + tbonus
 
     def accuracy(self, enemyEvade, enemyWeap):
         bonus = self.weaponTriangle(enemyWeap)
@@ -90,14 +113,29 @@ class character:
         
         return ((self.stats.getStrength() + bonus + self.primWeapon.getMight()) * modifier)
 
-    def defense(self):
-        #need terrain
-        return self.stats.getDefense()
+    def defense(self, terrain):
+        tbonus = 0
+        if terrain == 2:
+            tbonus = 1
+        elif terrain == 3:
+            tbonus = 2
+
+        return self.stats.getDefense() + tbonus
 
     def damage(self, enemyClass, enemyWeap, enemyDefense):
         return self.attackPower(enemyClass, enemyWeap) - enemyDefense
 
+    def critRate(self):
+        return self.primWeapon.getCrit() + (self.stats.getSkill() / 2)
+
+    def critEvade(self):
+        return self.stats.getLuck()
+
+    def critChance(self, enemyEvade):
+        return self.critRate() - enemyEvade
+
     def isValidAttack(self, distance):
+        #Check Ranges
         if self.getWeaponType() == "bow" and distance == 1:
             return False
         elif self.weapRange() < distance:
@@ -105,56 +143,72 @@ class character:
         else:
             return True
 
-    def performAttack(self, accuracy, damage):
+    #Resolve Attack performed on you
+    def performAttack(self, accuracy, damage, critChance):
+        #Random generate a hit number, check vs crit and hit rates
         hit = randrange(1, 100)
         if hit <= (accuracy * 100):
-            self.curhealth -= damage
+            if hit <= critChance:
+                self.curhealth -= damage * 3
+                if self.curhealth <= 0:
+                    self.status = DEAD
+                return damage
 
+            self.curhealth -= damage
             if self.curhealth <= 0:
                 self.status = DEAD
-
             return damage
+
         else:
             print "miss"
+            return 0      
 
-            return 0
+    def fight(self, enemy, distance, aTerrain, dTerrain):
 
-
-        
-
-    def fight(self, enemy, distance):
+        #Display purposes
         print self.name + " attacking " + enemy.getName() 
 
+        #Pull needed stats
         enemyWeap = enemy.getWeaponType()
         enemyClass = enemy.getClass()
-        enemyDefense = enemy.defense()
-        enemyEvade = enemy.evade()
+        enemyDefense = enemy.defense(dTerrain)
+        enemyEvade = enemy.evade(dTerrain)
+        enemyCritEvade = enemy.critEvade()
 
+        #Battle stats on attacker side
         accuracy = self.accuracy(enemyEvade, enemyWeap)
         damage = self.damage(enemyClass, enemyWeap, enemyDefense)
+        critChance = self.critChance(enemyCritEvade)
 
-        enemyAccuracy = enemy.accuracy(self.evade(), self.getWeaponType())
+        #Battle stats on defender side
+        enemyAccuracy = enemy.accuracy(self.evade(aTerrain), self.getWeaponType())
         enemyDamage = enemy.damage(self.getClass(), self.getWeaponType(), 
-                                   self.defense())
+                                   self.defense(aTerrain))
+        enemyCritChance = enemy.critChance(self.critEvade())
 
-
+        #Counters for display purposes
         damageInf = 0
         damageTak = 0
 
-        damageInf += enemy.performAttack(accuracy, damage)
+        #First Attack, Enemy Counter-attack, then checks for speed doubles
+        damageInf += enemy.performAttack(accuracy, damage, critChance)
 
         if enemy.isValidAttack(distance) and enemy.isAlive():
-            damageTak += self.performAttack(enemyAccuracy, enemyDamage)
+            damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
+                                            enemyCritChance)
 
         if self.attackSpeed() >= (enemy.attackSpeed() + 4):
-            damageInf += enemy.performAttack(accuracy, damage)
+            damageInf += enemy.performAttack(accuracy, damage, critChance)
 
         if enemy.attackSpeed() >= (self.attackSpeed() + 4):
-            damageTak += enemy.performAttack(accuracy, damage)
+            damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
+                                            enemyCritChance)
 
+        #Output Results
         print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
         print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
 
+    #Overload equality operator
     def __eq__(self, other):
         if isinstance(other, character):
             return self.name == other.getName()
@@ -203,6 +257,9 @@ class weapon:
         self.crit = crit
         self.rng = rng
         self.weight = weight
+
+    def getCrit(self):
+        return self.crit
 
     def getMight(self):
         return self.might
