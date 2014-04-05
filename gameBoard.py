@@ -93,20 +93,34 @@ class gameBoard:
             return false
 
     def Display(self):
+        print "--------"*15
         for x in xrange(self.height):
             for i in self.board[x]:
                 character = i.getCharacter()
                 if character != False and character.isAlive():
-                    sys.stdout.write(character.getName() + " ")
+                    sys.stdout.write(character.getName() + "\t")
                 else:
-                    sys.stdout.write(str(i.getTerrain()) + " ")
+                    sys.stdout.write(str(i.getTerrainDisplay()) + "\t")
                 sys.stdout.flush()
             print "\n"
+        print "--------"*15
 
 class gameSpace:
     def __init__(self, character, terrain):
         self.character = character
         self.terrain = terrain
+
+    def getTerrainDisplay(self):
+        if self.terrain == 0: 
+            return "_"
+        elif self.terrain == 2:
+            return "^"
+        elif self.terrain == 3:
+            return "/|"
+        elif self.terrain == 1:
+            return "X"
+        else:
+            return "?"
 
     def getTerrain(self):
         return self.terrain

@@ -140,6 +140,9 @@ class character:
         if self.attackSpeed() >= (enemy.attackSpeed() + 4):
             enemy.performAttack(accuracy, damage)
 
+        if enemy.attackSpeed() >= (self.attackSpeed() + 4):
+            enemy.performAttack(accuracy, damage)
+
         print "FIGHTING"
 
         print "attacker health: " + str(self.curhealth)

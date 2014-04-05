@@ -17,8 +17,8 @@ class runGame:
                     [0,1,1,1,0,0,0,0,2,0,0,1,1,1,0],
                     [0,1,1,1,0,1,0,0,0,0,0,1,0,1,1],
                     [2,0,0,0,0,1,1,1,0,0,0,2,0,0,0],
-                    [1,1,1,0,0,0,0,0,1,0,0,0,0,0,0],
-                    [0,2,1,1,1,1,1,1,1,1,1,0,0,2,0],
+                    [1,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+                    [0,3,1,1,1,1,1,1,1,1,1,0,0,2,0],
                     [0,0,1,1,1,0,0,1,0,0,2,0,1,1,1],
                     [0,0,0,0,0,0,0,1,0,0,1,0,1,0,1],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0,0,2],
@@ -55,7 +55,6 @@ class runGame:
             sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20)
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-
             wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20)
 
             florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
@@ -63,11 +62,11 @@ class runGame:
             
             #enemies
             L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
-            brigand1 = character("Brigand1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20)
+            brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20)
 
             L2BrigandStats = L1BrigandStats
-            brigand2 = character("Brigand2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
-            brigand3 = character("Brigand3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
+            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
+            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
 
             mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
             merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16)
@@ -93,6 +92,7 @@ class runGame:
             mapCharacters[8][13] = brigand2
             mapCharacters[3][11] = archer2
             mapCharacters[2][12] = brigand3
+            mapCharacters[6][14] = merc1
             mapCharacters[0][11] = merc2
             mapCharacters[0][13] = migal
 
@@ -131,7 +131,6 @@ def main():
 
     sain = game.getCharacterAtPosition((8, 4))
 
-    print "______________________________\n"
 
     gameboard.moveCharacter(sain, 8, 8)
 
@@ -139,7 +138,11 @@ def main():
 
     gameboard.Display()
 
-    print "______________________________\n"
+
+    gameboard.fight(sain, archer)
+
+    gameboard.Display()
+    
 
     gameboard.fight(sain, archer)
 
