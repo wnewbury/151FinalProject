@@ -94,28 +94,28 @@ class gameBoard:
     #Check board for lose condition   
     def isLose(self):
         lords = 0
-        for x in range(height):
-            for y in range(width):
+        for x in range(self.height):
+            for y in range(self.width):
                 if self.board[x][y].hasLord():
-                    lord += 1
+                    lords += 1
 
         if lords == self.lords:
-            return false
+            return False
         else:
-            return true
+            return True
 
     #Check board for win condition
     def isWin(self):
         enemies = 0
-        for x in range(height):
-            for y in range(width):
+        for x in range(self.height):
+            for y in range(self.width):
                 if self.board[x][y].hasLord():
                     enemies += 1
 
         if enemies == 0:
-            return true
+            return True
         else:
-            return false
+            return False
 
     #Display purposes - outputs grid of terrain/characters
     def Display(self):
@@ -175,11 +175,17 @@ class gameSpace:
         return self.character == None
 
     def hasLord(self):
-        return self.character.isLord()
+        if self.character != None:
+            return self.character.isLord()
+        else:
+            return False
 
     def hasEnemy(self):
         return self.character.isEnemy()
 
     def hasBoss(self):
-        return self.character.isBoss()
+        if self.character != None:
+            return self.character.isBoss()
+        else:
+            return False
     

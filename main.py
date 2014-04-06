@@ -105,6 +105,7 @@ class runGame:
             if characterTuple[1] == position:
                 return characterTuple[0]
         print "no character at position"
+        return False
 
     def getCharacterByName(self, name):
         characters = self.gameboard.getCharacters()
@@ -113,46 +114,95 @@ class runGame:
             if characterTuple[0].getName() == name:
                 return characterTuple[0]
         print "character does not exist"
+        return False
 
-    #def playPlayTurn():
+    def askInput(self):
+        command = raw_input("Input command to perform: ")
+
+        if command == "move":
+            char = raw_input("Input name of character to move: ")
+            character = self.getCharacterByName(char)
+            while character == False:
+                char = raw_input("Reinput name: ")
+                character = self.getCharacterByName(char)
+
+            x = raw_input("X coordinate to move to: ")
+            while (int(x) < 0) or (int(x) > 9):
+                x = raw_input("Please input valid coordinate: ")
+            y = raw_input("Y coordinate to move to: ")
+            while (int(y) < 0) or (int(y) > 14):
+                y = raw_input("Please input valid coordinate: ")
+
+            self.gameboard.moveCharacter(character, int(x), int(y))
+
+            self.Display()
+        elif command == "attack":
+            char1 = raw_input("Input name of character to attack with: ")
+            character1 = self.getCharacterByName(char1) 
+            while character1 == False:
+                char1 = raw_input("Reinput name: ")
+                character = self.getCharacterByName(char1)
+
+            char2 = raw_input("Input name of character to attack: ")
+            character2 = self.getCharacterByName(char2)
+            while character2 == False:
+                char2 = raw_input("Reinput name: ")
+                character = self.getCharacterByName(char2)
+
+            self.gameboard.fight(character1, character2)
+
+            self.Display()
+        elif command == "endTurn":
+            self.gameboard.endTurn()
+
+    def Display(self):
+        self.gameboard.Display()
+
+
+    def  hasEnded(self):
+        return self.gameboard.isWin() or self.gameboard.isLose()
+    #To be used at some point
+    #def playTurn(self):
         #self.gameboard.getCharacters()
 
-        #self.getCharacterByName("Lyn")
-
-        #kent
 
 
 def main():
     game = runGame("bom")
-    gameboard = game.gameboard
+
+    game.Display()
+
+    while not game.hasEnded():
+        game.askInput()
+
+    print "interesting"
+
+    #gameboard.Display()
+
+    #sain = game.getCharacterAtPosition((8, 4))
 
 
-    gameboard.Display()
+    #gameboard.moveCharacter(sain, 8, 8)
 
-    sain = game.getCharacterAtPosition((8, 4))
+    #gameboard.moveCharacter(sain, 7, 8)
 
+    #archer = game.getCharacterAtPosition((7, 8))
 
-    gameboard.moveCharacter(sain, 8, 8)
-
-    gameboard.moveCharacter(sain, 7, 8)
-
-    archer = game.getCharacterAtPosition((7, 8))
-
-    gameboard.Display()
+    #gameboard.Display()
 
 
-    gameboard.fight(sain, archer)
+    #gameboard.fight(sain, archer)
 
-    gameboard.Display()
+    #gameboard.Display()
     
 
-    gameboard.fight(sain, archer)
+    #gameboard.fight(sain, archer)
 
-    gameboard.endTurn()
+    #gameboard.endTurn()
 
-    gameboard.fight(sain, archer)  
+    #gameboard.fight(sain, archer)  
 
-    gameboard.Display() 
+    #gameboard.Display() 
     
 
 if __name__ == "__main__":
