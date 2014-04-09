@@ -18,12 +18,13 @@ class gameBoard:
     #Determine if a given move is valid for a given character
     def isValidMove(self, p1x, p1y, p2x, p2y, charRange, flying):
         inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
+        isempty = self.board[p2x][p2y].getCharacter() == False
         if flying:
-            return inrange
+            return inrange and isempty
         else:
             validTerrain = self.board[p2x][p2y].isValidTerrain()
             isempty = self.board[p2x][p2y].getCharacter() == False
-            return inrange and validTerrain
+            return inrange and validTerrain and isempty
 
     #Perform a move of a character
     def moveCharacter(self, inputChar, newx, newy):
@@ -45,11 +46,6 @@ class gameBoard:
                         print "move already used\n"
                         return
         print "No such character to move\n"
-
-    #HEURISTIC
-    def obtainBestMove(self, character, position):
-        #Insert heuristic!!! (Call out to another class, probably?)
-        print "meh"
 
     #Engage one character in friendly conflict with another
     def fight(self, character1, character2):

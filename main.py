@@ -1,5 +1,6 @@
 from gameBoard import gameBoard
 from character import weapon, character, stats
+from ai import ai
 
 class runGame:
     def __init__(self, mapName):
@@ -9,6 +10,8 @@ class runGame:
         self.width = len(self.mapBoard[0])
         self.gameboard = gameBoard(self.mapBoard, self.mapCharacters,
                                    self.height, self.width, self.mapLords)
+        self.weights = []
+        self.ai = ai(self.gameboard, self.height, self.width, self.weights)
 
     def generateBoard(self, mapName):
         mapBoard = [[]]
@@ -159,11 +162,14 @@ class runGame:
         self.gameboard.Display()
 
 
-    def  hasEnded(self):
+    def hasEnded(self):
         return self.gameboard.isWin() or self.gameboard.isLose()
     #To be used at some point
     #def playTurn(self):
         #self.gameboard.getCharacters()
+
+    def calculateMove(self, character):
+        return self.ai.calculateMove(character)
 
 
 
@@ -172,38 +178,12 @@ def main():
 
     game.Display()
 
-    while not game.hasEnded():
-        game.askInput()
+    game.calculateMove(game.getCharacterByName("Sain"))
+    #while not game.hasEnded():
+    #    game.askInput()
 
-    print "interesting"
+    #print "interesting"
 
-    #gameboard.Display()
-
-    #sain = game.getCharacterAtPosition((8, 4))
-
-
-    #gameboard.moveCharacter(sain, 8, 8)
-
-    #gameboard.moveCharacter(sain, 7, 8)
-
-    #archer = game.getCharacterAtPosition((7, 8))
-
-    #gameboard.Display()
-
-
-    #gameboard.fight(sain, archer)
-
-    #gameboard.Display()
-    
-
-    #gameboard.fight(sain, archer)
-
-    #gameboard.endTurn()
-
-    #gameboard.fight(sain, archer)  
-
-    #gameboard.Display() 
-    
 
 if __name__ == "__main__":
     main()
