@@ -5,13 +5,13 @@ class ai:
 		self.width = width
 		self.weights = weights
 
-	def getEndPositions(self, pos, rang, flying):
+	def getEndPositions(self, pos, rang, flying, mounted):
 		#Need to fix the terrain part of things
 		endPositions = []
 		for x in range(self.height):
 			for y in range(self.width):
 				valid = self.gameboard.isValidMove(pos[0], pos[1], x, y,
-														 rang, flying)
+														 rang, flying, mounted)
 				if valid:
 					endPositions.append((x,y))
 				else:
@@ -34,7 +34,8 @@ class ai:
 
 		rang = character.getRange()
 		flying = character.isFlying()
-		endPositions = self.getEndPositions(position, rang, flying)
+		mounted = character.isMounted()
+		endPositions = self.getEndPositions(position, rang, flying, mounted)
 
 		print endPositions
 

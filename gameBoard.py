@@ -1,4 +1,5 @@
 import sys
+import util
 
 class gameBoard:
     def __init__(self, board, characters, height, width, mapLords):
@@ -16,15 +17,113 @@ class gameBoard:
         return abs(p1x - p2x) + abs(p1y - p2y)
 
     #Determine if a given move is valid for a given character
-    def isValidMove(self, p1x, p1y, p2x, p2y, charRange, flying):
-        inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
+    def isValidMove(self, p1x, p1y, p2x, p2y, charRange, flying, mounted):
+        #inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
+        inrange = (self.aStarSearch(p1x, p1y, p2x, p2y, charRange, flying, mounted) != None)
         isempty = self.board[p2x][p2y].getCharacter() == False
         if flying:
             return inrange and isempty
         else:
-            validTerrain = self.board[p2x][p2y].isValidTerrain()
+            validTerrain = self.board[p2x][p2y].isValidTerrain(mounted)
             isempty = self.board[p2x][p2y].getCharacter() == False
             return inrange and validTerrain and isempty
+
+
+    #Determine if a given location is valid for a given character
+    def isValidLocation(self, x, y, flying, mounted):
+        isempty = self.board[p2x][p2y].getCharacter() == False
+        if flying:
+            return isempty
+        else:
+            validTerrain = self.board[x][y].isValidTerrain(mounted)
+            isempty = self.board[x][y].getCharacter() == False
+            return validTerrain and isempty
+
+
+    # get valid neighboring locations a given character can move to (along with their terrain cost)
+    def getSuccessors(self, x, y, flying, mounted):
+        possibleSuccessors = [ (x-1, y+1), (x, y+1), (x+1, y+1), (x-1, y), (x+1, y), (x-1, y-1), (x, y-1), (x+1, y-1) ]
+        successors = []
+
+        for possibleSuccessor in possibleSuccessors:
+            xCoor = possibleSuccessor[0]
+            yCoor = possibleSuccessor[1]
+
+            if ((xCoor >= 0 and xCoor < self.height) and (yCoor >= 0 and yCoor < self.width)) and self.isValidLocation(xCoor, yCoor, flying, mounted):
+                terrain = self.getTerrain(xCoor, yCoor)
+                terrainCost = 9999
+
+                if flying:
+                    terrainCost = 1
+                    successors.append( (xCoor, yCoor, terrainCost) )
+
+                else:
+
+                    # plain
+                    if (terrain == 0):
+                        terrainCost = 1
+
+                    # mountain
+                    elif (terrain == 2):
+                        terrainCost = 4
+
+                    # forest
+                    elif (terrain == 3):
+
+                        if mounted:
+                            terrainCost = 3
+                        else:
+                            terrainCost = 2
+
+                    successors.append( ( (xCoor, yCoor), terrainCost) )
+
+        return successors
+
+
+
+    def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted, heuristic=self.manhattanDistance):
+    "Search the node that has the lowest combined cost and heuristic first."
+
+    #reject if invalid goal
+    if not(self.isValidLocation(goalX, goalY, flying, mounted)):
+        return None
+
+    else:
+
+        startCoordinates = (startX, startY)
+        goalCoordinates = (goalX, goalY)
+
+        queue = util.PriorityQueue()
+        start = (startCoordinates, None, 0)
+        queue.push(start, 0)
+        closed = sets.Set()
+
+        while not(queue.isEmpty()):
+            top = queue.pop()
+            
+            if (top[0][0] == goalX) and (top[0][1] == goalY):
+                #we've reached the end, return cost it took to get here
+                    
+                return top[2]
+            
+            elif not(top[0] in closed):
+                #expand top
+                successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted)
+
+                for x in range(len(successors)):
+                    cost = top[2] + successors[x][1]
+                    queue.push( (successors[x][0], top, cost),
+                                cost + heuristic(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
+                closed.add(top[0])
+                continue
+
+            else:
+                continue
+
+        return None
+
+
+
 
     #Perform a move of a character
     def moveCharacter(self, inputChar, newx, newy):
@@ -143,20 +242,24 @@ class gameSpace:
     def getTerrainDisplay(self):
         if self.terrain == 0: 
             return "_"
+        elif self.terrain == 1:
+            return "X"
         elif self.terrain == 2:
             return "^"
         elif self.terrain == 3:
             return "/|"
-        elif self.terrain == 1:
-            return "X"
         else:
             return "?"
 
     def getTerrain(self):
         return self.terrain
 
-    def isValidTerrain(self):
-        return not (self.terrain == 1)
+    def isValidTerrain(self, mounted):
+        if mounted:
+            return ( not(self.terrain == 1) ) and ( not(self.terrain == 2) )
+
+        else:
+            return not (self.terrain == 1)
 
     def getCharacter(self):
         if self.character != None:

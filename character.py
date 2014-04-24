@@ -31,7 +31,10 @@ class character:
         return self.charClass == "Lord"
 
     def isFlying(self):
-        return self.charClass == "pegKnight"
+        return self.charClass == "PegKnight"
+
+    def isMounted(self):
+        return self.charClass == "Cavalier"
 
     def getName(self):
         return self.name
