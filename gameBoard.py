@@ -1,5 +1,6 @@
 import sys
 import util
+import sets
 
 class gameBoard:
     def __init__(self, board, characters, height, width, mapLords):
@@ -31,7 +32,7 @@ class gameBoard:
 
     #Determine if a given location is valid for a given character
     def isValidLocation(self, x, y, flying, mounted):
-        isempty = self.board[p2x][p2y].getCharacter() == False
+        isempty = self.board[x][y].getCharacter() == False
         if flying:
             return isempty
         else:
@@ -81,46 +82,45 @@ class gameBoard:
 
 
 
-    def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted, heuristic=self.manhattanDistance):
-    "Search the node that has the lowest combined cost and heuristic first."
+    def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted):
 
-    #reject if invalid goal
-    if not(self.isValidLocation(goalX, goalY, flying, mounted)):
-        return None
+        #reject if invalid goal
+        if not(self.isValidLocation(goalX, goalY, flying, mounted)):
+            return None
 
-    else:
+        else:
 
-        startCoordinates = (startX, startY)
-        goalCoordinates = (goalX, goalY)
+            startCoordinates = (startX, startY)
+            goalCoordinates = (goalX, goalY)
 
-        queue = util.PriorityQueue()
-        start = (startCoordinates, None, 0)
-        queue.push(start, 0)
-        closed = sets.Set()
+            queue = util.PriorityQueue()
+            start = (startCoordinates, None, 0)
+            queue.push(start, 0)
+            closed = sets.Set()
 
-        while not(queue.isEmpty()):
-            top = queue.pop()
-            
-            if (top[0][0] == goalX) and (top[0][1] == goalY):
-                #we've reached the end, return cost it took to get here
-                    
-                return top[2]
-            
-            elif not(top[0] in closed):
-                #expand top
-                successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted)
+            while not(queue.isEmpty()):
+                top = queue.pop()
+                
+                if (top[0][0] == goalX) and (top[0][1] == goalY):
+                    #we've reached the end, return cost it took to get here
+                        
+                    return top[2]
+                
+                elif not(top[0] in closed):
+                    #expand top
+                    successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted)
 
-                for x in range(len(successors)):
-                    cost = top[2] + successors[x][1]
-                    queue.push( (successors[x][0], top, cost),
-                                cost + heuristic(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
-                closed.add(top[0])
-                continue
+                    for x in range(len(successors)):
+                        cost = top[2] + successors[x][1]
+                        queue.push( (successors[x][0], top, cost),
+                                    cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
+                    closed.add(top[0])
+                    continue
 
-            else:
-                continue
+                else:
+                    continue
 
-        return None
+            return None
 
 
 
