@@ -37,8 +37,6 @@ class ai:
 		mounted = character.isMounted()
 		endPositions = self.getEndPositions(position, rang, flying, mounted)
 
-		print endPositions
-
 		positionUsed = position
 		positionScore = 0
 		for pos in endPositions:
@@ -48,4 +46,4 @@ class ai:
 				positionScore = score
 				positionUsed = pos
 
-		print positionUsed
+		return positionUsed

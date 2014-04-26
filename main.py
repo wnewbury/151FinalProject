@@ -178,11 +178,16 @@ def main():
 
     game.Display()
 
-    game.calculateMove(game.getCharacterByName("Sain"))
-    #while not game.hasEnded():
-    #    game.askInput()
+    character = game.getCharacterByName("Sain")
+    position = game.calculateMove(character)
 
-    #print "interesting"
+    game.gameboard.moveCharacter(character, position[0], position[1])
+
+    game.Display()
+    while not game.hasEnded():
+        game.askInput()
+
+    print "interesting"
 
 
 if __name__ == "__main__":
