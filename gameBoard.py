@@ -20,7 +20,7 @@ class gameBoard:
     #Determine if a given move is valid for a given character
     def isValidMove(self, p1x, p1y, p2x, p2y, charRange, flying, mounted):
         #inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
-        cost = self.aStarSearch(p1x, p1y, p2x, p2y, flying, mounted)
+        cost = self.aStarSearch(p1x, p1y, p2x, p2y, charRange, flying, mounted)
         inrange = (cost != None) and (cost < charRange)
         isempty = self.board[p2x][p2y].getCharacter() == False
         if flying:
@@ -72,7 +72,7 @@ class gameBoard:
                     successors.append( ( (xCoor, yCoor), terrainCost) )
         return successors
 
-    def aStarSearch(self, startX, startY, goalX, goalY, flying, mounted):
+    def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted):
         #reject if invalid goal
         if not(self.isValidLocation(goalX, goalY, flying, mounted)):
             return None
@@ -84,8 +84,9 @@ class gameBoard:
             start = (startCoordinates, None, 0)
             queue.push(start, 0)
             closed = sets.Set()
+            cost = 0
 
-            while not(queue.isEmpty()):
+            while not(queue.isEmpty() or (cost > charRange)):
                 top = queue.pop()
                 if (top[0][0] == goalX) and (top[0][1] == goalY):
                     #we've reached the end, return cost it took to get here
