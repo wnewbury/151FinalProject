@@ -43,7 +43,7 @@ class gameBoard:
 
     # get valid neighboring locations a given character can move to (along with their terrain cost)
     def getSuccessors(self, x, y, flying, mounted):
-        possibleSuccessors = [ (x-1, y+1), (x, y+1), (x+1, y+1), (x-1, y), (x+1, y), (x-1, y-1), (x, y-1), (x+1, y-1) ]
+        possibleSuccessors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1), ]
         successors = []
 
         for possibleSuccessor in possibleSuccessors:
@@ -112,8 +112,9 @@ class gameBoard:
 
                     for x in range(len(successors)):
                         cost = top[2] + successors[x][1]
-                        queue.push( (successors[x][0], top, cost),
-                                    cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
+                        if cost <= charRange:
+                            queue.push( (successors[x][0], top, cost),
+                                        cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
                     closed.add(top[0])
                     continue
 
@@ -122,6 +123,60 @@ class gameBoard:
 
             return None
 
+
+
+    def isInRange(self, unit, unitPos, targetPos):
+
+        flying = unit.isFlying()
+        mounted = unit.isMounted()
+        charRange = unit.getRange()
+
+        x = unitPos[0]
+        y = unitPos[1]
+
+        # Ranged attack only
+        if unit.getWeaponType() == "bow":
+            possibleNeighbors = [ (x-2, y), (x-1, y+1), (x, y+2), (x+1, y+1), (x+2, y), (x+1, y-1), (x, y-2), (x-1, y-1) ]
+            neighbors = []
+            for possibleNeighbor in possibleNeighbors:
+                xCoor = possibleNeighbor[0]
+                yCoor = possibleNeighbor[1]
+
+                if ((xCoor >= 0 and xCoor < self.height) and (yCoor >= 0 and yCoor < self.width)) and self.isValidLocation(xCoor, yCoor, flying, mounted):
+                    neighbors.append(possibleNeighbor)
+
+            distances = []
+            for neighbor in neighbors:
+                distances.append( self.aStarSearch(x, y, neighbor[0], neighbor[1], charRange, flying, mounted ) )
+
+            for distance in distances:
+
+                if (distance != None) and (distance <= charRange):
+                    return True
+
+            return False
+
+        # CQC only
+        else:
+            possibleNeighbors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1) ]
+            neighbors = []
+            for possibleNeighbor in possibleNeighbors:
+                xCoor = possibleNeighbor[0]
+                yCoor = possibleNeighbor[1]
+
+                if ((xCoor >= 0 and xCoor < self.height) and (yCoor >= 0 and yCoor < self.width)) and self.isValidLocation(xCoor, yCoor, flying, mounted):
+                    neighbors.append(possibleNeighbor)
+
+            distances = []
+            for neighbor in neighbors:
+                distances.append( self.aStarSearch(x, y, neighbor[0], neighbor[1], charRange, flying, mounted ) )
+
+            for distance in distances:
+
+                if (distance != None) and (distance <= charRange):
+                    return True
+
+            return False
 
 
 

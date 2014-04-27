@@ -21,7 +21,145 @@ class ai:
 		endPositions.append(pos)
 		return endPositions
 
-	def evaluationFunction(self, position, pos):
+
+	def enemyEvaluationFuntion(self, character, position, pos, attackedEnemy):
+
+		'''
+
+		expected kill - ULTRA HIGHT WEIGHT
+
+		expected death
+
+		expected damage done - HIGH WEIGHT
+
+		expected damage taken
+
+		if did not attack: distance to closest enemy
+
+		defense bonus
+
+
+
+		'''
+		return 0
+
+	def evaluationFunction(self, selfCharacter, equippedWeapon, position, pos, attackedEnemy):
+
+		# if attackedEnemy != None: calculate expected damage diven/taken
+
+		weights = selfCharacter.getOffensiveWeights(equippedWeapon)
+
+		# if character is below half health use defensive weights
+
+
+
+		gameboard = self.gameboard
+		characters = gameboard.getCharacters()
+
+		# grab all enemies and allies
+		enemies = []
+		allies = []
+		for character in characters:
+			if character.isEnemy():
+				enemies.append(character)
+
+			elif character != selfCharacter:
+				allies.append(character)
+
+
+		#check which enemies would be in range
+		numEnemiesInRange = 0
+		numArchersInRange = 0
+		numAxeUsersInRange = 0
+		numLanceUsersInRange = 0
+		numSwordUsersInRange = 0
+		bossInRange = 0
+
+		enemiesInRange = []
+		for enemy in enemies:
+			#enemyLocation = gameboard.GET_ENEMY_LOCATION
+			if gameboard.isInRange(enemy, pos):
+				numEnemiesInRange += 1
+				
+				primWeapon = enemy.getWeaponType()
+				secWeapon = enemy.getSecondaryWeaponType()
+
+				if (primWeapon == "axe") or (secWeapon == "axe"):
+					numAxeUsersInRange += 1
+
+				if (primWeapon == "lance") or (secWeapon == "lance"):
+					numLanceUsersInRange += 1
+
+				if (primWeapon == "sword") or (secWeapon == "sword"):
+					numSwordUsersInRange += 1
+
+				if (primWeapon == "bow") or (secWeapon == "bow"):
+					numArchersInRange += 1
+
+				if enemy.isBoss():
+					bossInRange = 1
+
+		'''
+
+		in range should also be based on currently equiped weapon
+
+		defensive mode and offensive mode
+			divided on 50 percent health line
+
+		if in range of enemy units: 
+
+			terrain defense bonus
+			terrain avoid bonus
+
+		in range of an axe user
+
+		in range of a lance user
+
+		in range of a sword user
+
+		in range of a bow user
+
+		in range of one unit
+
+		in range of two units
+
+		in range of three units
+
+		in range of four units
+
+		in range of five units
+
+		in range of more than 5 units
+
+		in range of boss and other enemies
+
+		expected damage taken if all enemies in range attack
+
+		expected death if all enemies in range attack
+
+			note: less expected health should make things worse
+
+
+		expected death
+
+		expected kill
+
+		predicted damage taken
+
+		predicted damage given
+
+		attacked enemy killable by ally
+
+
+
+		is archer in range of attack by cqc
+
+
+		'''
+
+
+
+
 		return self.gameboard.manhattanDistance(position[0], position[1], pos[0], pos[1])
 
 	def calculateMove(self, character):
@@ -42,7 +180,15 @@ class ai:
 		positionUsed = position
 		positionScore = 0
 		for pos in endPositions:
-			score = self.evaluationFunction(position, pos)
+
+			#try both types of weapons as well as each enemy to attack
+			primWeapon = character.getWeaponType()
+			secWeapon = character.getSecondaryWeaponType()
+
+			# check all attacks
+			score = self.evaluationFunction(character, position, pos)
+
+			def evaluationFunction(self, selfCharacter, equippedWeapon, position, pos, attackedEnemy):
 
 			if score > positionScore:
 				positionScore = score

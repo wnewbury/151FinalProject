@@ -45,6 +45,9 @@ class character:
     def getWeaponType(self):
         return self.primWeapon.getType()
 
+    def getSecondaryWeaponType(self):
+        return self.secWeapon.getType()
+
     def getClass(self):
         return self.getClass
 
