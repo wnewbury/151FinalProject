@@ -20,7 +20,8 @@ class gameBoard:
     #Determine if a given move is valid for a given character
     def isValidMove(self, p1x, p1y, p2x, p2y, charRange, flying, mounted):
         #inrange = self.manhattanDistance(p1x, p1y, p2x, p2y) <= charRange
-        inrange = (self.aStarSearch(p1x, p1y, p2x, p2y, charRange, flying, mounted) != None)
+        cost = self.aStarSearch(p1x, p1y, p2x, p2y, charRange, flying, mounted)
+        inrange = (cost != None) and (cost < charRange)
         isempty = self.board[p2x][p2y].getCharacter() == False
         if flying:
             return inrange and isempty
@@ -49,47 +50,33 @@ class gameBoard:
         for possibleSuccessor in possibleSuccessors:
             xCoor = possibleSuccessor[0]
             yCoor = possibleSuccessor[1]
-
             if ((xCoor >= 0 and xCoor < self.height) and (yCoor >= 0 and yCoor < self.width)) and self.isValidLocation(xCoor, yCoor, flying, mounted):
                 terrain = self.getTerrain(xCoor, yCoor)
                 terrainCost = 9999
-
                 if flying:
                     terrainCost = 1
                     successors.append( (xCoor, yCoor, terrainCost) )
-
                 else:
-
                     # plain
                     if (terrain == 0):
                         terrainCost = 1
-
                     # mountain
                     elif (terrain == 2):
                         terrainCost = 4
-
                     # forest
                     elif (terrain == 3):
-
                         if mounted:
                             terrainCost = 3
                         else:
                             terrainCost = 2
-
                     successors.append( ( (xCoor, yCoor), terrainCost) )
-
         return successors
 
-
-
     def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted):
-
         #reject if invalid goal
         if not(self.isValidLocation(goalX, goalY, flying, mounted)):
             return None
-
         else:
-
             startCoordinates = (startX, startY)
             goalCoordinates = (goalX, goalY)
 
@@ -100,12 +87,9 @@ class gameBoard:
 
             while not(queue.isEmpty()):
                 top = queue.pop()
-                
                 if (top[0][0] == goalX) and (top[0][1] == goalY):
                     #we've reached the end, return cost it took to get here
-                        
-                    return top[2]
-                
+                    return top[2] 
                 elif not(top[0] in closed):
                     #expand top
                     successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted)
@@ -117,12 +101,9 @@ class gameBoard:
                                         cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
                     closed.add(top[0])
                     continue
-
                 else:
                     continue
-
             return None
-
 
 
     def isInRange(self, unit, unitPos, targetPos):
@@ -178,7 +159,38 @@ class gameBoard:
 
             return False
 
+    def getTargets(character, position):
 
+        characterAlignment = character.isEnemy()
+
+        x = pos[0]
+        y = pos[1]
+
+        targets = []
+
+        # ranged
+        if character.getWeaponType() == "bow":
+            neighbors = [ (x-2, y), (x-1, y+1), (x, y+2), (x+1, y+1), (x+2, y), (x+1, y-1), (x, y-2), (x-1, y-1) ]
+
+            for neighbor in neighbors:
+                char = main.getCharacterAtPosition(neighbor)
+                if char != False:
+                    if char.isEnemy() != characterAlignment:
+                        targets.append(char)
+
+            return targets
+
+        #CQC
+        else:
+            neighbors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1) ]
+
+            for neighbor in neighbors:
+                char = main.getCharacterAtPosition(neighbor)
+                if char != False:
+                    if char.isEnemy() != characterAlignment:
+                        targets.append(char)
+
+            return targets
 
     #Perform a move of a character
     def moveCharacter(self, inputChar, newx, newy):
@@ -188,7 +200,7 @@ class gameBoard:
                 if character != False and inputChar == character:
                     if character.moveable(): 
                         if self.isValidMove(x, y, newx, newy, character.getRange(),
-                                            character.isFlying()):
+                                            character.isFlying(), character.isMounted()):
                             self.board[x][y].changeCharacter(None)
                             self.board[newx][newy].changeCharacter(character)
                             character.moveUsed()

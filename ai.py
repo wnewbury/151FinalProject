@@ -175,9 +175,9 @@ class ai:
 		mounted = character.isMounted()
 		endPositions = self.getEndPositions(position, rang, flying, mounted)
 
-		print endPositions
-
 		positionUsed = position
+		switchWeapons = False
+		target = None
 		positionScore = 0
 		for pos in endPositions:
 
@@ -185,13 +185,19 @@ class ai:
 			primWeapon = character.getWeaponType()
 			secWeapon = character.getSecondaryWeaponType()
 
-			# check all attacks
-			score = self.evaluationFunction(character, position, pos)
+			targets = self.gameboard.getTargets(character, pos)
 
-			def evaluationFunction(self, selfCharacter, equippedWeapon, position, pos, attackedEnemy):
+			for target in targets:
+
+			# score = self.evaluationFunction(character, equippedWeapon, position, pos, None)
+			# loop over all attacks
+			# for attacked target:
+			# 		score = self.evaluationFunction(character, equippedWeapon, position, pos, attackedEnemy)
+
+			score = self.evaluationFunction(character, position, pos)
 
 			if score > positionScore:
 				positionScore = score
 				positionUsed = pos
 
-		print positionUsed
+		return (positionUsed, switchWeapons, target)
