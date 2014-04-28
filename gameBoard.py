@@ -8,6 +8,7 @@ class gameBoard:
         self.width = width
         self.lords = mapLords
         self.board = [[None for i in xrange(width)] for i in xrange(height)]
+        self.sideTurn = "good"
         
         for x in range(height):
             for y in range(width):
@@ -312,12 +313,17 @@ class gameBoard:
         print "--------"*15 + "\n"
 
     #End a turn - resets the move and attack counters for the characters
-    def endTurn(self):
+    def endTurn(self, side):
         #When we have actual two players, give the characters a side, then
         #check if its the appropriate side before reseting the actions
         print "ENDING TURN\n"
         for character in self.getCharacters():
-            character[0].resetActions()
+            if character.getSide() == side:
+                character[0].resetActions()
+                if side == "good" and self.sideTurn == "good":
+                    self.sideTurn = "bad"
+                elif side == "bad" and self.sideTurn == "bad":
+                    self.sideTurn = "good"
 
 class gameSpace:
     def __init__(self, character, terrain):

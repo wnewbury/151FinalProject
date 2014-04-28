@@ -121,7 +121,7 @@ class ai:
 		allies = []
 		for character in characters:
 			if character[0].isEnemy():
-				enemies.append(character[0])
+				enemies.append(character)
 
 			elif character[0] != selfCharacter:
 				allies.append(character[0])
@@ -138,11 +138,11 @@ class ai:
 		enemiesInRange = []
 		for enemy in enemies:
 			#enemyLocation = gameboard.GET_ENEMY_LOCATION
-			if gameboard.isInRange(enemy, pos):
+			if gameboard.isInRange(enemy[0], pos):
 				numEnemiesInRange += 1
 				
-				primWeapon = enemy.getWeaponType()
-				secWeapon = enemy.getSecondaryWeaponType()
+				primWeapon = enemy[0].getWeaponType()
+				secWeapon = enemy[0].getSecondaryWeaponType()
 
 				if (primWeapon == "axe") or (secWeapon == "axe"):
 					numAxeUsersInRange += 1
@@ -156,7 +156,7 @@ class ai:
 				if (primWeapon == "bow") or (secWeapon == "bow"):
 					numArchersInRange += 1
 
-				if enemy.isBoss():
+				if enemy[0].isBoss():
 					bossInRange = 1
 
 		result = (0,0)
@@ -169,7 +169,14 @@ class ai:
 					targetAttacked = target
 					damageNet = (result[0] - result[1])
 
-		return (damageNet, targetAttacked)
+		dist = 1000
+		for character  in enemies:
+			dist = min(dist, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
+
+		if targetAttacked == None:
+			return (5 - dist, None)
+		else:
+			return (damageNet, targetAttacked)
 
 	def calculateMove(self, character):
 		characters = self.gameboard.getCharacters()

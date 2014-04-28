@@ -52,38 +52,38 @@ class runGame:
 
             #characters
             lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
-            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, oweights, dweights)
+            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, oweights, dweights, "good")
 
             kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
-            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, oweights, dweights)
+            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, oweights, dweights,  "good")
 
             sainStats = stats(20, 8, 5, 7, 4, 6, 0, 9, 7)
-            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, oweights, dweights)
+            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, oweights, dweights, "good")
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-            wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20, oweights, dweights)
+            wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20, oweights, dweights, "good")
 
             florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
-            florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17, oweights, dweights)
+            florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17, oweights, dweights, "good")
             
             #enemies
             L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
-            brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20, oweights, dweights)
+            brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20, oweights, dweights, "bad")
 
             L2BrigandStats = L1BrigandStats
-            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights)
-            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights)
+            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights,  "bad")
+            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights,  "bad")
 
             mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
-            merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights)
-            merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights)
+            merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights,  "bad")
+            merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights,  "bad")
 
             archerStats = stats(17, 3, 3, 3, 0, 3, 0, 6, 5)
-            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights)
-            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights)
+            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights,  "bad")
+            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights,  "bad")
 
             migalStats = stats(25, 7, 3, 5, 2, 5, 0, 12, 5)
-            migal = character("Migal", "Brigand", steelAxe, None, True, True, migalStats, 25, oweights, dweights)
+            migal = character("Migal", "Brigand", steelAxe, None, True, True, migalStats, 25, oweights, dweights,  "bad")
 
 
             #initialize characters on map
@@ -165,11 +165,11 @@ class runGame:
 
             result = self.ai.calculateMove(character)
             position = result[0]
-            print position
+            #print position
             character2 = result[2]
-            print character2
+            #print character2
             switch = result[1]
-            print switch
+            #print switch
 
             if switch:
                 character.switchWeapons()
