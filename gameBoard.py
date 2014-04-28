@@ -106,8 +106,7 @@ class gameBoard:
             return None
 
 
-    def isInRange(self, unit, unitPos, targetPos):
-
+    def isInRange(self, unit, unitPos):
         flying = unit.isFlying()
         mounted = unit.isMounted()
         charRange = unit.getRange()
@@ -159,12 +158,11 @@ class gameBoard:
 
             return False
 
-    def getTargets(character, position):
-
+    def getTargets(self, character, position):
         characterAlignment = character.isEnemy()
 
-        x = pos[0]
-        y = pos[1]
+        x = position[0]
+        y = position[1]
 
         targets = []
 
@@ -173,10 +171,11 @@ class gameBoard:
             neighbors = [ (x-2, y), (x-1, y+1), (x, y+2), (x+1, y+1), (x+2, y), (x+1, y-1), (x, y-2), (x-1, y-1) ]
 
             for neighbor in neighbors:
-                char = main.getCharacterAtPosition(neighbor)
-                if char != False:
-                    if char.isEnemy() != characterAlignment:
-                        targets.append(char)
+                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                    char = self.board[neighbor[0]][neighbor[1]].getCharacter()
+                    if char != False:
+                        if char.isEnemy() != characterAlignment:
+                            targets.append(char)
 
             return targets
 
@@ -185,10 +184,11 @@ class gameBoard:
             neighbors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1) ]
 
             for neighbor in neighbors:
-                char = main.getCharacterAtPosition(neighbor)
-                if char != False:
-                    if char.isEnemy() != characterAlignment:
-                        targets.append(char)
+                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                    char = self.board[neighbor[0]][neighbor[1]].getCharacter()
+                    if char != False:
+                        if char.isEnemy() != characterAlignment:
+                            targets.append(char)
 
             return targets
 
@@ -199,6 +199,8 @@ class gameBoard:
                 character = self.board[x][y].getCharacter()
                 if character != False and inputChar == character:
                     if character.moveable(): 
+                        if (newx == x) and (newy ==y):
+                            return
                         if self.isValidMove(x, y, newx, newy, character.getRange(),
                                             character.isFlying(), character.isMounted()):
                             self.board[x][y].changeCharacter(None)
@@ -214,8 +216,7 @@ class gameBoard:
         print "No such character to move\n"
 
     #Engage one character in friendly conflict with another
-    def fight(self, character1, character2):
-        #NOTE: does not currently account for terrain
+    def fight(self, character1, character2, mock = False, mockPos = False):
         p1x, p2x, p2y, p1y = 0, 0, 0, 0
         for x in range(self.height):
             for y in range(self.width):
@@ -226,17 +227,27 @@ class gameBoard:
                 if character == character2:
                     p2x = x
                     p2y = y
+
+        if mockPos != False:
+            p1x, p1y = mockPos[0], mockPos[1]
+
         dist = self.manhattanDistance(p1x, p1y, p2x, p2y)
         attackTerrain = self.board[p1x][p1y].getTerrain()
         defendTerrain = self.board[p2x][p2y].getTerrain()
+        result = 0
         if character1.canAttack():
             if dist <= character1.weapRange():
-                character1.fight(character2, dist, attackTerrain, defendTerrain)
-                character1.attackUsed()
+                result = character1.fight(character2, dist, attackTerrain, defendTerrain, mock)
+                if not mock:
+                    character1.attackUsed()
             else:
                 print "invalid fight\n"
+                
         else:
             print "already attacked\n"
+
+        if result != None:
+            return result
 
     #Pull terrain of a square
     def getTerrain(self, x, y):
@@ -281,8 +292,15 @@ class gameBoard:
 
     #Display purposes - outputs grid of terrain/characters
     def Display(self):
-        print "--------"*15
+        sys.stdout.write("-------")
+        for y in range(self.width):
+            if y < 10:
+                sys.stdout.write(" " + str(y) +  " -----")
+            else:
+                sys.stdout.write(" " + str(y) +  " ----")
+        sys.stdout.write("\n")
         for x in xrange(self.height):
+            sys.stdout.write(str(x) + "\t")
             for i in self.board[x]:
                 character = i.getCharacter()
                 if character != False and character.isAlive():

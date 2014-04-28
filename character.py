@@ -4,7 +4,7 @@ DEAD = 0
 from random import randrange
 
 class character:
-    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health):
+    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health, oweights, dweights):
         self.name = name
         self.charClass = charClass
         self.primWeapon = primWeapon
@@ -17,6 +17,8 @@ class character:
         self.status = ALIVE
         self.moveAction =  True
         self.attackAction = True
+        self.oweights = oweights
+        self.dweights = dweights
 
     def isEnemy(self):
         return self.enemy
@@ -24,7 +26,7 @@ class character:
     def weapRange(self):
         return self.primWeapon.getRange()
 
-    def isBoss():
+    def isBoss(self):
         return self.boss
 
     def isLord(self):
@@ -39,6 +41,18 @@ class character:
     def getName(self):
         return self.name
 
+    def getOffensiveWeights(self):
+        return self.oweights
+
+    def getDefensiveWeights(self):
+        return self.dweights
+
+    def getCurrentHealth(self):
+        return self.curhealth
+
+    def getMaxHealth(self):
+        return self.maxhealth
+
     def getSpeed(self):
         return self.stats.getSpeed()
 
@@ -46,7 +60,8 @@ class character:
         return self.primWeapon.getType()
 
     def getSecondaryWeaponType(self):
-        return self.secWeapon.getType()
+        if self.secWeapon != None:
+            return self.secWeapon.getType()
 
     def getClass(self):
         return self.getClass
@@ -80,6 +95,11 @@ class character:
 
     def hitRate(self):
         return self.primWeapon.getHit() + (self.stats.getSkill() * 2) + (self.stats.getLuck() / 2)
+
+    def switchWeapons(self):
+        temp = self.secWeapon
+        self.secWeapon = self.primWeapon
+        self.primWeapon = temp
 
     def evade(self, terrain):
         tbonus = 0
@@ -150,17 +170,19 @@ class character:
             return True
 
     #Resolve Attack performed on you
-    def performAttack(self, accuracy, damage, critChance):
+    def performAttack(self, accuracy, damage, critChance, mock = False):
         #Random generate a hit number, check vs crit and hit rates
         hit = randrange(1, 100)
         if hit <= (accuracy * 100):
             if hit <= critChance:
-                self.curhealth -= damage * 3
+                if not mock:
+                    self.curhealth -= damage * 3
                 if self.curhealth <= 0:
                     self.status = DEAD
                 return damage
 
-            self.curhealth -= damage
+            if not mock:
+                self.curhealth -= damage
             if self.curhealth <= 0:
                 self.status = DEAD
             return damage
@@ -169,10 +191,11 @@ class character:
             print "miss"
             return 0      
 
-    def fight(self, enemy, distance, aTerrain, dTerrain):
+    def fight(self, enemy, distance, aTerrain, dTerrain, mock = False):
 
         #Display purposes
-        print self.name + " attacking " + enemy.getName() 
+        if not mock:
+            print self.name + " attacking " + enemy.getName() 
 
         #Pull needed stats
         enemyWeap = enemy.getWeaponType()
@@ -197,22 +220,27 @@ class character:
         damageTak = 0
 
         #First Attack, Enemy Counter-attack, then checks for speed doubles
-        damageInf += enemy.performAttack(accuracy, damage, critChance)
+        damageInf += enemy.performAttack(accuracy, damage, critChance, mock)
 
         if enemy.isValidAttack(distance) and enemy.isAlive():
             damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
-                                            enemyCritChance)
+                                            enemyCritChance, mock)
 
         if self.attackSpeed() >= (enemy.attackSpeed() + 4):
-            damageInf += enemy.performAttack(accuracy, damage, critChance)
+            damageInf += enemy.performAttack(accuracy, damage, critChance, mock)
 
         if enemy.attackSpeed() >= (self.attackSpeed() + 4):
             damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
-                                            enemyCritChance)
+                                            enemyCritChance, mock)
 
-        #Output Results
-        print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
-        print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
+        
+        if mock:
+            return (damageInf, damageTak)
+        else:
+            #Output Results
+            print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
+            print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
+            return None
 
     #Overload equality operator
     def __eq__(self, other):

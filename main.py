@@ -47,40 +47,43 @@ class runGame:
 
             ironBow = weapon("Iron Bow", "bow", 6, .85, 0, 2, 5)
 
+            oweights = [1,1,1,1]
+            dweights = [1,1,1,1]
+
             #characters
             lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
-            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17)
+            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, oweights, dweights)
 
             kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
-            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21)
+            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, oweights, dweights)
 
             sainStats = stats(20, 8, 5, 7, 4, 6, 0, 9, 7)
-            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20)
+            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, oweights, dweights)
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
-            wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20)
+            wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20, oweights, dweights)
 
             florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
-            florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17)
+            florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17, oweights, dweights)
             
             #enemies
             L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
-            brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20)
+            brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20, oweights, dweights)
 
             L2BrigandStats = L1BrigandStats
-            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
-            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20)
+            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights)
+            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, oweights, dweights)
 
             mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
-            merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16)
-            merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16)
+            merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights)
+            merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, oweights, dweights)
 
             archerStats = stats(17, 3, 3, 3, 0, 3, 0, 6, 5)
-            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17)
-            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17)
+            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights)
+            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17, oweights, dweights)
 
             migalStats = stats(25, 7, 3, 5, 2, 5, 0, 12, 5)
-            migal = character("Migal", "Brigand", steelAxe, None, True, True, migalStats, 25)
+            migal = character("Migal", "Brigand", steelAxe, None, True, True, migalStats, 25, oweights, dweights)
 
 
             #initialize characters on map
@@ -137,26 +140,45 @@ class runGame:
                 y = raw_input("Please input valid coordinate: ")
 
             self.gameboard.moveCharacter(character, int(x), int(y))
-
-            self.Display()
         elif command == "attack":
             char1 = raw_input("Input name of character to attack with: ")
             character1 = self.getCharacterByName(char1) 
             while character1 == False:
                 char1 = raw_input("Reinput name: ")
-                character = self.getCharacterByName(char1)
+                character1 = self.getCharacterByName(char1)
 
             char2 = raw_input("Input name of character to attack: ")
             character2 = self.getCharacterByName(char2)
             while character2 == False:
                 char2 = raw_input("Reinput name: ")
-                character = self.getCharacterByName(char2)
+                character2 = self.getCharacterByName(char2)
 
             self.gameboard.fight(character1, character2)
-
-            self.Display()
         elif command == "endTurn":
             self.gameboard.endTurn()
+        elif command == "auto":
+            char = raw_input("Input name of character to automate: ")
+            character = self.getCharacterByName(char)
+            while character == False:
+                char = raw_input("Reinput name: ")
+                character = self.getCharacterByName(char)
+
+            result = self.ai.calculateMove(character)
+            position = result[0]
+            print position
+            character2 = result[2]
+            print character2
+            switch = result[1]
+            print switch
+
+            if switch:
+                character.switchWeapons()
+
+            self.gameboard.moveCharacter(character, position[0], position[1])
+
+            if character2 != None:
+                self.gameboard.fight(character, character2)
+        self.Display()
 
     def Display(self):
         self.gameboard.Display()
@@ -178,12 +200,6 @@ def main():
 
     game.Display()
 
-    character = game.getCharacterByName("Sain")
-    position = game.calculateMove(character)
-
-    game.gameboard.moveCharacter(character, position[0], position[1])
-
-    game.Display()
     while not game.hasEnded():
         game.askInput()
 

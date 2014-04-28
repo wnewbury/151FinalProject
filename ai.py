@@ -43,15 +43,75 @@ class ai:
 		'''
 		return 0
 
-	def evaluationFunction(self, selfCharacter, equippedWeapon, position, pos, attackedEnemy):
+	'''
 
-		# if attackedEnemy != None: calculate expected damage diven/taken
+	in range should also be based on currently equiped weapon
 
-		weights = selfCharacter.getOffensiveWeights(equippedWeapon)
+	defensive mode and offensive mode
+		divided on 50 percent health line
+
+	if in range of enemy units: 
+
+		terrain defense bonus
+		terrain avoid bonus
+
+	in range of an axe user
+
+	in range of a lance user
+
+	in range of a sword user
+
+	in range of a bow user
+
+	in range of one unit
+
+	in range of two units
+
+	in range of three units
+
+	in range of four units
+
+	in range of five units
+
+	in range of more than 5 units
+
+	in range of boss and other enemies
+
+	expected damage taken if all enemies in range attack
+
+	expected death if all enemies in range attack
+
+		note: less expected health should make things worse
+
+
+	expected death
+
+	expected kill
+
+	predicted damage taken
+
+	predicted damage given
+
+	attacked enemy killable by ally
+
+
+
+	is archer in range of attack by cqc
+
+
+	'''
+	def evaluationFunction(self, selfCharacter, equippedWeapon, pos, targets):
+
 
 		# if character is below half health use defensive weights
+		healthModifierOffensive = 2
+		healthModifierDefensive = 1
+		if selfCharacter.getCurrentHealth() < (.5 * selfCharacter.getMaxHealth()):
+			healthModifierOffensive = 1
+			healthModifierDefensive = 2
 
-
+		oweights = selfCharacter.getOffensiveWeights()
+		dweights = selfCharacter.getDefensiveWeights()
 
 		gameboard = self.gameboard
 		characters = gameboard.getCharacters()
@@ -60,11 +120,11 @@ class ai:
 		enemies = []
 		allies = []
 		for character in characters:
-			if character.isEnemy():
-				enemies.append(character)
+			if character[0].isEnemy():
+				enemies.append(character[0])
 
-			elif character != selfCharacter:
-				allies.append(character)
+			elif character[0] != selfCharacter:
+				allies.append(character[0])
 
 
 		#check which enemies would be in range
@@ -99,68 +159,17 @@ class ai:
 				if enemy.isBoss():
 					bossInRange = 1
 
-		'''
+		result = (0,0)
+		damageNet = 0
+		targetAttacked = None
+		if targets != []:
+			for target in targets:
+				result = self.gameboard.fight(selfCharacter, target, True, pos)
+				if (result[0] - result[1]) > damageNet:
+					targetAttacked = target
+					damageNet = (result[0] - result[1])
 
-		in range should also be based on currently equiped weapon
-
-		defensive mode and offensive mode
-			divided on 50 percent health line
-
-		if in range of enemy units: 
-
-			terrain defense bonus
-			terrain avoid bonus
-
-		in range of an axe user
-
-		in range of a lance user
-
-		in range of a sword user
-
-		in range of a bow user
-
-		in range of one unit
-
-		in range of two units
-
-		in range of three units
-
-		in range of four units
-
-		in range of five units
-
-		in range of more than 5 units
-
-		in range of boss and other enemies
-
-		expected damage taken if all enemies in range attack
-
-		expected death if all enemies in range attack
-
-			note: less expected health should make things worse
-
-
-		expected death
-
-		expected kill
-
-		predicted damage taken
-
-		predicted damage given
-
-		attacked enemy killable by ally
-
-
-
-		is archer in range of attack by cqc
-
-
-		'''
-
-
-
-
-		return self.gameboard.manhattanDistance(position[0], position[1], pos[0], pos[1])
+		return (damageNet, targetAttacked)
 
 	def calculateMove(self, character):
 		characters = self.gameboard.getCharacters()
@@ -177,7 +186,7 @@ class ai:
 
 		positionUsed = position
 		switchWeapons = False
-		target = None
+		targetAttacked = None
 		positionScore = 0
 		for pos in endPositions:
 
@@ -187,17 +196,21 @@ class ai:
 
 			targets = self.gameboard.getTargets(character, pos)
 
-			for target in targets:
+			score = max(self.evaluationFunction(character, primWeapon, pos, [])[0], self.evaluationFunction(character, secWeapon, pos, [])[0])
 
-			# score = self.evaluationFunction(character, equippedWeapon, position, pos, None)
-			# loop over all attacks
-			# for attacked target:
-			# 		score = self.evaluationFunction(character, equippedWeapon, position, pos, attackedEnemy)
+			temp = self.evaluationFunction(character, primWeapon, pos, targets)
+			if temp[0] > score:
+				targetAttacked = temp[1]
+				score = temp[0]
 
-			score = self.evaluationFunction(character, position, pos)
+			temp = self.evaluationFunction(character, secWeapon, pos, targets)
+			if temp[0] > score:
+				targetAttacked = temp[1]
+				score = temp[0]
+				switchWeapons = True
 
 			if score > positionScore:
 				positionScore = score
 				positionUsed = pos
 
-		return (positionUsed, switchWeapons, target)
+		return (positionUsed, switchWeapons, targetAttacked)
