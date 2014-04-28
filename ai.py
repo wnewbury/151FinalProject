@@ -120,7 +120,7 @@ class ai:
 		enemies = []
 		allies = []
 		for character in characters:
-			if character[0].isEnemy():
+			if character[0].isEnemy() != selfCharacter.isEnemy():
 				enemies.append(character)
 
 			elif character[0] != selfCharacter:
@@ -179,6 +179,9 @@ class ai:
 			return (damageNet, targetAttacked)
 
 	def calculateMove(self, character):
+		if not character.moveable():
+			return None
+
 		characters = self.gameboard.getCharacters()
 
 		position = (0,0)

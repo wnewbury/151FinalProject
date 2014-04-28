@@ -19,7 +19,6 @@ class character:
         self.attackAction = True
         self.oweights = oweights
         self.dweights = dweights
-        self.side = side
 
     def isEnemy(self):
         return self.enemy
@@ -177,21 +176,24 @@ class character:
     def performAttack(self, accuracy, damage, critChance, mock = False):
         #Random generate a hit number, check vs crit and hit rates
         hit = randrange(1, 100)
-        if hit <= (accuracy * 100):
+        if mock:
+            eDamage = (3*damage*critChance) + (damage*(accuracy-critChance))
+            return eDamage
+        elif hit <= accuracy:
             if hit <= critChance:
-                if not mock:
-                    self.curhealth -= damage * 3
+
+                self.curhealth -= damage * 3
                 if self.curhealth <= 0:
                     self.status = DEAD
                 return damage
 
-            if not mock:
-                self.curhealth -= damage
+
+            self.curhealth -= damage
             if self.curhealth <= 0:
                 self.status = DEAD
             return damage
-
         else:
+            print self.getName()
             print "miss"
             return 0      
 
@@ -236,7 +238,6 @@ class character:
         if enemy.attackSpeed() >= (self.attackSpeed() + 4):
             damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
                                             enemyCritChance, mock)
-
         
         if mock:
             return (damageInf, damageTak)

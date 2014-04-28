@@ -8,8 +8,8 @@ class gameBoard:
         self.width = width
         self.lords = mapLords
         self.board = [[None for i in xrange(width)] for i in xrange(height)]
-        self.sideTurn = "good"
-        
+        self.enemyTurn = False
+
         for x in range(height):
             for y in range(width):
                 self.board[x][y] = gameSpace(characters[x][y], board[x][y])
@@ -56,7 +56,7 @@ class gameBoard:
                 terrainCost = 9999
                 if flying:
                     terrainCost = 1
-                    successors.append( (xCoor, yCoor, terrainCost) )
+                    successors.append( ((xCoor, yCoor), terrainCost) )
                 else:
                     # plain
                     if (terrain == 0):
@@ -241,6 +241,10 @@ class gameBoard:
                 result = character1.fight(character2, dist, attackTerrain, defendTerrain, mock)
                 if not mock:
                     character1.attackUsed()
+                    if character1.status == 0:
+                        self.board[p1x][p1y].removeCharacter()
+                    elif character2.status == 0:
+                        self.board[p2x][p2y].removeCharacter()
             else:
                 print "invalid fight\n"
                 
@@ -283,7 +287,7 @@ class gameBoard:
         enemies = 0
         for x in range(self.height):
             for y in range(self.width):
-                if self.board[x][y].hasLord():
+                if self.board[x][y].hasBoss():
                     enemies += 1
 
         if enemies == 0:
@@ -313,17 +317,14 @@ class gameBoard:
         print "--------"*15 + "\n"
 
     #End a turn - resets the move and attack counters for the characters
-    def endTurn(self, side):
+    def endTurn(self):
         #When we have actual two players, give the characters a side, then
         #check if its the appropriate side before reseting the actions
         print "ENDING TURN\n"
         for character in self.getCharacters():
-            if character.getSide() == side:
+            if character[0].isEnemy() == self.enemyTurn:
                 character[0].resetActions()
-                if side == "good" and self.sideTurn == "good":
-                    self.sideTurn = "bad"
-                elif side == "bad" and self.sideTurn == "bad":
-                    self.sideTurn = "good"
+        self.enemyTurn = 1 - self.enemyTurn
 
 class gameSpace:
     def __init__(self, character, terrain):
@@ -379,3 +380,5 @@ class gameSpace:
         else:
             return False
     
+    def removeCharacter(self):
+        self.character = None

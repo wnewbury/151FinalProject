@@ -16,13 +16,14 @@ class runGame:
     def generateBoard(self, mapName):
         mapBoard = [[]]
         if mapName == "bom":
+            ##### PUT THE TREE BACK IN
             mapBoard = [[0,0,0,0,0,1,0,0,0,2,0,0,0,0,3],
                     [0,1,1,1,0,0,0,0,2,0,0,1,1,1,0],
                     [0,1,1,1,0,1,0,0,0,0,0,1,0,1,1],
                     [2,0,0,0,0,1,1,1,0,0,0,2,0,0,0],
                     [1,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
                     [0,3,1,1,1,1,1,1,1,1,1,0,0,2,0],
-                    [0,0,1,1,1,0,0,1,0,0,2,0,1,1,1],
+                    [0,0,1,1,1,0,0,1,0,0,0,0,1,1,1],
                     [0,0,0,0,0,0,0,1,0,0,1,0,1,0,1],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0,0,2],
                     [0,0,0,0,0,0,0,0,0,0,1,0,0,2,2]]
@@ -36,14 +37,14 @@ class runGame:
             self.mapLords = 1
 
             #weapons in map
-            ironAxe = weapon("Iron Axe", "axe", 8, .75, 0, 1, 10)
-            steelAxe = weapon("Steel Axe", "axe", 11, .65, 0, 1, 15)
+            ironAxe = weapon("Iron Axe", "axe", 8, 75, 0, 1, 10)
+            steelAxe = weapon("Steel Axe", "axe", 11, 65, 0, 1, 15)
             
-            ironSword = weapon("Iron Sword", "sword", 5, .90, 0, 1, 5)
-            maniKatti = weapon("Mani Katti", "sword", 8, .80, .20, 1, 3)
+            ironSword = weapon("Iron Sword", "sword", 5, 90, 0, 1, 5)
+            maniKatti = weapon("Mani Katti", "sword", 8, 80, .20, 1, 3)
 
-            slimLance = weapon("Slim Lance", "lance", 4, .85, .05, 1, 4)
-            ironLance = weapon("Iron Lance", "lance", 7, .80, 0, 1, 8)
+            slimLance = weapon("Slim Lance", "lance", 4, 85, .05, 1, 4)
+            ironLance = weapon("Iron Lance", "lance", 7, 80, 0, 1, 8)
 
             ironBow = weapon("Iron Bow", "bow", 6, .85, 0, 2, 5)
 
@@ -164,6 +165,11 @@ class runGame:
                 character = self.getCharacterByName(char)
 
             result = self.ai.calculateMove(character)
+
+            if result == None:
+                print "Already acted"
+                return
+
             position = result[0]
             #print position
             character2 = result[2]
@@ -193,6 +199,21 @@ class runGame:
     def calculateMove(self, character):
         return self.ai.calculateMove(character)
 
+    def getAllyCharacters(self):
+        characters = self.gameboard.getCharacters()
+        Allies = []
+        for character in characters:
+            if not character[0].isEnemy():
+                Allies.append(character[0])
+        return Allies
+
+    def getEnemyCharacters(self):
+        characters = self.gameboard.getCharacters()
+        Enemies = []
+        for character in characters:
+            if character[0].isEnemy():
+                Enemies.append(character[0])
+        return Enemies
 
 
 def main():
@@ -200,8 +221,50 @@ def main():
 
     game.Display()
 
+    turn = 0
     while not game.hasEnded():
-        game.askInput()
+        #game.askInput()
+        
+        if turn % 2 == 0:
+            characters = game.getAllyCharacters()
+        else:
+            characters = game.getEnemyCharacters()
+
+        for character in characters:
+            result = game.ai.calculateMove(character)
+
+            if result == None:
+                print "Already acted"
+                return
+
+            position = result[0]
+            #print position
+            character2 = result[2]
+            #print character2
+            switch = result[1]
+            #print switch
+
+            if switch:
+                character.switchWeapons()
+
+            game.gameboard.moveCharacter(character, position[0], position[1])
+
+            if character2 != None:
+                game.gameboard.fight(character, character2)
+
+            if game.hasEnded():
+                break
+
+        game.gameboard.endTurn()
+
+        game.Display()
+
+        turn += 1
+        
+        print "Turn = " + str(turn)
+
+
+
 
     print "interesting"
 
