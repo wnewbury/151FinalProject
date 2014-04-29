@@ -80,7 +80,7 @@ class ai:
 		enemiesInRange = []
 		for enemy in enemies:
 			#enemyLocation = gameboard.GET_ENEMY_LOCATION
-			if gameboard.isInRange(enemy[0], pos):
+			if gameboard.isInRange(enemy[0], enemy[1], pos):
 				numEnemiesInRange += 1
 				
 				primWeapon = enemy[0].getWeaponType()

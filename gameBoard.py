@@ -107,13 +107,13 @@ class gameBoard:
             return None
 
 
-    def isInRange(self, unit, unitPos):
+    def isInRange(self, unit, unitPos, targetPos):
         flying = unit.isFlying()
         mounted = unit.isMounted()
         charRange = unit.getRange()
 
-        x = unitPos[0]
-        y = unitPos[1]
+        x = targetPos[0]
+        y = targetPos[1]
 
         # Ranged attack only
         if unit.getWeaponType() == "bow":
@@ -128,7 +128,7 @@ class gameBoard:
 
             distances = []
             for neighbor in neighbors:
-                distances.append( self.aStarSearch(x, y, neighbor[0], neighbor[1], charRange, flying, mounted ) )
+                distances.append( self.aStarSearch(unitPos[0], unitPos[1], neighbor[0], neighbor[1], charRange, flying, mounted ) )
 
             for distance in distances:
 
@@ -150,7 +150,7 @@ class gameBoard:
 
             distances = []
             for neighbor in neighbors:
-                distances.append( self.aStarSearch(x, y, neighbor[0], neighbor[1], charRange, flying, mounted ) )
+                distances.append( self.aStarSearch(unitPos[0], unitPos[1], neighbor[0], neighbor[1], charRange, flying, mounted ) )
 
             for distance in distances:
 
