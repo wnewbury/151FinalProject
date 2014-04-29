@@ -258,6 +258,26 @@ class gameBoard:
     def getTerrain(self, x, y):
         return self.board[x][y].getTerrain()
 
+    def getTerrainDefenseBonus(self, x, y):
+        tbonus = 0
+        terrain  = self.getTerrain(x, y)
+        if terrain == 2:
+            tbonus = 1
+        elif terrain == 3:
+            tbonus = 2
+
+        return tbonus
+            
+    def getTerrainAvoidBonus(self, x, y):
+        tbonus = 0
+        terrain  = self.getTerrain(x, y)
+        if terrain == 2:
+            tbonus = 20
+        elif terrain == 3:
+            tbonus = 30
+
+        return tbonus
+
     #Pull all the characters on the map
     def getCharacters(self):
         characters = list()
@@ -337,7 +357,7 @@ class gameSpace:
         elif self.terrain == 1:
             return "X"
         elif self.terrain == 2:
-            return "^"
+            return "^|^"
         elif self.terrain == 3:
             return "/|"
         else:

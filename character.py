@@ -4,7 +4,7 @@ DEAD = 0
 from random import randrange
 
 class character:
-    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health, oweights, dweights, side):
+    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health, oweights, dweights):
         self.name = name
         self.charClass = charClass
         self.primWeapon = primWeapon
