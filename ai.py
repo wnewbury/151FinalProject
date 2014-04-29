@@ -374,7 +374,6 @@ class ai:
 			secWeapon = character.getSecondaryWeaponType()
 
 			targets = self.gameboard.getTargets(character, pos)
-			targets.append(None)
 
 			localBestScore = -float("inf")
 			localTargetAttacked = None
