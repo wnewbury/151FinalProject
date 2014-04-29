@@ -182,6 +182,9 @@ class ai:
 
 		features = util.Counter()
 
+		features["terrainDefBonus"] = 0
+		features["terrainAvoidBonus"] = 0
+
 
 		# if character is below half health use defensive weights
 		'''
@@ -207,6 +210,8 @@ class ai:
 			weights = dweights
 
 		gameboard = self.gameboard
+
+		#get characters returns a list of 2-tuples: (character, characterPosition)
 		characters = gameboard.getCharacters()
 
 
@@ -221,7 +226,7 @@ class ai:
 			if switchWeapons:
 
 				selfCharacter = selfCharacter.switchWeapons()
-				fightResult = self.gameboard.fight(selfCharacter, target, True, pos)             # Make sure this is simulated (doesn't actually subtract health)
+				fightResult = self.gameboard.fight(selfCharacter, target, True, pos)
 				selfCharacter = selfCharacter.switchWeapons()
 
 				damageGiven = fightResult[0]
@@ -234,7 +239,7 @@ class ai:
 					expectedKill = 1
 
 			else:
-				fightResult = self.gameboard.fight(selfCharacter, target, True, pos)             # Make sure this is simulated (doesn't actually subtract health)
+				fightResult = self.gameboard.fight(selfCharacter, target, True, pos)
 
 				damageGiven = fightResult[0]
 				damageTaken = fightResult[1]
@@ -258,6 +263,7 @@ class ai:
 		enemies = []
 		allies = []
 		for character in characters:
+
 			if character[0].isEnemy() != selfCharacter.isEnemy():
 
 				if character == target:
