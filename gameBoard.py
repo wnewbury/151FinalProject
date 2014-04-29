@@ -165,7 +165,7 @@ class gameBoard:
         x = position[0]
         y = position[1]
 
-        targets = []
+        targets = [None]
 
         # ranged
         if character.getWeaponType() == "bow":

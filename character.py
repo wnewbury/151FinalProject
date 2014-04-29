@@ -4,7 +4,7 @@ DEAD = 0
 from random import randrange
 
 class character:
-    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health, oweights, dweights):
+    def __init__(self, name, charClass, primWeapon, secWeapon, enemy, boss, stats, health, primOweights, primDweights, secOweights, secDweights):
         self.name = name
         self.charClass = charClass
         self.primWeapon = primWeapon
@@ -17,8 +17,10 @@ class character:
         self.status = ALIVE
         self.moveAction =  True
         self.attackAction = True
-        self.oweights = oweights
-        self.dweights = dweights
+        self.primOweights = primOweights
+        self.primDweights = primDweights
+        self.secOweights = secOweights
+        self.secDweights = secDweights
 
     def isEnemy(self):
         return self.enemy
@@ -44,11 +46,17 @@ class character:
     def getSide(self):
         return self.side
 
-    def getOffensiveWeights(self):
-        return self.oweights
+    def getPrimOffensiveWeights(self):
+        return self.primOweights
 
-    def getDefensiveWeights(self):
-        return self.dweights
+    def getPrimDefensiveWeights(self):
+        return self.primDweights
+
+    def getSecOffensiveWeights(self):
+        return self.secOweights
+
+    def getSecDefensiveWeights(self):
+        return self.secDweights
 
     def getCurrentHealth(self):
         return self.curhealth
