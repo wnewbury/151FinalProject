@@ -187,12 +187,13 @@ class ai:
 
 
 		# if character is below half health use defensive weights
-
+		"""
 		healthModifierOffensive = 2
 		healthModifierDefensive = 1
 		if selfCharacter.getCurrentHealth() < (.5 * selfCharacter.getMaxHealth()):
 			healthModifierOffensive = 1
 			healthModifierDefensive = 2
+		"""
 
 
 		oweights = selfCharacter.getPrimOffensiveWeights()

@@ -112,6 +112,13 @@ class character:
         self.secWeapon = self.primWeapon
         self.primWeapon = temp
 
+        temp2 = self.primOweights
+        temp3 = self.primDweights
+        self.primOweights = self.secOweights
+        self.primDweights = self.secDweights
+        self.secOweights = temp2
+        self.secDweights = temp3
+
     def evade(self, terrain):
         tbonus = 0
         if terrain == 2:
