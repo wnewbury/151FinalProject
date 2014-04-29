@@ -258,23 +258,23 @@ class runGame:
 
             wilPrimOweights["expectedDeath"] = -500.0
             wilPrimOweights["expectedKill"] = 5.0
-            wilPrimOweights["damageGiven"] = 1.0
+            wilPrimOweights["damageGiven"] = 2.0
             wilPrimOweights["damageTaken"] = -1.5
             wilPrimOweights["bossDead"] = 50.0
             wilPrimOweights["allEnemiesDead"] = 100.0
 
-            wilPrimOweights["numArchersInRange"] = -.5
-            wilPrimOweights["numAxeUsersInRange"] = 1.0
-            wilPrimOweights["numLanceUsersInRange"] = -1.0
-            wilPrimOweights["numSwordUsersInRange"] = 0
+            wilPrimOweights["numArchersInRange"] = 1.0
+            wilPrimOweights["numAxeUsersInRange"] = -.5
+            wilPrimOweights["numLanceUsersInRange"] = -.5
+            wilPrimOweights["numSwordUsersInRange"] = -.5
             wilPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
             wilPrimOweights["bossInRangeWhileEnemiesAllDead"] = 1.0
 
             wilPrimOweights["inRangeOfOneUnit"] = 1.0
-            wilPrimOweights["inRangeOfTwoUnits"] = 1.0
-            wilPrimOweights["inRangeOfThreeUnits"] = 1.0
-            wilPrimOweights["inRangeOfFourUnits"] = -.5
-            wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -1.0
+            wilPrimOweights["inRangeOfTwoUnits"] = -.2
+            wilPrimOweights["inRangeOfThreeUnits"] = -4.0
+            wilPrimOweights["inRangeOfFourUnits"] = -5.0
+            wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -7.0
 
             wilPrimOweights["nearestEnemyDistance"] = -.2
 
@@ -290,18 +290,18 @@ class runGame:
             wilPrimDweights["bossDead"] = 50.0
             wilPrimDweights["allEnemiesDead"] = 100.0
 
-            wilPrimDweights["numArchersInRange"] = -2.5
-            wilPrimDweights["numAxeUsersInRange"] = -.1
-            wilPrimDweights["numLanceUsersInRange"] = -5.0
+            wilPrimDweights["numArchersInRange"] = -.2
+            wilPrimDweights["numAxeUsersInRange"] = -1.0
+            wilPrimDweights["numLanceUsersInRange"] = -1.0
             wilPrimDweights["numSwordUsersInRange"] = -1.0
             wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
             wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
 
             wilPrimDweights["inRangeOfOneUnit"] = -.2
-            wilPrimDweights["inRangeOfTwoUnits"] = -2.0
-            wilPrimDweights["inRangeOfThreeUnits"] = -4.0
-            wilPrimDweights["inRangeOfFourUnits"] = -4.0
-            wilPrimDweights["inRangeOfFiveUnitsOrMore"] = -5.0
+            wilPrimDweights["inRangeOfTwoUnits"] = -3.0
+            wilPrimDweights["inRangeOfThreeUnits"] = -5.0
+            wilPrimDweights["inRangeOfFourUnits"] = -6.0
+            wilPrimDweights["inRangeOfFiveUnitsOrMore"] = -8.0
 
             wilPrimDweights["nearestEnemyDistance"] = 1.0
 
@@ -322,22 +322,22 @@ class runGame:
             florinaPrimOweights["expectedDeath"] = -500.0
             florinaPrimOweights["expectedKill"] = 5.0
             florinaPrimOweights["damageGiven"] = 1.0
-            florinaPrimOweights["damageTaken"] = -1.5
+            florinaPrimOweights["damageTaken"] = -2.0
             florinaPrimOweights["bossDead"] = 50.0
             florinaPrimOweights["allEnemiesDead"] = 100.0
 
-            florinaPrimOweights["numArchersInRange"] = -.5
-            florinaPrimOweights["numAxeUsersInRange"] = 1.0
-            florinaPrimOweights["numLanceUsersInRange"] = -1.0
-            florinaPrimOweights["numSwordUsersInRange"] = 0
-            florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
-            florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = 1.0
+            florinaPrimOweights["numArchersInRange"] = -7.0
+            florinaPrimOweights["numAxeUsersInRange"] = -1.0
+            florinaPrimOweights["numLanceUsersInRange"] = 0
+            florinaPrimOweights["numSwordUsersInRange"] = 1.0
+            florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -6.0
+            florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = -.1
 
             florinaPrimOweights["inRangeOfOneUnit"] = 1.0
-            florinaPrimOweights["inRangeOfTwoUnits"] = 1.0
-            florinaPrimOweights["inRangeOfThreeUnits"] = 1.0
-            florinaPrimOweights["inRangeOfFourUnits"] = -.5
-            florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -1.0
+            florinaPrimOweights["inRangeOfTwoUnits"] = .5
+            florinaPrimOweights["inRangeOfThreeUnits"] = -.5
+            florinaPrimOweights["inRangeOfFourUnits"] = -2.0
+            florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -4.0
 
             florinaPrimOweights["nearestEnemyDistance"] = -.2
 
@@ -353,18 +353,18 @@ class runGame:
             florinaPrimDweights["bossDead"] = 50.0
             florinaPrimDweights["allEnemiesDead"] = 100.0
 
-            florinaPrimDweights["numArchersInRange"] = -2.5
-            florinaPrimDweights["numAxeUsersInRange"] = -.1
-            florinaPrimDweights["numLanceUsersInRange"] = -5.0
-            florinaPrimDweights["numSwordUsersInRange"] = -1.0
+            florinaPrimDweights["numArchersInRange"] = -20.0
+            florinaPrimDweights["numAxeUsersInRange"] = -3.0
+            florinaPrimDweights["numLanceUsersInRange"] = -1.0
+            florinaPrimDweights["numSwordUsersInRange"] = -.2
             florinaPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
-            florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
+            florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = -5.0
 
             florinaPrimDweights["inRangeOfOneUnit"] = -.2
-            florinaPrimDweights["inRangeOfTwoUnits"] = -2.0
-            florinaPrimDweights["inRangeOfThreeUnits"] = -4.0
-            florinaPrimDweights["inRangeOfFourUnits"] = -4.0
-            florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = -5.0
+            florinaPrimDweights["inRangeOfTwoUnits"] = -3.0
+            florinaPrimDweights["inRangeOfThreeUnits"] = -5.0
+            florinaPrimDweights["inRangeOfFourUnits"] = -6.0
+            florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = -7.0
 
             florinaPrimDweights["nearestEnemyDistance"] = 1.0
 
