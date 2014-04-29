@@ -245,6 +245,9 @@ class ai:
 		features["damageGiven"] = damageGiven
 		features["damageTaken"] = damageTaken
 
+		features["bossDead"] = 0
+		features["allEnemiesDead"] = 0
+
 
 
 
@@ -301,9 +304,11 @@ class ai:
 
 		#features["numEnemiesInRange"] = numEnemiesInRange
 		features["numArchersInRange"] = numArchersInRange
+		features["numAxeUsersInRange"] = numAxeUsersInRange
 		features["numLanceUsersInRange"] = numLanceUsersInRange
 		features["numSwordUsersInRange"] = numSwordUsersInRange
-		features["bossInRange"] = bossInRange
+		features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
+		features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
 
 		features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
 		features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
