@@ -382,14 +382,14 @@ class ai:
 
 			for target in targets:
 
-				primWeaponScore = self.evaluationFunction(character, primWeapon, pos, target)
+				primWeaponScore = self.evaluationFunction(character, False, pos, target)
 
 				score = primWeaponScore
 				switchWeapons = False
 
 				if secWeapon != None:
 
-					secWeaponScore = self.evaluationFunction(character, secWeapon, pos, target)
+					secWeaponScore = self.evaluationFunction(character, True, pos, target)
 
 
 					if secWeaponScore > primWeaponScore:
