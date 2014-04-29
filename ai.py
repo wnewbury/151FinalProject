@@ -7,21 +7,27 @@ class ai:
 		self.width = width
 		self.weights = weights
 
-	def getEndPositions(self, pos, rang, flying, mounted):
-		#Need to fix the terrain part of things
-		endPositions = []
-		for x in range(self.height):
-			for y in range(self.width):
-				valid = self.gameboard.isValidMove(pos[0], pos[1], x, y,
-														 rang, flying, mounted)
-				if valid:
-					endPositions.append((x,y))
-				else:
-					continue
+	def getEndPositions(self, pos, rang, flying, mounted, isEnemy, isBoss):
 
-		#Hackish
-		endPositions.append(pos)
-		return endPositions
+		if isBoss:
+			return [pos]
+
+		else:
+
+			#Need to fix the terrain part of things
+			endPositions = []
+			for x in range(self.height):
+				for y in range(self.width):
+					valid = self.gameboard.isValidMove(pos[0], pos[1], x, y,
+															 rang, flying, mounted, isEnemy)
+					if valid:
+						endPositions.append((x,y))
+					else:
+						continue
+
+			#Hackish
+			endPositions.append(pos)
+			return endPositions
 
 
 	def enemyEvaluationFuntion(self, selfCharacter, pos, target):
@@ -66,7 +72,7 @@ class ai:
 				expectedKill = 1
 
 		features["expectedDeath"] = expectedDeath
-		features["expectedKill"] = expectedKill
+		features["expectedKill"] = expectedKill*10
 		features["damageGiven"] = damageGiven
 		features["damageTaken"] = damageTaken
 
@@ -85,7 +91,8 @@ class ai:
 
 		nearestEnemyDistance = float("inf")
 		for enemy  in enemies:
-			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
+			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], enemy[1][0], enemy[1][1]))
+			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.aStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
 
 		features["nearestEnemyDistance"] = -nearestEnemyDistance
 
@@ -330,7 +337,9 @@ class ai:
 		rang = character.getRange()
 		flying = character.isFlying()
 		mounted = character.isMounted()
-		endPositions = self.getEndPositions(position, rang, flying, mounted)
+		isEnemy = character.isEnemy()
+		isBoss = character.isBoss()
+		endPositions = self.getEndPositions(position, rang, flying, mounted, isEnemy, isBoss)
 
 		bestScore = -float("inf")
 		bestTargetAttcked = None
