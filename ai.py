@@ -187,13 +187,13 @@ class ai:
 
 
 		# if character is below half health use defensive weights
-		'''
+
 		healthModifierOffensive = 2
 		healthModifierDefensive = 1
 		if selfCharacter.getCurrentHealth() < (.5 * selfCharacter.getMaxHealth()):
 			healthModifierOffensive = 1
 			healthModifierDefensive = 2
-		'''
+
 
 		oweights = selfCharacter.getPrimOffensiveWeights()
 		dweights = selfCharacter.getPrimDefensiveWeights()
@@ -225,9 +225,8 @@ class ai:
 		if target != None:
 			if switchWeapons:
 
-				selfCharacter = selfCharacter.switchWeapons()
+				selfCharacter.switchWeapons()
 				fightResult = self.gameboard.fight(selfCharacter, target, True, pos)
-				selfCharacter = selfCharacter.switchWeapons()
 
 				damageGiven = fightResult[0]
 				damageTaken = fightResult[1]
@@ -288,7 +287,7 @@ class ai:
 		enemiesInRange = []
 		for enemy in enemies:
 			#enemyLocation = gameboard.GET_ENEMY_LOCATION
-			if gameboard.isInRange(enemy[0], pos):
+			if gameboard.isInRange(enemy[0], enemy[1], pos):
 				numEnemiesInRange += 1
 				
 				primWeapon = enemy[0].getWeaponType()
@@ -331,18 +330,18 @@ class ai:
 		
 		nearestEnemyDistance = float("inf")
 		for enemy  in enemies:
-
-			#dist = min(dist, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
-			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.aStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))	
+			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
+			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.aStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))	
 
 		features["nearestEnemyDistance"] = nearestEnemyDistance
-
 
 		# return weighted sum of features
 		featureNames = features.keys()
 		weightedSum = 0
 
 		for featureName in featureNames:
+			#print featureName
+			#print features[featureName]*weights[featureName]
 			weightedSum += features[featureName]*weights[featureName]
 
 		return weightedSum
@@ -388,26 +387,20 @@ class ai:
 			for target in targets:
 
 				primWeaponScore = self.evaluationFunction(character, False, pos, target)
-
 				score = primWeaponScore
 				switchWeapons = False
 
 				if secWeapon != None:
-
 					secWeaponScore = self.evaluationFunction(character, True, pos, target)
-
-
+					
 					if secWeaponScore > primWeaponScore:
-
 						score = secWeaponScore
-
 						switchWeapons = True
-
 
 				if score > localBestScore:
 					localBestScore = score
 					localTargetAttacked = target
-					localSwitchWeapons = weaponSwitch
+					localSwitchWeapons = switchWeapons
 
 			if localBestScore > bestScore:
 				bestScore = localBestScore
@@ -436,5 +429,6 @@ class ai:
 				positionUsed = pos
 
 			'''
-
+		print character.getName()
+		print (bestPosition, bestSwitchWeapons, bestTargetAttcked)
 		return (bestPosition, bestSwitchWeapons, bestTargetAttcked)

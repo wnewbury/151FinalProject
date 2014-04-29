@@ -76,7 +76,7 @@ class gameBoard:
     def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted):
         #reject if invalid goal
         if not(self.isValidLocation(goalX, goalY, flying, mounted)):
-            return None
+            return float("inf")
         else:
             startCoordinates = (startX, startY)
             goalCoordinates = (goalX, goalY)
@@ -104,7 +104,7 @@ class gameBoard:
                     continue
                 else:
                     continue
-            return None
+            return float("inf")
 
 
     def isInRange(self, unit, unitPos, targetPos):
