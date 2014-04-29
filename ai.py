@@ -185,17 +185,6 @@ class ai:
 		features["terrainDefBonus"] = 0
 		features["terrainAvoidBonus"] = 0
 
-
-		# if character is below half health use defensive weights
-		"""
-		healthModifierOffensive = 2
-		healthModifierDefensive = 1
-		if selfCharacter.getCurrentHealth() < (.5 * selfCharacter.getMaxHealth()):
-			healthModifierOffensive = 1
-			healthModifierDefensive = 2
-		"""
-
-
 		oweights = selfCharacter.getPrimOffensiveWeights()
 		dweights = selfCharacter.getPrimDefensiveWeights()
 
@@ -341,8 +330,6 @@ class ai:
 		weightedSum = 0
 
 		for featureName in featureNames:
-			#print featureName
-			#print features[featureName]*weights[featureName]
 			weightedSum += features[featureName]*weights[featureName]
 
 		return weightedSum
