@@ -266,7 +266,7 @@ class ai:
 
 			if character[0].isEnemy() != selfCharacter.isEnemy():
 
-				if character == target:
+				if character[0] == target:
 					if expectedKill == 0:
 						enemies.append(character)
 
