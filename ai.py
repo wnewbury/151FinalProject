@@ -256,8 +256,8 @@ class ai:
 		features["damageGiven"] = damageGiven
 		features["damageTaken"] = damageTaken
 
-		#features["bossDead"]
-		#features["allEnemiesDead"]
+		features["bossDead"] = 0
+		features["allEnemiesDead"] = 0
 
 
 
