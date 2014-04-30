@@ -99,7 +99,7 @@ class ai:
 			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.uninhibitedAStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
 
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
-			nearestEnemyDistance = 100
+			nearestEnemyDistance = 20
 
 		features["nearestEnemyDistance"] = -nearestEnemyDistance
 
@@ -191,7 +191,7 @@ class ai:
 		maxHealth = selfCharacter.getMaxHealth()
 
 		weights = oweights
-		healthThreshold = 7
+		healthThreshold = 1
 		if currentHealth < healthThreshold:
 			weights = dweights
 
@@ -322,7 +322,7 @@ class ai:
 
 		#print nearestEnemyDistance
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
-			nearestEnemyDistance = 100
+			nearestEnemyDistance = 20
 
 		features["nearestEnemyDistance"] = nearestEnemyDistance
 
@@ -401,6 +401,6 @@ class ai:
 				bestSwitchWeapons = localSwitchWeapons
 				bestPosition = pos
 
-		#print character.getName()
-		#print (bestPosition, bestSwitchWeapons, bestTargetAttcked)
+		print character.getName()
+		print (bestPosition, bestSwitchWeapons, bestTargetAttcked)
 		return (bestPosition, bestSwitchWeapons, bestTargetAttcked)

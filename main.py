@@ -1,6 +1,7 @@
 from gameBoard import gameBoard
 from character import weapon, character, stats
 from ai import ai
+import random
 
 import util
 
@@ -22,7 +23,7 @@ class runGame:
                     [0,1,1,1,0,0,0,0,2,0,0,1,1,1,0],
                     [0,1,1,1,0,1,0,0,0,0,0,1,0,1,1],
                     [2,0,0,0,0,1,1,1,0,0,0,2,0,0,0],
-                    [1,1,0,0,0,0,0,1,0,0,0,0,0,0,0],
+                    [1,1,1,0,0,0,0,1,0,0,0,0,0,0,0],
                     [0,3,1,1,1,1,1,1,1,1,1,0,0,2,0],
                     [0,0,1,1,1,0,0,1,0,0,0,0,1,1,1],
                     [0,0,0,0,0,0,0,1,0,0,1,0,1,0,1],
@@ -113,7 +114,7 @@ class runGame:
             lynPrimDweights["nearestEnemyDistance"] = 1.0
 
 
-            lynStats = stats(17, 4, 8, 10, 6, 2, 0, 5, 5)
+            lynStats = stats(17, 5, 10, 12, 7, 3, 0, 5, 5)
             lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, lynPrimOweights, lynPrimDweights, lynSecOweights, lynSecDweights)
 
 
@@ -124,7 +125,6 @@ class runGame:
             kentSecDweights = util.Counter()
 
 
-            '''
             # offensive (normal) weights (primary weapon - lance)
             kentPrimOweights["terrainDefBonus"] = 1.0
             kentPrimOweights["terrainAvoidBonus"] = 1.0
@@ -149,7 +149,7 @@ class runGame:
             kentPrimOweights["inRangeOfFourUnits"] = 1.0
             kentPrimOweights["inRangeOfFiveUnitsOrMore"] = -.5
 
-            '''
+
 
             kentPrimOweights["nearestEnemyDistance"] = -.2
 
@@ -179,7 +179,7 @@ class runGame:
 
             kentPrimDweights["nearestEnemyDistance"] = 1.0
 
-            '''
+            
             # secondary weapon
             # offensive (normal) weights (secondary weapon)
             kentSecOweights["terrainDefBonus"] = 1.0
@@ -204,7 +204,7 @@ class runGame:
             kentSecOweights["inRangeOfThreeUnits"] = 1.5
             kentSecOweights["inRangeOfFourUnits"] = .5
             kentSecOweights["inRangeOfFiveUnitsOrMore"] = -.5
-            '''
+
             kentSecOweights["nearestEnemyDistance"] = -.2
 
 
@@ -234,7 +234,7 @@ class runGame:
 
             kentSecDweights["nearestEnemyDistance"] = 1.0
 
-            kentStats = stats(21, 6, 6, 7, 2, 5, 1, 9, 7)
+            kentStats = stats(21, 7, 7, 7, 2, 7, 1, 9, 7)
             kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, kentPrimOweights, kentPrimDweights, kentSecOweights, kentSecDweights)
 
 
@@ -244,7 +244,7 @@ class runGame:
             sainSecOweights = kentSecOweights
             sainSecDweights = kentSecDweights
 
-            sainStats = stats(20, 8, 5, 7, 4, 6, 0, 9, 7)
+            sainStats = stats(20, 9, 6, 8, 4, 6, 0, 9, 7)
             sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, sainPrimOweights, sainPrimDweights, sainSecOweights, sainSecDweights)
 
 
@@ -293,11 +293,11 @@ class runGame:
             wilPrimDweights["allEnemiesDead"] = 100.0
 
             wilPrimDweights["numArchersInRange"] = -.2
-            wilPrimDweights["numAxeUsersInRange"] = -1.0
-            wilPrimDweights["numLanceUsersInRange"] = -1.0
-            wilPrimDweights["numSwordUsersInRange"] = -1.0
+            wilPrimDweights["numAxeUsersInRange"] = -10.0
+            wilPrimDweights["numLanceUsersInRange"] = -10.0
+            wilPrimDweights["numSwordUsersInRange"] = -10.0
             wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
-            wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
+            wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 10
 
             wilPrimDweights["inRangeOfOneUnit"] = -.2
             wilPrimDweights["inRangeOfTwoUnits"] = -3.0
@@ -305,7 +305,7 @@ class runGame:
             wilPrimDweights["inRangeOfFourUnits"] = -6.0
             wilPrimDweights["inRangeOfFiveUnitsOrMore"] = -8.0
 
-            wilPrimDweights["nearestEnemyDistance"] = 1.0
+            wilPrimDweights["nearestEnemyDistance"] = -.2
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
             wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20, wilPrimOweights, wilPrimDweights, wilSecOweights, wilSecDweights)
@@ -543,6 +543,7 @@ class runGame:
         for character in characters:
             if not character[0].isEnemy():
                 Allies.append(character[0])
+        random.shuffle(Allies)
         return Allies
 
     def getEnemyCharacters(self):
@@ -551,8 +552,8 @@ class runGame:
         for character in characters:
             if character[0].isEnemy():
                 Enemies.append(character[0])
+        random.shuffle(Enemies)        
         return Enemies
-
 
 def main():
     game = runGame("bom")
