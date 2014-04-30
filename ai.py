@@ -183,8 +183,9 @@ class ai:
 		currentHealth = selfCharacter.getCurrentHealth()
 		maxHealth = selfCharacter.getMaxHealth()
 
+		healthThreshold = 7
 		weights = oweights
-		if currentHealth < (.5 * maxHealth):
+		if currentHealth < healthThreshold:
 			weights = dweights
 
 		#get characters returns a list of 2-tuples: (character, characterPosition)
@@ -344,7 +345,7 @@ class ai:
 		bestScore = -float("inf")
 		bestTargetAttcked = None
 		bestSwitchWeapons = False
-		bestPosition = None
+		bestPosition = position
 
 		for pos in endPositions:
 

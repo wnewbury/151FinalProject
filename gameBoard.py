@@ -241,7 +241,7 @@ class gameBoard:
             neighbors = [ (x-2, y), (x-1, y+1), (x, y+2), (x+1, y+1), (x+2, y), (x+1, y-1), (x, y-2), (x-1, y-1) ]
 
             for neighbor in neighbors:
-                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                if (neighbor[0] >= 0 and neighbor[0] < self.height) and (neighbor[1] >= 0 and neighbor[1] < self.width):
                     char = self.board[neighbor[0]][neighbor[1]].getCharacter()
                     if char != False:
                         if char.isEnemy() != characterAlignment:
@@ -254,7 +254,7 @@ class gameBoard:
             neighbors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1) ]
 
             for neighbor in neighbors:
-                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                if (neighbor[0] >= 0 and neighbor[0] < self.height) and (neighbor[1] >= 0 and neighbor[1] < self.width):
                     char = self.board[neighbor[0]][neighbor[1]].getCharacter()
                     if char != False:
                         if char.isEnemy() != characterAlignment:
