@@ -277,6 +277,7 @@ class runGame:
             wilPrimOweights["inRangeOfThreeUnits"] = -4.0
             wilPrimOweights["inRangeOfFourUnits"] = -5.0
             wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -7.0
+            wilPrimOweights["adjacentToEnemy"] = -50.0
 
             wilPrimOweights["nearestEnemyDistance"] = -.2
 
