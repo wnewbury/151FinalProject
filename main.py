@@ -78,13 +78,13 @@ class runGame:
             lynPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
             lynPrimOweights["bossInRangeWhileEnemiesAllDead"] = 1.0
 
-            lynPrimOweights["inRangeOfOneUnit"] = 1.0
+            lynPrimOweights["inRangeOfOneUnit"] = 2.0
             lynPrimOweights["inRangeOfTwoUnits"] = 1.0
-            lynPrimOweights["inRangeOfThreeUnits"] = 1.0
-            lynPrimOweights["inRangeOfFourUnits"] = -.5
-            lynPrimOweights["inRangeOfFiveUnitsOrMore"] = -1.0
+            lynPrimOweights["inRangeOfThreeUnits"] = -1.0
+            lynPrimOweights["inRangeOfFourUnits"] = -5.0
+            lynPrimOweights["inRangeOfFiveUnitsOrMore"] = -10.0
 
-            lynPrimOweights["nearestEnemyDistance"] = -.2
+            lynPrimOweights["nearestEnemyDistance"] = -2.0
 
 
             # defensive weights
@@ -106,7 +106,7 @@ class runGame:
             lynPrimDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
 
             lynPrimDweights["inRangeOfOneUnit"] = -.2
-            lynPrimDweights["inRangeOfTwoUnits"] = -2.0
+            lynPrimDweights["inRangeOfTwoUnits"] = -3.0
             lynPrimDweights["inRangeOfThreeUnits"] = -4.0
             lynPrimDweights["inRangeOfFourUnits"] = -4.0
             lynPrimDweights["inRangeOfFiveUnitsOrMore"] = -5.0
@@ -136,26 +136,25 @@ class runGame:
             kentPrimOweights["bossDead"] = 50.0
             kentPrimOweights["allEnemiesDead"] = 100.0
 
-            kentPrimOweights["numArchersInRange"] = -.5
+            kentPrimOweights["numArchersInRange"] = 1.0
             kentPrimOweights["numAxeUsersInRange"] = -1.0
-            kentPrimOweights["numLanceUsersInRange"] = .25
-            kentPrimOweights["numSwordUsersInRange"] = 2.0
+            kentPrimOweights["numLanceUsersInRange"] = .8
+            kentPrimOweights["numSwordUsersInRange"] = 1.0
             kentPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
             kentPrimOweights["bossInRangeWhileEnemiesAllDead"] = -2.0
 
-            kentPrimOweights["inRangeOfOneUnit"] = 2.0
-            kentPrimOweights["inRangeOfTwoUnits"] = 1.5
-            kentPrimOweights["inRangeOfThreeUnits"] = 1.0
+            kentPrimOweights["inRangeOfOneUnit"] = 4.0
+            kentPrimOweights["inRangeOfTwoUnits"] = 4.0
+            kentPrimOweights["inRangeOfThreeUnits"] = 2.0
             kentPrimOweights["inRangeOfFourUnits"] = 1.0
-            kentPrimOweights["inRangeOfFiveUnitsOrMore"] = -.5
+            kentPrimOweights["inRangeOfFiveUnitsOrMore"] = -2.0
 
+            kentPrimOweights["nearestEnemyDistance"] = -2.0
 
-
-            kentPrimOweights["nearestEnemyDistance"] = -.2
 
             # defensive weights (primary weapon)
-            kentPrimDweights["terrainDefBonus"] = 5.0
-            kentPrimDweights["terrainAvoidBonus"] = 5.0
+            kentPrimDweights["terrainDefBonus"] = 3.0
+            kentPrimDweights["terrainAvoidBonus"] = 3.0
 
             kentPrimDweights["expectedDeath"] = -500.0
             kentPrimDweights["expectedKill"] = 1.0
@@ -192,20 +191,20 @@ class runGame:
             kentSecOweights["bossDead"] = 50.0
             kentSecOweights["allEnemiesDead"] = 100.0
 
-            kentSecOweights["numArchersInRange"] = -.25
-            kentSecOweights["numAxeUsersInRange"] = 2.0
+            kentSecOweights["numArchersInRange"] = 1.0
+            kentSecOweights["numAxeUsersInRange"] = 3.0
             kentSecOweights["numLanceUsersInRange"] = -1.0
-            kentSecOweights["numSwordUsersInRange"] = .5
+            kentSecOweights["numSwordUsersInRange"] = 1.0
             kentSecOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
             kentSecOweights["bossInRangeWhileEnemiesAllDead"] = 2.0
 
-            kentSecOweights["inRangeOfOneUnit"] = 2.0
-            kentSecOweights["inRangeOfTwoUnits"] = 2.0
+            kentSecOweights["inRangeOfOneUnit"] = 4.0
+            kentSecOweights["inRangeOfTwoUnits"] = 3.0
             kentSecOweights["inRangeOfThreeUnits"] = 1.5
             kentSecOweights["inRangeOfFourUnits"] = .5
-            kentSecOweights["inRangeOfFiveUnitsOrMore"] = -.5
+            kentSecOweights["inRangeOfFiveUnitsOrMore"] = -2.0
 
-            kentSecOweights["nearestEnemyDistance"] = -.2
+            kentSecOweights["nearestEnemyDistance"] = -2.0
 
 
             # defensive weights (secondary weapon)
@@ -279,7 +278,7 @@ class runGame:
             wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -7.0
             wilPrimOweights["adjacentToEnemy"] = -50.0
 
-            wilPrimOweights["nearestEnemyDistance"] = -.2
+            wilPrimOweights["nearestEnemyDistance"] = -.5
 
 
             # defensive weights
@@ -329,8 +328,8 @@ class runGame:
             florinaPrimOweights["bossDead"] = 50.0
             florinaPrimOweights["allEnemiesDead"] = 100.0
 
-            florinaPrimOweights["numArchersInRange"] = -7.0
-            florinaPrimOweights["numAxeUsersInRange"] = -1.0
+            florinaPrimOweights["numArchersInRange"] = -30.0
+            florinaPrimOweights["numAxeUsersInRange"] = -2.0
             florinaPrimOweights["numLanceUsersInRange"] = 0
             florinaPrimOweights["numSwordUsersInRange"] = 1.0
             florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -6.0
@@ -338,9 +337,9 @@ class runGame:
 
             florinaPrimOweights["inRangeOfOneUnit"] = 1.0
             florinaPrimOweights["inRangeOfTwoUnits"] = .5
-            florinaPrimOweights["inRangeOfThreeUnits"] = -.5
-            florinaPrimOweights["inRangeOfFourUnits"] = -2.0
-            florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -4.0
+            florinaPrimOweights["inRangeOfThreeUnits"] = -3.0
+            florinaPrimOweights["inRangeOfFourUnits"] = -5.0
+            florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -10.0
 
             florinaPrimOweights["nearestEnemyDistance"] = -.2
 
@@ -367,7 +366,7 @@ class runGame:
             florinaPrimDweights["inRangeOfTwoUnits"] = -3.0
             florinaPrimDweights["inRangeOfThreeUnits"] = -5.0
             florinaPrimDweights["inRangeOfFourUnits"] = -6.0
-            florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = -7.0
+            florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = -15.0
 
             florinaPrimDweights["nearestEnemyDistance"] = 1.0
 
