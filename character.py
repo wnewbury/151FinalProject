@@ -247,10 +247,10 @@ class character:
             damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
                                             enemyCritChance, mock)
 
-        if self.attackSpeed() >= (enemy.attackSpeed() + 4):
+        if self.attackSpeed() >= (enemy.attackSpeed() + 4) and self.isAlive():
             damageInf += enemy.performAttack(accuracy, damage, critChance, mock)
 
-        if enemy.attackSpeed() >= (self.attackSpeed() + 4):
+        if enemy.attackSpeed() >= (self.attackSpeed() + 4) and enemy.isAlive():
             damageTak += self.performAttack(enemyAccuracy, enemyDamage, 
                                             enemyCritChance, mock)
         
