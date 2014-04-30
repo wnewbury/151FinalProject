@@ -326,6 +326,11 @@ class ai:
 
 		features["nearestEnemyDistance"] = nearestEnemyDistance
 
+		if nearestEnemyDistance == 1:
+			features["adjacentToEnemy"] = 1
+		else:
+			features["adjacentToEnemy"] = 0
+
 		# return weighted sum of features
 		featureNames = features.keys()
 		weightedSum = 0
