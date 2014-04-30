@@ -114,7 +114,7 @@ class runGame:
             lynPrimDweights["nearestEnemyDistance"] = 1.0
 
 
-            lynStats = stats(17, 5, 10, 12, 7, 3, 0, 5, 5)
+            lynStats = stats(17, 4, 9, 11, 5, 3, 0, 6, 5)
             lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, lynPrimOweights, lynPrimDweights, lynSecOweights, lynSecDweights)
 
 
@@ -234,7 +234,7 @@ class runGame:
 
             kentSecDweights["nearestEnemyDistance"] = 1.0
 
-            kentStats = stats(21, 7, 7, 7, 2, 7, 1, 9, 7)
+            kentStats = stats(21, 8, 7, 7, 2, 6, 1, 9, 7)
             kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, kentPrimOweights, kentPrimDweights, kentSecOweights, kentSecDweights)
 
 
@@ -244,7 +244,7 @@ class runGame:
             sainSecOweights = kentSecOweights
             sainSecDweights = kentSecDweights
 
-            sainStats = stats(20, 9, 6, 8, 4, 6, 0, 9, 7)
+            sainStats = stats(21, 9, 4, 7, 4, 6, 0, 9, 7)
             sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, sainPrimOweights, sainPrimDweights, sainSecOweights, sainSecDweights)
 
 
