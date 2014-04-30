@@ -30,7 +30,7 @@ class ai:
 			return endPositions
 
 
-	def enemyEvaluationFuntion(self, selfCharacter, pos, target):
+	def enemyEvaluationFunction(self, selfCharacter, pos, target):
 
 		'''
 
@@ -71,7 +71,7 @@ class ai:
 			if damageGiven > target.getCurrentHealth():
 				expectedKill = 1
 
-		features["expectedDeath"] = expectedDeath
+		#features["expectedDeath"] = expectedDeath
 		features["expectedKill"] = expectedKill*10
 		features["damageGiven"] = damageGiven
 		features["damageTaken"] = damageTaken
@@ -99,7 +99,7 @@ class ai:
 			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.uninhibitedAStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
 
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
-			nearestEnemyDistance = 20
+			nearestEnemyDistance = 100
 
 		features["nearestEnemyDistance"] = -nearestEnemyDistance
 
@@ -294,19 +294,19 @@ class ai:
 					bossInRange = 1
 
 
-		#features["numEnemiesInRange"] = numEnemiesInRange
-		features["numArchersInRange"] = numArchersInRange
-		features["numAxeUsersInRange"] = numAxeUsersInRange
-		features["numLanceUsersInRange"] = numLanceUsersInRange
-		features["numSwordUsersInRange"] = numSwordUsersInRange
-		features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
-		features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
+		features["numEnemiesInRange"] = numEnemiesInRange
+		#features["numArchersInRange"] = numArchersInRange
+		#features["numAxeUsersInRange"] = numAxeUsersInRange
+		#features["numLanceUsersInRange"] = numLanceUsersInRange
+		#features["numSwordUsersInRange"] = numSwordUsersInRange
+		#features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
+		#features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
 
-		features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
-		features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
-		features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
-		features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
-		features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
+		#features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
+		#features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
+		#features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
+		#features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
+		#features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
 
 
 		# calculate distance to nearest enemy
@@ -315,14 +315,16 @@ class ai:
 		flying = selfCharacter.isFlying()
 		mounted = selfCharacter.isMounted()
 		
+
 		nearestEnemyDistance = float("inf")
 		for enemy  in enemies:
 			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
 			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.uninhibitedAStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
 
 		#print nearestEnemyDistance
+
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
-			nearestEnemyDistance = 20
+			nearestEnemyDistance = 100
 
 		features["nearestEnemyDistance"] = nearestEnemyDistance
 
@@ -378,7 +380,7 @@ class ai:
 			for target in targets:
 
 				if character.isEnemy():
-					primWeaponScore = self.enemyEvaluationFuntion(character, pos, target)
+					primWeaponScore = self.enemyEvaluationFunction(character, pos, target)
 				else:
 					primWeaponScore = self.evaluationFunction(character, False, pos, target)
 				
@@ -387,7 +389,7 @@ class ai:
 
 				if secWeapon != None:
 					if character.isEnemy():
-						secWeaponScore = self.enemyEvaluationFuntion(character, pos, target)
+						secWeaponScore = self.enemyEvaluationFunction(character, pos, target)
 					else:
 						secWeaponScore = self.evaluationFunction(character, True, pos, target)
 					
@@ -406,6 +408,6 @@ class ai:
 				bestSwitchWeapons = localSwitchWeapons
 				bestPosition = pos
 
-		print character.getName()
-		print (bestPosition, bestSwitchWeapons, bestTargetAttcked)
+		#print character.getName()
+		#print (bestPosition, bestSwitchWeapons, bestTargetAttcked)
 		return (bestPosition, bestSwitchWeapons, bestTargetAttcked)

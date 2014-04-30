@@ -67,7 +67,7 @@ class runGame:
             lynPrimOweights["expectedDeath"] = -500.0
             lynPrimOweights["expectedKill"] = 5.0
             lynPrimOweights["damageGiven"] = 1.0
-            lynPrimOweights["damageTaken"] = -1.5
+            lynPrimOweights["damageTaken"] = -3.0
             lynPrimOweights["bossDead"] = 50.0
             lynPrimOweights["allEnemiesDead"] = 100.0
 
@@ -86,6 +86,8 @@ class runGame:
 
             lynPrimOweights["nearestEnemyDistance"] = -2.0
 
+            lynPrimOweights["adjacentToEnemy"] = -500.0
+
 
             # defensive weights
             lynPrimDweights["terrainDefBonus"] = 5.0
@@ -103,7 +105,7 @@ class runGame:
             lynPrimDweights["numLanceUsersInRange"] = -5.0
             lynPrimDweights["numSwordUsersInRange"] = -1.0
             lynPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
-            lynPrimDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
+            lynPrimDweights["bossInRangeWhileEnemiesAllDead"] = 2.0
 
             lynPrimDweights["inRangeOfOneUnit"] = -.2
             lynPrimDweights["inRangeOfTwoUnits"] = -3.0
@@ -168,7 +170,7 @@ class runGame:
             kentPrimDweights["numLanceUsersInRange"] = -1.0
             kentPrimDweights["numSwordUsersInRange"] = -1.0
             kentPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
-            kentPrimDweights["bossInRangeWhileEnemiesAllDead"] = -5.0
+            kentPrimDweights["bossInRangeWhileEnemiesAllDead"] = 5.0
 
             kentPrimDweights["inRangeOfOneUnit"] = -.2
             kentPrimDweights["inRangeOfTwoUnits"] = -1.0
@@ -276,7 +278,7 @@ class runGame:
             wilPrimOweights["inRangeOfThreeUnits"] = -4.0
             wilPrimOweights["inRangeOfFourUnits"] = -5.0
             wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -7.0
-            wilPrimOweights["adjacentToEnemy"] = -50.0
+            wilPrimOweights["adjacentToEnemy"] = -5000.0
 
             wilPrimOweights["nearestEnemyDistance"] = -.5
 
@@ -297,13 +299,14 @@ class runGame:
             wilPrimDweights["numLanceUsersInRange"] = -10.0
             wilPrimDweights["numSwordUsersInRange"] = -10.0
             wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
-            wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 10
+            wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 5.0
 
             wilPrimDweights["inRangeOfOneUnit"] = -.2
             wilPrimDweights["inRangeOfTwoUnits"] = -3.0
             wilPrimDweights["inRangeOfThreeUnits"] = -5.0
             wilPrimDweights["inRangeOfFourUnits"] = -6.0
             wilPrimDweights["inRangeOfFiveUnitsOrMore"] = -8.0
+            wilPrimDweights["adjacentToEnemy"] = -100.0
 
             wilPrimDweights["nearestEnemyDistance"] = -.2
 
@@ -328,15 +331,15 @@ class runGame:
             florinaPrimOweights["bossDead"] = 50.0
             florinaPrimOweights["allEnemiesDead"] = 100.0
 
-            florinaPrimOweights["numArchersInRange"] = -30.0
+            florinaPrimOweights["numArchersInRange"] = -500.0
             florinaPrimOweights["numAxeUsersInRange"] = -2.0
             florinaPrimOweights["numLanceUsersInRange"] = 0
             florinaPrimOweights["numSwordUsersInRange"] = 1.0
             florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -6.0
             florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = -.1
 
-            florinaPrimOweights["inRangeOfOneUnit"] = 1.0
-            florinaPrimOweights["inRangeOfTwoUnits"] = .5
+            florinaPrimOweights["inRangeOfOneUnit"] = .2
+            florinaPrimOweights["inRangeOfTwoUnits"] = -2.0
             florinaPrimOweights["inRangeOfThreeUnits"] = -3.0
             florinaPrimOweights["inRangeOfFourUnits"] = -5.0
             florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -10.0
@@ -362,7 +365,7 @@ class runGame:
             florinaPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
             florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = -5.0
 
-            florinaPrimDweights["inRangeOfOneUnit"] = -.2
+            florinaPrimDweights["inRangeOfOneUnit"] = -1.0
             florinaPrimDweights["inRangeOfTwoUnits"] = -3.0
             florinaPrimDweights["inRangeOfThreeUnits"] = -5.0
             florinaPrimDweights["inRangeOfFourUnits"] = -6.0
@@ -541,9 +544,11 @@ class runGame:
         characters = self.gameboard.getCharacters()
         Allies = []
         for character in characters:
-            if not character[0].isEnemy():
+            if not character[0].isEnemy() and character[0].getName() != "Lyn":
                 Allies.append(character[0])
         random.shuffle(Allies)
+        Lyn = self.getCharacterByName("Lyn")
+        Allies.append(Lyn)
         return Allies
 
     def getEnemyCharacters(self):
@@ -560,52 +565,56 @@ def main():
 
     game.Display()
 
+
     turn = 0
     while not game.hasEnded():
-        #game.askInput()
+        blah = raw_input("Continue? ")
+        if blah == "y":
+
+            print "Turn = " + str(turn)
         
-        if turn % 2 == 0:
-            characters = game.getAllyCharacters()
+            if turn % 2 == 0:
+                characters = game.getAllyCharacters()
+            else:
+                characters = game.getEnemyCharacters()
+
+            for character in characters:
+                result = game.ai.calculateMove(character)
+
+                if result == None:
+                    print "Already acted"
+                    return
+
+                position = result[0]
+                #print position
+                character2 = result[2]
+                #print character2
+                switch = result[1]
+                #print switch
+
+                if switch:
+                    character.switchWeapons()
+
+                game.gameboard.moveCharacter(character, position[0], position[1])
+
+                if character2 != None:
+                    game.gameboard.fight(character, character2)
+
+                if game.hasEnded():
+                    break
+
+            game.gameboard.endTurn()
+
+            game.Display()
+
+            turn += 1
         else:
-            characters = game.getEnemyCharacters()
+            continue           
 
-        for character in characters:
-            result = game.ai.calculateMove(character)
-
-            if result == None:
-                print "Already acted"
-                return
-
-            position = result[0]
-            #print position
-            character2 = result[2]
-            #print character2
-            switch = result[1]
-            #print switch
-
-            if switch:
-                character.switchWeapons()
-
-            game.gameboard.moveCharacter(character, position[0], position[1])
-
-            if character2 != None:
-                game.gameboard.fight(character, character2)
-
-            if game.hasEnded():
-                break
-
-        game.gameboard.endTurn()
-
-        game.Display()
-
-        turn += 1
-        
-        print "Turn = " + str(turn)
-
-
-
-
-    print "interesting"
+    if game.gameboard.isWin():
+        print "WIN"
+    else:
+        print "FAIL"
 
 
 if __name__ == "__main__":

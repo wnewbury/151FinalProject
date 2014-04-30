@@ -215,9 +215,8 @@ class gameBoard:
 
                     for x in range(len(successors)):
                         cost = top[2] + successors[x][1]
-                        if cost <= charRange:
-                            queue.push( (successors[x][0], top, cost),
-                                        cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
+                        queue.push( (successors[x][0], top, cost),
+                                    cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
                     closed.add(top[0])
                     continue
                 else:
