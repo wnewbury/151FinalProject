@@ -124,6 +124,7 @@ class runGame:
             kentSecDweights = util.Counter()
 
 
+            '''
             # offensive (normal) weights (primary weapon - lance)
             kentPrimOweights["terrainDefBonus"] = 1.0
             kentPrimOweights["terrainAvoidBonus"] = 1.0
@@ -148,8 +149,9 @@ class runGame:
             kentPrimOweights["inRangeOfFourUnits"] = 1.0
             kentPrimOweights["inRangeOfFiveUnitsOrMore"] = -.5
 
-            kentPrimOweights["nearestEnemyDistance"] = -.2
+            '''
 
+            kentPrimOweights["nearestEnemyDistance"] = -.2
 
             # defensive weights (primary weapon)
             kentPrimDweights["terrainDefBonus"] = 5.0
@@ -177,7 +179,7 @@ class runGame:
 
             kentPrimDweights["nearestEnemyDistance"] = 1.0
 
-
+            '''
             # secondary weapon
             # offensive (normal) weights (secondary weapon)
             kentSecOweights["terrainDefBonus"] = 1.0
@@ -202,7 +204,7 @@ class runGame:
             kentSecOweights["inRangeOfThreeUnits"] = 1.5
             kentSecOweights["inRangeOfFourUnits"] = .5
             kentSecOweights["inRangeOfFiveUnitsOrMore"] = -.5
-
+            '''
             kentSecOweights["nearestEnemyDistance"] = -.2
 
 

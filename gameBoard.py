@@ -70,6 +70,14 @@ class gameBoard:
                 return False
 
 
+    def isValidNaiveIntermediate(self, x, y, flying, mounted):
+        if flying:
+            return True
+        else:
+            validTerrain = self.board[x][y].isValidTerrain(mounted)
+            return validTerrain
+
+
     # get valid neighboring locations a given character can move through (along with their terrain cost)
     def getSuccessors(self, x, y, flying, mounted, isEnemy):
         possibleSuccessors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1), ]
@@ -105,45 +113,89 @@ class gameBoard:
                         successors.append( ( (xCoor, yCoor), terrainCost) )
         return successors
 
+
+
+
+    def getNaiveSuccessors(self, x, y, flying, mounted):
+        possibleSuccessors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1), ]
+        successors = []
+
+        for possibleSuccessor in possibleSuccessors:
+            xCoor = possibleSuccessor[0]
+            yCoor = possibleSuccessor[1]
+
+            # valid map location
+            if (xCoor >= 0 and xCoor < self.height) and (yCoor >= 0 and yCoor < self.width):
+
+                # can be passed through
+                if self.isValidNaiveIntermediate(xCoor, yCoor, flying, mounted):
+                    terrain = self.getTerrain(xCoor, yCoor)
+                    terrainCost = 9999
+                    if flying:
+                        terrainCost = 1
+                        successors.append( ((xCoor, yCoor), terrainCost) )
+                    else:
+                        # plain
+                        if (terrain == 0):
+                            terrainCost = 1
+                        # mountain
+                        elif (terrain == 2):
+                            terrainCost = 4
+                        # forest
+                        elif (terrain == 3):
+                            if mounted:
+                                terrainCost = 3
+                            else:
+                                terrainCost = 2
+                        successors.append( ( (xCoor, yCoor), terrainCost) )
+        return successors
+
     def aStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted, isEnemy):
-        #reject if invalid goal
-        if not(self.isValidLocation(goalX, goalY, flying, mounted)):
-            return float("inf")
+
+        if (startX == goalX) and (startY == goalY):
+            return 0
+
         else:
-            startCoordinates = (startX, startY)
-            goalCoordinates = (goalX, goalY)
+            #reject if invalid goal
+            if not(self.isValidLocation(goalX, goalY, flying, mounted)):
+                return float("inf")
+            else:
+                startCoordinates = (startX, startY)
+                goalCoordinates = (goalX, goalY)
 
-            queue = util.PriorityQueue()
-            start = (startCoordinates, None, 0)
-            queue.push(start, 0)
-            closed = sets.Set()
+                queue = util.PriorityQueue()
+                start = (startCoordinates, None, 0)
+                queue.push(start, 0)
+                closed = sets.Set()
 
-            while not(queue.isEmpty()):
-                top = queue.pop()
-                if (top[0][0] == goalX) and (top[0][1] == goalY):
-                    #we've reached the end, return cost it took to get here
-                    return top[2] 
-                elif not(top[0] in closed):
-                    #expand top
-                    successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted, isEnemy)
+                while not(queue.isEmpty()):
+                    top = queue.pop()
+                    if (top[0][0] == goalX) and (top[0][1] == goalY):
+                        #we've reached the end, return cost it took to get here
+                        return top[2] 
+                    elif not(top[0] in closed):
+                        #expand top
+                        successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted, isEnemy)
 
-                    for x in range(len(successors)):
-                        cost = top[2] + successors[x][1]
-                        if cost <= charRange:
-                            queue.push( (successors[x][0], top, cost),
-                                        cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
-                    closed.add(top[0])
-                    continue
-                else:
-                    continue
-            return float("inf")
+                        for x in range(len(successors)):
+                            cost = top[2] + successors[x][1]
+                            if cost <= charRange:
+                                queue.push( (successors[x][0], top, cost),
+                                            cost + self.manhattanDistance(successors[x][0][0], successors[x][0][1], goalX, goalY) )             
+                        closed.add(top[0])
+                        continue
+                    else:
+                        continue
+                return float("inf")
 
 
     def uninhibitedAStarSearch(self, startX, startY, goalX, goalY, charRange, flying, mounted):
-        #reject if invalid goal
-        if not(self.isValidLocation(goalX, goalY, flying, mounted)):
-            return float("inf")
+
+        if (startX == goalX) and (startY == goalY):
+            return 0
+
         else:
+
             startCoordinates = (startX, startY)
             goalCoordinates = (goalX, goalY)
 
@@ -159,7 +211,7 @@ class gameBoard:
                     return top[2] 
                 elif not(top[0] in closed):
                     #expand top
-                    successors = self.getSuccessors(top[0][0], top[0][1], flying, mounted)
+                    successors = self.getNaiveSuccessors(top[0][0], top[0][1], flying, mounted)
 
                     for x in range(len(successors)):
                         cost = top[2] + successors[x][1]
@@ -241,7 +293,7 @@ class gameBoard:
             neighbors = [ (x-2, y), (x-1, y+1), (x, y+2), (x+1, y+1), (x+2, y), (x+1, y-1), (x, y-2), (x-1, y-1) ]
 
             for neighbor in neighbors:
-                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                if (neighbor[0] >= 0 and neighbor[0] < self.height) and (neighbor[1] >= 0 and neighbor[1] < self.width):
                     char = self.board[neighbor[0]][neighbor[1]].getCharacter()
                     if char != False:
                         if char.isEnemy() != characterAlignment:
@@ -254,7 +306,7 @@ class gameBoard:
             neighbors = [ (x, y+1), (x-1, y), (x+1, y), (x, y-1) ]
 
             for neighbor in neighbors:
-                if (neighbor[0] > 0 and neighbor[0] < self.height) and (neighbor[1] > 0 and neighbor[1] < self.width):
+                if (neighbor[0] >= 0 and neighbor[0] < self.height) and (neighbor[1] >= 0 and neighbor[1] < self.width):
                     char = self.board[neighbor[0]][neighbor[1]].getCharacter()
                     if char != False:
                         if char.isEnemy() != characterAlignment:
