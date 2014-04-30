@@ -89,10 +89,17 @@ class ai:
 				else:
 					enemies.append(character)
 
+		charRange = selfCharacter.getRange()
+		flying = selfCharacter.isFlying()
+		mounted = selfCharacter.isMounted()
+
 		nearestEnemyDistance = float("inf")
 		for enemy  in enemies:
-			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], enemy[1][0], enemy[1][1]))
-			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.aStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
+			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], enemy[1][0], enemy[1][1]))
+			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.uninhibitedAStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
+
+		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
+			nearestEnemyDistance = 100
 
 		features["nearestEnemyDistance"] = -nearestEnemyDistance
 
@@ -183,8 +190,8 @@ class ai:
 		currentHealth = selfCharacter.getCurrentHealth()
 		maxHealth = selfCharacter.getMaxHealth()
 
-		healthThreshold = 7
 		weights = oweights
+		healthThreshold = 7
 		if currentHealth < healthThreshold:
 			weights = dweights
 
@@ -310,8 +317,12 @@ class ai:
 		
 		nearestEnemyDistance = float("inf")
 		for enemy  in enemies:
-			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
-			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.aStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))	
+			#nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.manhattanDistance(pos[0], pos[1], character[1][0], character[1][1]))
+			nearestEnemyDistance = min(nearestEnemyDistance, self.gameboard.uninhibitedAStarSearch( pos[0], pos[1], enemy[1][0], enemy[1][1], charRange, flying, mounted))
+
+		#print nearestEnemyDistance
+		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
+			nearestEnemyDistance = 100
 
 		features["nearestEnemyDistance"] = nearestEnemyDistance
 
