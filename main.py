@@ -116,8 +116,8 @@ class runGame:
             lynPrimDweights["nearestEnemyDistance"] = 1.0
 
 
-            lynStats = stats(17, 4, 9, 11, 5, 3, 0, 6, 5)
-            lyn = character("Lyn", "Lord", ironSword, None, False, False, lynStats, 17, lynPrimOweights, lynPrimDweights, lynSecOweights, lynSecDweights)
+            lynStats = stats(19, 5, 10, 12, 8, 2, 1, 5, 5)
+            lyn = character("Lyn", "Lord", maniKatti, None, False, False, lynStats, 19, lynPrimOweights, lynPrimDweights, lynSecOweights, lynSecDweights)
 
 
             #kent
@@ -235,8 +235,8 @@ class runGame:
 
             kentSecDweights["nearestEnemyDistance"] = 1.0
 
-            kentStats = stats(21, 8, 7, 7, 2, 6, 1, 9, 7)
-            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 21, kentPrimOweights, kentPrimDweights, kentSecOweights, kentSecDweights)
+            kentStats = stats(22, 6, 6, 8, 3, 5, 1, 9, 7)
+            kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 22, kentPrimOweights, kentPrimDweights, kentSecOweights, kentSecDweights)
 
 
             #sain
@@ -245,8 +245,8 @@ class runGame:
             sainSecOweights = kentSecOweights
             sainSecDweights = kentSecDweights
 
-            sainStats = stats(21, 9, 4, 7, 4, 6, 0, 9, 7)
-            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 20, sainPrimOweights, sainPrimDweights, sainSecOweights, sainSecDweights)
+            sainStats = stats(21, 9, 4, 8, 4, 7, 1, 9, 7)
+            sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 21, sainPrimOweights, sainPrimDweights, sainSecOweights, sainSecDweights)
 
 
             #wil
@@ -386,7 +386,7 @@ class runGame:
             L1BrigandSecOweights = None
             L1BrigandSecDweights = None
 
-            L1BrigandStats = stats(20, 5, 1, 5, 0, 3, 0, 12, 5)
+            L1BrigandStats = stats(20, 3, 1, 5, 0, 3, 0, 12, 5)
             brigand1 = character("Brig1", "Brigand", ironAxe, None, True, False, L1BrigandStats, 20, L1BrigandPrimOweights, L1BrigandPrimDweights, L1BrigandSecOweights, L1BrigandSecDweights)
 
             #L2 Brigands
@@ -395,9 +395,9 @@ class runGame:
             L2BrigandSecOweights = None
             L2BrigandSecDweights = None
 
-            L2BrigandStats = L1BrigandStats
-            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, L2BrigandPrimOweights, L2BrigandPrimDweights, L2BrigandSecOweights, L2BrigandSecDweights)
-            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 20, L2BrigandPrimOweights, L2BrigandPrimDweights, L2BrigandSecOweights, L2BrigandSecDweights)
+            L2BrigandStats = stats(21, 4, 2, 5, 0, 3, 0, 12, 5)
+            brigand2 = character("Brig2", "Brigand", ironAxe, None, True, False, L2BrigandStats, 21, L2BrigandPrimOweights, L2BrigandPrimDweights, L2BrigandSecOweights, L2BrigandSecDweights)
+            brigand3 = character("Brig3", "Brigand", ironAxe, None, True, False, L2BrigandStats, 21, L2BrigandPrimOweights, L2BrigandPrimDweights, L2BrigandSecOweights, L2BrigandSecDweights)
 
             #Mercs
             mercPrimOweights = util.Counter()
@@ -405,7 +405,7 @@ class runGame:
             mercSecOweights = None
             mercSecDweights = None
 
-            mercenaryStats = stats(16, 3, 5, 6, 0, 2, 0, 8, 5)
+            mercenaryStats = stats(16, 4, 7, 5, 0, 3, 0, 9, 5)
             merc1 = character("Merc1", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, mercPrimOweights, mercPrimDweights, mercSecOweights, mercSecDweights)
             merc2 = character("Merc2", "Mercenary", ironSword, None, True, False, mercenaryStats, 16, mercPrimOweights, mercPrimDweights, mercSecOweights, mercSecDweights)
 
@@ -415,9 +415,9 @@ class runGame:
             archerSecOweights = None
             archerSecDweights = None
 
-            archerStats = stats(17, 3, 3, 3, 0, 3, 0, 6, 5)
-            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 17, archerPrimOweights, archerPrimDweights, archerSecOweights, archerSecDweights)
-            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 17, archerPrimOweights, archerPrimDweights, archerSecOweights, archerSecDweights)
+            archerStats = stats(18, 1, 3, 3, 0, 3, 0, 7, 5)
+            archer1 = character("Archer1", "Archer", ironBow, None, True, False, archerStats, 18, archerPrimOweights, archerPrimDweights, archerSecOweights, archerSecDweights)
+            archer2 = character("Archer2", "Archer", ironBow, None, True, False, archerStats, 18, archerPrimOweights, archerPrimDweights, archerSecOweights, archerSecDweights)
 
             #Migal
             migalPrimOweights = util.Counter()
@@ -436,8 +436,8 @@ class runGame:
             mapCharacters[4][4] = florina
 
             mapCharacters[7][8] = archer1
-            mapCharacters[4][8] = brigand1
-            mapCharacters[8][13] = brigand2
+            mapCharacters[4][8] = brigand2
+            mapCharacters[8][13] = brigand1
             mapCharacters[3][11] = archer2
             mapCharacters[2][12] = brigand3
             mapCharacters[6][14] = merc1
