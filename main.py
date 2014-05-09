@@ -583,7 +583,7 @@ def main():
 
                 if result == None:
                     print "Already acted"
-                    return
+                    continue
 
                 position = result[0]
                 #print position

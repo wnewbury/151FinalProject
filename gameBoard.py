@@ -374,6 +374,57 @@ class gameBoard:
         if result != None:
             return result
 
+
+
+    #Engage one character in friendly conflict with another
+    def fightRL(self, character1, character2, mock = False, mockPos = False):
+        p1x, p2x, p2y, p1y = 0, 0, 0, 0
+        for x in range(self.height):
+            for y in range(self.width):
+                character = self.board[x][y].getCharacter()
+                if character == character1:
+                    p1x = x
+                    p1y = y
+                if character == character2:
+                    p2x = x
+                    p2y = y
+
+        if mockPos != False:
+            p1x, p1y = mockPos[0], mockPos[1]
+
+        dist = self.manhattanDistance(p1x, p1y, p2x, p2y)
+        attackTerrain = self.board[p1x][p1y].getTerrain()
+        defendTerrain = self.board[p2x][p2y].getTerrain()
+        result = 0
+        attackingCharDead = 0
+        defendingCharDead = 0
+        if character1.canAttack():
+            if dist <= character1.weapRange():
+                result = character1.fightRL(character2, dist, attackTerrain, defendTerrain, mock)
+                if not mock:
+                    character1.attackUsed()
+                    if character1.status == 0:
+                        self.board[p1x][p1y].removeCharacter()
+                        attackingCharDead = 1
+                    elif character2.status == 0:
+                        self.board[p2x][p2y].removeCharacter()
+                        defendingCharDead = 1
+            else:
+                print "invalid fight\n"
+                return (0, 0, 0, 0)
+                
+        else:
+            print "already attacked\n"
+            return (0, 0, 0, 0)
+
+        if mock==True:
+            return result
+
+        else:
+            damageInf = result[0]
+            damageTak = result[1]
+            return (damageInf, damageTak, attackingCharDead, defendingCharDead)
+
     #Pull terrain of a square
     def getTerrain(self, x, y):
         return self.board[x][y].getTerrain()
@@ -465,6 +516,13 @@ class gameBoard:
             if character[0].isEnemy() == self.enemyTurn:
                 character[0].resetActions()
         self.enemyTurn = 1 - self.enemyTurn
+
+
+    #End a turn - resets the move and attack counters for the characters
+    def endTurnRL(self):
+        #print "ENDING TURN\n"
+        for character in self.getCharacters():
+            character[0].resetActions()
 
 class gameSpace:
     def __init__(self, character, terrain):

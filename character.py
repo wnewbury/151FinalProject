@@ -49,14 +49,26 @@ class character:
     def getPrimOffensiveWeights(self):
         return self.primOweights
 
+    def setPrimOffensiveWeights(self, weights):
+        self.primOweights = weights
+
     def getPrimDefensiveWeights(self):
         return self.primDweights
+
+    def setPrimDefensiveWeights(self, weights):
+        self.primDweights = weights
 
     def getSecOffensiveWeights(self):
         return self.secOweights
 
+    def setSecOffensiveWeights(self, weights):
+        self.secOweights = weights
+
     def getSecDefensiveWeights(self):
         return self.secDweights
+
+    def setSecDefensiveWeights(self, weights):
+        self.secDweights = weights
 
     def getCurrentHealth(self):
         return self.curhealth
@@ -210,7 +222,31 @@ class character:
         else:
             print self.getName()
             print "miss"
-            return 0      
+            return 0    
+
+
+    #Resolve Attack performed on you
+    def performAttackRL(self, accuracy, damage, critChance, mock = False):
+        #Random generate a hit number, check vs crit and hit rates
+        hit = randrange(1, 100)
+        if mock:
+            eDamage = (3*damage*critChance) + (damage*(accuracy-critChance))
+            return eDamage
+        elif hit <= accuracy:
+            if hit <= critChance:
+
+                self.curhealth -= damage * 3
+                if self.curhealth <= 0:
+                    self.status = DEAD
+                return damage
+
+
+            self.curhealth -= damage
+            if self.curhealth <= 0:
+                self.status = DEAD
+            return damage
+        else:
+            return 0     
 
     def fight(self, enemy, distance, aTerrain, dTerrain, mock = False):
 
@@ -261,6 +297,54 @@ class character:
             print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
             print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
             return None
+
+
+
+    def fightRL(self, enemy, distance, aTerrain, dTerrain, mock = False):
+
+        #Pull needed stats
+        enemyWeap = enemy.getWeaponType()
+        enemyClass = enemy.getClass()
+        enemyDefense = enemy.defense(dTerrain)
+        enemyEvade = enemy.evade(dTerrain)
+        enemyCritEvade = enemy.critEvade()
+
+        #Battle stats on attacker side
+        accuracy = self.accuracy(enemyEvade, enemyWeap)
+        damage = self.damage(enemyClass, enemyWeap, enemyDefense)
+        critChance = self.critChance(enemyCritEvade)
+
+        #Battle stats on defender side
+        enemyAccuracy = enemy.accuracy(self.evade(aTerrain), self.getWeaponType())
+        enemyDamage = enemy.damage(self.getClass(), self.getWeaponType(), 
+                                   self.defense(aTerrain))
+        enemyCritChance = enemy.critChance(self.critEvade())
+
+        #Counters for display purposes
+        damageInf = 0
+        damageTak = 0
+
+        #First Attack, Enemy Counter-attack, then checks for speed doubles
+        damageInf += enemy.performAttackRL(accuracy, damage, critChance, mock)
+
+        if enemy.isValidAttack(distance) and enemy.isAlive():
+            damageTak += self.performAttackRL(enemyAccuracy, enemyDamage, 
+                                            enemyCritChance, mock)
+
+        if self.attackSpeed() >= (enemy.attackSpeed() + 4) and self.isAlive():
+            damageInf += enemy.performAttackRL(accuracy, damage, critChance, mock)
+
+        if enemy.attackSpeed() >= (self.attackSpeed() + 4) and enemy.isAlive():
+            damageTak += self.performAttackRL(enemyAccuracy, enemyDamage, 
+                                            enemyCritChance, mock)
+        
+        if mock:
+            return (damageInf, damageTak)
+        else:
+            #Output Results
+            #print "Results: damage inflicted = " + str(damageInf) + " damage taken = " + str(damageTak) 
+            #print "Attacker health = " + str(self.curhealth) + ", Defender health =  " + str(enemy.curhealth) + "\n"
+            return (damageInf, damageTak)
 
     #Overload equality operator
     def __eq__(self, other):
