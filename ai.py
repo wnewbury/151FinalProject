@@ -296,18 +296,18 @@ class ai:
 
 
 		features["numEnemiesInRange"] = numEnemiesInRange
-		#features["numArchersInRange"] = numArchersInRange
-		#features["numAxeUsersInRange"] = numAxeUsersInRange
-		#features["numLanceUsersInRange"] = numLanceUsersInRange
-		#features["numSwordUsersInRange"] = numSwordUsersInRange
-		#features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
-		#features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
+		features["numArchersInRange"] = numArchersInRange
+		features["numAxeUsersInRange"] = numAxeUsersInRange
+		features["numLanceUsersInRange"] = numLanceUsersInRange
+		features["numSwordUsersInRange"] = numSwordUsersInRange
+		features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
+		features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
 
-		#features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
-		#features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
-		#features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
-		#features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
-		#features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
+		features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
+		features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
+		features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
+		features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
+		features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
 
 
 		# calculate distance to nearest enemy
@@ -327,7 +327,7 @@ class ai:
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
 			nearestEnemyDistance = 100
 
-		features["nearestEnemyDistance"] = nearestEnemyDistance
+		#features["nearestEnemyDistance"] = nearestEnemyDistance
 
 		if nearestEnemyDistance == 1:
 			features["adjacentToEnemy"] = 1
@@ -467,18 +467,18 @@ class ai:
 
 
 		features["numEnemiesInRange"] = numEnemiesInRange
-		#features["numArchersInRange"] = numArchersInRange
-		#features["numAxeUsersInRange"] = numAxeUsersInRange
-		#features["numLanceUsersInRange"] = numLanceUsersInRange
-		#features["numSwordUsersInRange"] = numSwordUsersInRange
-		#features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
-		#features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
+		features["numArchersInRange"] = numArchersInRange
+		features["numAxeUsersInRange"] = numAxeUsersInRange
+		features["numLanceUsersInRange"] = numLanceUsersInRange
+		features["numSwordUsersInRange"] = numSwordUsersInRange
+		features["bossInRangeWhileEnemiesStillAlive"] = (bossInRange and (len(enemies) > 1))
+		features["bossInRangeWhileEnemiesAllDead"] = (bossInRange and (len(enemies) == 1))
 
-		#features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
-		#features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
-		#features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
-		#features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
-		#features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
+		features["inRangeOfOneUnit"] = (numEnemiesInRange == 1)
+		features["inRangeOfTwoUnits"] = (numEnemiesInRange == 2)
+		features["inRangeOfThreeUnits"] = (numEnemiesInRange == 3)
+		features["inRangeOfFourUnits"] = (numEnemiesInRange == 4)
+		features["inRangeOfFiveUnitsOrMore"] = (numEnemiesInRange >= 5)
 
 
 		# calculate distance to nearest enemy
@@ -498,7 +498,7 @@ class ai:
 		if (nearestEnemyDistance == float("inf")) or (nearestEnemyDistance == None):
 			nearestEnemyDistance = 100
 
-		features["nearestEnemyDistance"] = nearestEnemyDistance
+		#features["nearestEnemyDistance"] = nearestEnemyDistance
 
 		if nearestEnemyDistance == 1:
 			features["adjacentToEnemy"] = 1
@@ -622,19 +622,19 @@ class ai:
 
 			for target in targets:
 
-				if character.isEnemy():
-					primWeaponScore = self.enemyEvaluationFunction(character, pos, target)
-				else:
-					primWeaponScore = self.evaluationFunction(character, False, pos, target)
+				#if character.isEnemy():
+				primWeaponScore = self.enemyEvaluationFunction(character, pos, target)
+				#else:
+					#primWeaponScore = self.evaluationFunction(character, False, pos, target)
 				
 				score = primWeaponScore
 				switchWeapons = False
 
 				if secWeapon != None:
-					if character.isEnemy():
-						secWeaponScore = self.enemyEvaluationFunction(character, pos, target)
-					else:
-						secWeaponScore = self.evaluationFunction(character, True, pos, target)
+					#if character.isEnemy():
+					secWeaponScore = self.enemyEvaluationFunction(character, pos, target)
+					#else:
+						#secWeaponScore = self.evaluationFunction(character, True, pos, target)
 					
 					if secWeaponScore > primWeaponScore:
 						score = secWeaponScore

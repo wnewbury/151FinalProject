@@ -7,9 +7,9 @@ import reinforcement
 import util
 
 class runGame:
-    def __init__(self, mapName, weights):
+    def __init__(self, mapName):
         self.mapBoard = self.generateBoard(mapName)
-        self.mapCharacters = self.generateCharacters(mapName, weights)
+        self.mapCharacters = self.generateCharacters(mapName)
         self.height = len(self.mapBoard)
         self.width = len(self.mapBoard[0])
         self.gameboard = gameBoard(self.mapBoard, self.mapCharacters,
@@ -33,7 +33,7 @@ class runGame:
 
         return mapBoard
 
-    def generateCharacters(self, mapName, weights):
+    def generateCharacters(self, mapName):
         mapCharacters = [[]]
         if mapName == "bom":
             mapCharacters = [[None for i in xrange(15)] for j in xrange(10)]
@@ -55,50 +55,334 @@ class runGame:
             #characters
 
             #lyn
-            lynPrimOweights = weights["lynPrimOweights"]
-            lynPrimDweights = weights["lynPrimDweights"]
+
+            lynPrimOweights = util.Counter()
+            lynPrimDweights = util.Counter()
             lynSecOweights = None
             lynSecDweights = None
+
+            # offensive (normal) weights
+            lynPrimOweights["allEnemiesDead"] = 100.0
+            lynPrimOweights["terrainDefBonus"] = 1.0
+            lynPrimOweights["terrainAvoidBonus"] = 1.0
+
+            lynPrimOweights["expectedDeath"] = -500.0
+            lynPrimOweights["expectedKill"] = 5.0
+            lynPrimOweights["damageGiven"] = 1.0
+            lynPrimOweights["damageTaken"] = -3.0
+            lynPrimOweights["bossDead"] = 50.0
+            lynPrimOweights["allEnemiesDead"] = 100.0
+
+            lynPrimOweights["numArchersInRange"] = -.5
+            lynPrimOweights["numAxeUsersInRange"] = 1.0
+            lynPrimOweights["numLanceUsersInRange"] = -1.0
+            lynPrimOweights["numSwordUsersInRange"] = 0
+            lynPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
+            lynPrimOweights["bossInRangeWhileEnemiesAllDead"] = 1.0
+
+            lynPrimOweights["inRangeOfOneUnit"] = 2.0
+            lynPrimOweights["inRangeOfTwoUnits"] = 1.0
+            lynPrimOweights["inRangeOfThreeUnits"] = -1.0
+            lynPrimOweights["inRangeOfFourUnits"] = -5.0
+            lynPrimOweights["inRangeOfFiveUnitsOrMore"] = -10.0
+
+            lynPrimOweights["nearestEnemyDistance"] = -2.0
+
+            lynPrimOweights["adjacentToEnemy"] = -500.0
+
+
+
+
+            lynPrimOweights['adjacentToEnemy': -2.3846987791096977e-13
+            lynPrimOweights['numAxeUsersInRange': -0.0
+            lynPrimOweights['damageTaken': -0.0
+            lynPrimOweights['bossDead': -0.0,
+            lynPrimOweights['nearestEnemyDistance': 1.0000000000002385
+            lynPrimOweights['numEnemiesInRange': 3.564200924442686e-25
+
+
+            # d weights
+
+            lynPrimDweights['allEnemiesDead'] = 0.0
+            lynPrimDweights['numSwordUsersInRange'] = 0.0
+            lynPrimDweights['inRangeOfOneUnit'] = 0.0
+            lynPrimDweights['numArchersInRange'] = 0.0
+            lynPrimDweights['inRangeOfFiveUnitsOrMore'] = 0.0
+            lynPrimDweights['inRangeOfFourUnits'] = 0.0
+            lynPrimDweights['terrainDefBonus'] = 0.0
+            lynPrimDweights['terrainAvoidBonus'] = 0.0
+            lynPrimDweights['inRangeOfTwoUnits'] = 0.0
+            lynPrimDweights['expectedKill'] = 0.0
+            lynPrimDweights['bossInRangeWhileEnemiesAllDead'] = 0.0
+            lynPrimDweights['damageGiven'] = 0.0
+            lynPrimDweights['inRangeOfThreeUnits'] = 0.0
+            lynPrimDweights['expectedDeath'] = 0.0
+            lynPrimDweights['adjacentToEnemy'] = 0.49871487457055774
+            lynPrimDweights['numAxeUsersInRange'] = 0.0
+            lynPrimDweights['damageTaken'] = 0.0
+            lynPrimDweights['bossDead'] = 0.0
+            lynPrimDweights['nearestEnemyDistance'] = 0.5012851254294437
+            lynPrimDweights['numEnemiesInRange'] = -1.516153845302876e-15
+            lynPrimDweights['bossInRangeWhileEnemiesStillAlive'] = 0.0
+            lynPrimDweights['numLanceUsersInRange'] = 0.0
+
 
             lynStats = stats(19, 5, 10, 12, 8, 2, 1, 5, 5)
             lyn = character("Lyn", "Lord", maniKatti, None, False, False, lynStats, 19, lynPrimOweights, lynPrimDweights, lynSecOweights, lynSecDweights)
 
 
             #kent
-            kentPrimOweights = weights["kentPrimOweights"]
-            kentPrimDweights = weights["kentPrimDweights"]
-            kentSecOweights = weights["kentSecOweights"]
-            kentSecDweights = weights["kentSecDweights"]
+            kentPrimOweights = util.Counter()
+            kentPrimDweights = util.Counter()
+            kentSecOweights = util.Counter()
+            kentSecDweights = util.Counter()
+
+
+            # offensive (normal) weights (primary weapon - lance)
+            kentPrimOweights["terrainDefBonus"] = 1.0
+            kentPrimOweights["terrainAvoidBonus"] = 1.0
+
+            kentPrimOweights["expectedDeath"] = -500.0
+            kentPrimOweights["expectedKill"] = 5.0
+            kentPrimOweights["damageGiven"] = 1.0
+            kentPrimOweights["damageTaken"] = -1.0
+            kentPrimOweights["bossDead"] = 50.0
+            kentPrimOweights["allEnemiesDead"] = 100.0
+
+            kentPrimOweights["numArchersInRange"] = 1.0
+            kentPrimOweights["numAxeUsersInRange"] = -1.0
+            kentPrimOweights["numLanceUsersInRange"] = .8
+            kentPrimOweights["numSwordUsersInRange"] = 1.0
+            kentPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
+            kentPrimOweights["bossInRangeWhileEnemiesAllDead"] = -2.0
+
+            kentPrimOweights["inRangeOfOneUnit"] = 4.0
+            kentPrimOweights["inRangeOfTwoUnits"] = 4.0
+            kentPrimOweights["inRangeOfThreeUnits"] = 2.0
+            kentPrimOweights["inRangeOfFourUnits"] = 1.0
+            kentPrimOweights["inRangeOfFiveUnitsOrMore"] = -2.0
+
+            kentPrimOweights["nearestEnemyDistance"] = -2.0
+
+
+            # defensive weights (primary weapon)
+            kentPrimDweights["terrainDefBonus"] = 3.0
+            kentPrimDweights["terrainAvoidBonus"] = 3.0
+
+            kentPrimDweights["expectedDeath"] = -500.0
+            kentPrimDweights["expectedKill"] = 1.0
+            kentPrimDweights["damageGiven"] = 1.0
+            kentPrimDweights["damageTaken"] = -5.0
+            kentPrimDweights["bossDead"] = 50.0
+            kentPrimDweights["allEnemiesDead"] = 100.0
+
+            kentPrimDweights["numArchersInRange"] = -2.5
+            kentPrimDweights["numAxeUsersInRange"] = -4.0
+            kentPrimDweights["numLanceUsersInRange"] = -1.0
+            kentPrimDweights["numSwordUsersInRange"] = -1.0
+            kentPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
+            kentPrimDweights["bossInRangeWhileEnemiesAllDead"] = 5.0
+
+            kentPrimDweights["inRangeOfOneUnit"] = -.2
+            kentPrimDweights["inRangeOfTwoUnits"] = -1.0
+            kentPrimDweights["inRangeOfThreeUnits"] = -3.0
+            kentPrimDweights["inRangeOfFourUnits"] = -4.0
+            kentPrimDweights["inRangeOfFiveUnitsOrMore"] = -5.0
+
+            kentPrimDweights["nearestEnemyDistance"] = 1.0
+
+            
+            # secondary weapon
+            # offensive (normal) weights (secondary weapon)
+            kentSecOweights["terrainDefBonus"] = 1.0
+            kentSecOweights["terrainAvoidBonus"] = 1.0
+
+            kentSecOweights["expectedDeath"] = -500.0
+            kentSecOweights["expectedKill"] = 5.0
+            kentSecOweights["damageGiven"] = 1.0
+            kentSecOweights["damageTaken"] = -1.0
+            kentSecOweights["bossDead"] = 50.0
+            kentSecOweights["allEnemiesDead"] = 100.0
+
+            kentSecOweights["numArchersInRange"] = 1.0
+            kentSecOweights["numAxeUsersInRange"] = 3.0
+            kentSecOweights["numLanceUsersInRange"] = -1.0
+            kentSecOweights["numSwordUsersInRange"] = 1.0
+            kentSecOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
+            kentSecOweights["bossInRangeWhileEnemiesAllDead"] = 2.0
+
+            kentSecOweights["inRangeOfOneUnit"] = 4.0
+            kentSecOweights["inRangeOfTwoUnits"] = 3.0
+            kentSecOweights["inRangeOfThreeUnits"] = 1.5
+            kentSecOweights["inRangeOfFourUnits"] = .5
+            kentSecOweights["inRangeOfFiveUnitsOrMore"] = -2.0
+
+            kentSecOweights["nearestEnemyDistance"] = -2.0
+
+
+            # defensive weights (secondary weapon)
+            kentSecDweights["terrainDefBonus"] = 5.0
+            kentSecDweights["terrainAvoidBonus"] = 5.0
+
+            kentSecDweights["expectedDeath"] = -500.0
+            kentSecDweights["expectedKill"] = 1.0
+            kentSecDweights["damageGiven"] = 1.0
+            kentSecDweights["damageTaken"] = -5.0
+            kentSecDweights["bossDead"] = 50.0
+            kentSecDweights["allEnemiesDead"] = 100.0
+
+            kentSecDweights["numArchersInRange"] = -2.5
+            kentSecDweights["numAxeUsersInRange"] = -.1
+            kentSecDweights["numLanceUsersInRange"] = -4.0
+            kentSecDweights["numSwordUsersInRange"] = -1.0
+            kentSecDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
+            kentSecDweights["bossInRangeWhileEnemiesAllDead"] = -2.0
+
+            kentSecDweights["inRangeOfOneUnit"] = -.2
+            kentSecDweights["inRangeOfTwoUnits"] = -2.0
+            kentSecDweights["inRangeOfThreeUnits"] = -3.0
+            kentSecDweights["inRangeOfFourUnits"] = -4.0
+            kentSecDweights["inRangeOfFiveUnitsOrMore"] = -5.0
+
+            kentSecDweights["nearestEnemyDistance"] = 1.0
 
             kentStats = stats(22, 6, 6, 8, 3, 5, 1, 9, 7)
             kent = character("Kent", "Cavalier", ironSword, ironLance, False, False, kentStats, 22, kentPrimOweights, kentPrimDweights, kentSecOweights, kentSecDweights)
 
 
             #sain
-            sainPrimOweights = weights["sainPrimOweights"]
-            sainPrimDweights = weights["sainPrimDweights"]
-            sainSecOweights = weights["sainSecOweights"]
-            sainSecDweights = weights["sainSecDweights"]
+            sainPrimOweights = kentPrimOweights
+            sainPrimDweights = kentPrimDweights
+            sainSecOweights = kentSecOweights
+            sainSecDweights = kentSecDweights
 
             sainStats = stats(21, 9, 4, 8, 4, 7, 1, 9, 7)
             sain = character("Sain", "Cavalier", ironSword, ironLance, False, False, sainStats, 21, sainPrimOweights, sainPrimDweights, sainSecOweights, sainSecDweights)
 
 
             #wil
-            wilPrimOweights = weights["wilPrimOweights"]
-            wilPrimDweights = weights["wilPrimDweights"]
+            wilPrimOweights = util.Counter()
+            wilPrimDweights = util.Counter()
             wilSecOweights = None
             wilSecDweights = None
+
+            # offensive (normal) weights
+            wilPrimOweights["terrainDefBonus"] = 1.0
+            wilPrimOweights["terrainAvoidBonus"] = 1.0
+
+            wilPrimOweights["expectedDeath"] = -500.0
+            wilPrimOweights["expectedKill"] = 5.0
+            wilPrimOweights["damageGiven"] = 2.0
+            wilPrimOweights["damageTaken"] = -1.5
+            wilPrimOweights["bossDead"] = 50.0
+            wilPrimOweights["allEnemiesDead"] = 100.0
+
+            wilPrimOweights["numArchersInRange"] = 1.0
+            wilPrimOweights["numAxeUsersInRange"] = -.5
+            wilPrimOweights["numLanceUsersInRange"] = -.5
+            wilPrimOweights["numSwordUsersInRange"] = -.5
+            wilPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -5.0
+            wilPrimOweights["bossInRangeWhileEnemiesAllDead"] = 1.0
+
+            wilPrimOweights["inRangeOfOneUnit"] = 1.0
+            wilPrimOweights["inRangeOfTwoUnits"] = -.2
+            wilPrimOweights["inRangeOfThreeUnits"] = -4.0
+            wilPrimOweights["inRangeOfFourUnits"] = -5.0
+            wilPrimOweights["inRangeOfFiveUnitsOrMore"] = -7.0
+            wilPrimOweights["adjacentToEnemy"] = -5000.0
+
+            wilPrimOweights["nearestEnemyDistance"] = -.5
+
+
+            # defensive weights
+            wilPrimDweights["terrainDefBonus"] = 5.0
+            wilPrimDweights["terrainAvoidBonus"] = 5.0
+
+            wilPrimDweights["expectedDeath"] = -500.0
+            wilPrimDweights["expectedKill"] = 1.0
+            wilPrimDweights["damageGiven"] = 1.0
+            wilPrimDweights["damageTaken"] = -5.0
+            wilPrimDweights["bossDead"] = 50.0
+            wilPrimDweights["allEnemiesDead"] = 100.0
+
+            wilPrimDweights["numArchersInRange"] = -.2
+            wilPrimDweights["numAxeUsersInRange"] = -10.0
+            wilPrimDweights["numLanceUsersInRange"] = -10.0
+            wilPrimDweights["numSwordUsersInRange"] = -10.0
+            wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
+            wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 5.0
+
+            wilPrimDweights["inRangeOfOneUnit"] = -.2
+            wilPrimDweights["inRangeOfTwoUnits"] = -3.0
+            wilPrimDweights["inRangeOfThreeUnits"] = -5.0
+            wilPrimDweights["inRangeOfFourUnits"] = -6.0
+            wilPrimDweights["inRangeOfFiveUnitsOrMore"] = -8.0
+            wilPrimDweights["adjacentToEnemy"] = -100.0
+
+            wilPrimDweights["nearestEnemyDistance"] = -.2
 
             wilStats = stats(20, 6, 5, 5, 6, 5, 0, 6, 5)
             wil = character("Wil", "Archer", ironBow, None, False, False, wilStats, 20, wilPrimOweights, wilPrimDweights, wilSecOweights, wilSecDweights)
 
 
             #florina
-            florinaPrimOweights = weights["florinaPrimOweights"]
-            florinaPrimDweights = weights["florinaPrimDweights"]
+            florinaPrimOweights = util.Counter()
+            florinaPrimDweights = util.Counter()
             florinaSecOweights = None
             florinaSecDweights = None
+
+            # offensive (normal) weights
+            florinaPrimOweights["terrainDefBonus"] = 1.0
+            florinaPrimOweights["terrainAvoidBonus"] = 1.0
+
+            florinaPrimOweights["expectedDeath"] = -500.0
+            florinaPrimOweights["expectedKill"] = 5.0
+            florinaPrimOweights["damageGiven"] = 1.0
+            florinaPrimOweights["damageTaken"] = -2.0
+            florinaPrimOweights["bossDead"] = 50.0
+            florinaPrimOweights["allEnemiesDead"] = 100.0
+
+            florinaPrimOweights["numArchersInRange"] = -500.0
+            florinaPrimOweights["numAxeUsersInRange"] = -2.0
+            florinaPrimOweights["numLanceUsersInRange"] = 0
+            florinaPrimOweights["numSwordUsersInRange"] = 1.0
+            florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = -6.0
+            florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = -.1
+
+            florinaPrimOweights["inRangeOfOneUnit"] = .2
+            florinaPrimOweights["inRangeOfTwoUnits"] = -2.0
+            florinaPrimOweights["inRangeOfThreeUnits"] = -3.0
+            florinaPrimOweights["inRangeOfFourUnits"] = -5.0
+            florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = -10.0
+
+            florinaPrimOweights["nearestEnemyDistance"] = -.2
+
+
+            # defensive weights
+            florinaPrimDweights["terrainDefBonus"] = 5.0
+            florinaPrimDweights["terrainAvoidBonus"] = 5.0
+
+            florinaPrimDweights["expectedDeath"] = -500.0
+            florinaPrimDweights["expectedKill"] = 1.0
+            florinaPrimDweights["damageGiven"] = 1.0
+            florinaPrimDweights["damageTaken"] = -5.0
+            florinaPrimDweights["bossDead"] = 50.0
+            florinaPrimDweights["allEnemiesDead"] = 100.0
+
+            florinaPrimDweights["numArchersInRange"] = -20.0
+            florinaPrimDweights["numAxeUsersInRange"] = -3.0
+            florinaPrimDweights["numLanceUsersInRange"] = -1.0
+            florinaPrimDweights["numSwordUsersInRange"] = -.2
+            florinaPrimDweights["bossInRangeWhileEnemiesStillAlive"] = -10.0
+            florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = -5.0
+
+            florinaPrimDweights["inRangeOfOneUnit"] = -1.0
+            florinaPrimDweights["inRangeOfTwoUnits"] = -3.0
+            florinaPrimDweights["inRangeOfThreeUnits"] = -5.0
+            florinaPrimDweights["inRangeOfFourUnits"] = -6.0
+            florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = -15.0
+
+            florinaPrimDweights["nearestEnemyDistance"] = 1.0
 
             florinaStats = stats(17, 5, 7, 9, 7, 4, 4, 4, 7)
             florina = character("Florina", "PegKnight", slimLance, None, False, False, florinaStats, 17, florinaPrimOweights, florinaPrimDweights, florinaSecOweights, florinaSecDweights)
@@ -287,681 +571,7 @@ class runGame:
         random.shuffle(Enemies)        
         return Enemies
 
-def createTestingWeights():
 
-      weights = util.Counter()
-
-      #lyn
-      lynPrimOweights = util.Counter()
-      lynPrimDweights = util.Counter()
-      lynSecOweights = None
-      lynSecDweights = None
-
-      # offensive (normal) weights
-      lynPrimOweights["terrainDefBonus"] = 0.0
-      lynPrimOweights["terrainAvoidBonus"] = 0.0
-
-      lynPrimOweights["expectedDeath"] = 0.0
-      lynPrimOweights["expectedKill"] = 0.0
-      lynPrimOweights["damageGiven"] = 0.0
-      lynPrimOweights["damageTaken"] = 0.0
-      lynPrimOweights["bossDead"] = 0.0
-      lynPrimOweights["allEnemiesDead"] = 0.0
-
-      lynPrimOweights["numArchersInRange"] = 0.0
-      lynPrimOweights["numAxeUsersInRange"] = 0.0
-      lynPrimOweights["numLanceUsersInRange"] = 0.0
-      lynPrimOweights["numSwordUsersInRange"] = 0.0
-      lynPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      lynPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      lynPrimOweights["inRangeOfOneUnit"] = 0.0
-      lynPrimOweights["inRangeOfTwoUnits"] = 0.0
-      lynPrimOweights["inRangeOfThreeUnits"] = 0.0
-      lynPrimOweights["inRangeOfFourUnits"] = 0.0
-      lynPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      lynPrimOweights["nearestEnemyDistance"] = 0.0
-
-      lynPrimOweights["adjacentToEnemy"] = 0.0
-
-
-      # defensive weights
-      lynPrimDweights["terrainDefBonus"] = 0.0
-      lynPrimDweights["terrainAvoidBonus"] = 0.0
-
-      lynPrimDweights["expectedDeath"] = 0.0
-      lynPrimDweights["expectedKill"] = 0.0
-      lynPrimDweights["damageGiven"] = 0.0
-      lynPrimDweights["damageTaken"] = 0.0
-      lynPrimDweights["bossDead"] = 0.0
-      lynPrimDweights["allEnemiesDead"] = 0.0
-
-      lynPrimDweights["numArchersInRange"] = 0.0
-      lynPrimDweights["numAxeUsersInRange"] = 0.0
-      lynPrimDweights["numLanceUsersInRange"] = 0.0
-      lynPrimDweights["numSwordUsersInRange"] = 0.0
-      lynPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      lynPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      lynPrimDweights["inRangeOfOneUnit"] = 0.0
-      lynPrimDweights["inRangeOfTwoUnits"] = 0.0
-      lynPrimDweights["inRangeOfThreeUnits"] = 0.0
-      lynPrimDweights["inRangeOfFourUnits"] = 0.0
-      lynPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      lynPrimDweights["nearestEnemyDistance"] = 0.0
-      lynPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["lynPrimOweights"] = lynPrimOweights
-      weights["lynPrimDweights"] = lynPrimDweights
-      weights["lynSecOweights"] = lynSecOweights
-      weights["lynSecDweights"] = lynSecDweights
-
-
-      # kent
-      kentPrimOweights = util.Counter()
-      kentPrimDweights = util.Counter()
-      kentSecOweights = util.Counter()
-      kentSecDweights = util.Counter()
-
-      # prim off weights
-      kentPrimOweights["terrainDefBonus"] = 0.0
-      kentPrimOweights["terrainAvoidBonus"] = 0.0
-
-      kentPrimOweights["expectedDeath"] = 0.0
-      kentPrimOweights["expectedKill"] = 0.0
-      kentPrimOweights["damageGiven"] = 0.0
-      kentPrimOweights["damageTaken"] = 0.0
-      kentPrimOweights["bossDead"] = 0.0
-      kentPrimOweights["allEnemiesDead"] = 0.0
-
-      kentPrimOweights["numArchersInRange"] = 0.0
-      kentPrimOweights["numAxeUsersInRange"] = 0.0
-      kentPrimOweights["numLanceUsersInRange"] = 0.0
-      kentPrimOweights["numSwordUsersInRange"] = 0.0
-      kentPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentPrimOweights["inRangeOfOneUnit"] = 0.0
-      kentPrimOweights["inRangeOfTwoUnits"] = 0.0
-      kentPrimOweights["inRangeOfThreeUnits"] = 0.0
-      kentPrimOweights["inRangeOfFourUnits"] = 0.0
-      kentPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentPrimOweights["nearestEnemyDistance"] = 0.0
-      kentPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim def
-      kentPrimDweights["terrainDefBonus"] = 0.0
-      kentPrimDweights["terrainAvoidBonus"] = 0.0
-
-      kentPrimDweights["expectedDeath"] = 0.0
-      kentPrimDweights["expectedKill"] = 0.0
-      kentPrimDweights["damageGiven"] = 0.0
-      kentPrimDweights["damageTaken"] = 0.0
-      kentPrimDweights["bossDead"] = 0.0
-      kentPrimDweights["allEnemiesDead"] = 0.0
-
-      kentPrimDweights["numArchersInRange"] = 0.0
-      kentPrimDweights["numAxeUsersInRange"] = 0.0
-      kentPrimDweights["numLanceUsersInRange"] = 0.0
-      kentPrimDweights["numSwordUsersInRange"] = 0.0
-      kentPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentPrimDweights["inRangeOfOneUnit"] = 0.0
-      kentPrimDweights["inRangeOfTwoUnits"] = 0.0
-      kentPrimDweights["inRangeOfThreeUnits"] = 0.0
-      kentPrimDweights["inRangeOfFourUnits"] = 0.0
-      kentPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentPrimDweights["nearestEnemyDistance"] = 0.0
-      kentPrimDweights["adjacentToEnemy"] = 0.0
-
-      #sec off
-      kentSecOweights["terrainDefBonus"] = 0.0
-      kentSecOweights["terrainAvoidBonus"] = 0.0
-
-      kentSecOweights["expectedDeath"] = 0.0
-      kentSecOweights["expectedKill"] = 0.0
-      kentSecOweights["damageGiven"] = 0.0
-      kentSecOweights["damageTaken"] = 0.0
-      kentSecOweights["bossDead"] = 0.0
-      kentSecOweights["allEnemiesDead"] = 0.0
-
-      kentSecOweights["numArchersInRange"] = 0.0
-      kentSecOweights["numAxeUsersInRange"] = 0.0
-      kentSecOweights["numLanceUsersInRange"] = 0.0
-      kentSecOweights["numSwordUsersInRange"] = 0.0
-      kentSecOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentSecOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentSecOweights["inRangeOfOneUnit"] = 0.0
-      kentSecOweights["inRangeOfTwoUnits"] = 0.0
-      kentSecOweights["inRangeOfThreeUnits"] = 0.0
-      kentSecOweights["inRangeOfFourUnits"] = 0.0
-      kentSecOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentSecOweights["nearestEnemyDistance"] = 0.0
-      kentSecOweights["adjacentToEnemy"] = 0.0
-
-      #sec def
-      kentSecDweights["terrainDefBonus"] = 0.0
-      kentSecDweights["terrainAvoidBonus"] = 0.0
-
-      kentSecDweights["expectedDeath"] = 0.0
-      kentSecDweights["expectedKill"] = 0.0
-      kentSecDweights["damageGiven"] = 0.0
-      kentSecDweights["damageTaken"] = 0.0
-      kentSecDweights["bossDead"] = 0.0
-      kentSecDweights["allEnemiesDead"] = 0.0
-
-      kentSecDweights["numArchersInRange"] = 0.0
-      kentSecDweights["numAxeUsersInRange"] = 0.0
-      kentSecDweights["numLanceUsersInRange"] = 0.0
-      kentSecDweights["numSwordUsersInRange"] = 0.0
-      kentSecDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentSecDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentSecDweights["inRangeOfOneUnit"] = 0.0
-      kentSecDweights["inRangeOfTwoUnits"] = 0.0
-      kentSecDweights["inRangeOfThreeUnits"] = 0.0
-      kentSecDweights["inRangeOfFourUnits"] = 0.0
-      kentSecDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentSecDweights["nearestEnemyDistance"] = 0.0
-      kentSecDweights["adjacentToEnemy"] = 0.0
-
-      weights["kentPrimOweights"] = kentPrimOweights
-      weights["kentPrimDweights"] = kentPrimDweights
-      weights["kentSecOweights"] = kentSecOweights
-      weights["kentSecDweights"] = kentSecDweights
-
-
-      # sain
-      sainPrimOweights = kentPrimOweights
-      sainPrimDweights = kentPrimDweights
-      sainSecOweights = kentSecOweights
-      sainSecDweights = kentSecDweights
-
-      weights["sainPrimOweights"] = sainPrimOweights
-      weights["sainPrimDweights"] = sainPrimDweights
-      weights["sainSecOweights"] = sainSecOweights
-      weights["sainSecDweights"] = sainSecDweights
-      
-
-
-      #wil
-      wilPrimOweights = util.Counter()
-      wilPrimDweights = util.Counter()
-      wilSecOweights = None
-      wilSecDweights = None
-
-      #prim off weights
-      wilPrimOweights["terrainDefBonus"] = 0.0
-      wilPrimOweights["terrainAvoidBonus"] = 0.0
-
-      wilPrimOweights["expectedDeath"] = 0.0
-      wilPrimOweights["expectedKill"] = 0.0
-      wilPrimOweights["damageGiven"] = 0.0
-      wilPrimOweights["damageTaken"] = 0.0
-      wilPrimOweights["bossDead"] = 0.0
-      wilPrimOweights["allEnemiesDead"] = 0.0
-
-      wilPrimOweights["numArchersInRange"] = 0.0
-      wilPrimOweights["numAxeUsersInRange"] = 0.0
-      wilPrimOweights["numLanceUsersInRange"] = 0.0
-      wilPrimOweights["numSwordUsersInRange"] = 0.0
-      wilPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      wilPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      wilPrimOweights["inRangeOfOneUnit"] = 0.0
-      wilPrimOweights["inRangeOfTwoUnits"] = 0.0
-      wilPrimOweights["inRangeOfThreeUnits"] = 0.0
-      wilPrimOweights["inRangeOfFourUnits"] = 0.0
-      wilPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      wilPrimOweights["nearestEnemyDistance"] = 0.0
-      wilPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim d weights
-      wilPrimDweights["terrainDefBonus"] = 0.0
-      wilPrimDweights["terrainAvoidBonus"] = 0.0
-
-      wilPrimDweights["expectedDeath"] = 0.0
-      wilPrimDweights["expectedKill"] = 0.0
-      wilPrimDweights["damageGiven"] = 0.0
-      wilPrimDweights["damageTaken"] = 0.0
-      wilPrimDweights["bossDead"] = 0.0
-      wilPrimDweights["allEnemiesDead"] = 0.0
-
-      wilPrimDweights["numArchersInRange"] = 0.0
-      wilPrimDweights["numAxeUsersInRange"] = 0.0
-      wilPrimDweights["numLanceUsersInRange"] = 0.0
-      wilPrimDweights["numSwordUsersInRange"] = 0.0
-      wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      wilPrimDweights["inRangeOfOneUnit"] = 0.0
-      wilPrimDweights["inRangeOfTwoUnits"] = 0.0
-      wilPrimDweights["inRangeOfThreeUnits"] = 0.0
-      wilPrimDweights["inRangeOfFourUnits"] = 0.0
-      wilPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      wilPrimDweights["nearestEnemyDistance"] = 0.0
-      wilPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["wilPrimOweights"] = wilPrimOweights
-      weights["wilPrimDweights"] = wilPrimDweights
-      weights["wilSecOweights"] = wilSecOweights
-      weights["wilSecDweights"] = wilSecDweights
-
-      #florina
-      florinaPrimOweights = util.Counter()
-      florinaPrimDweights = util.Counter()
-      florinaSecOweights = None
-      florinaSecDweights = None
-
-      #prim off weights
-      florinaPrimOweights["terrainDefBonus"] = 0.0
-      florinaPrimOweights["terrainAvoidBonus"] = 0.0
-
-      florinaPrimOweights["expectedDeath"] = 0.0
-      florinaPrimOweights["expectedKill"] = 0.0
-      florinaPrimOweights["damageGiven"] = 0.0
-      florinaPrimOweights["damageTaken"] = 0.0
-      florinaPrimOweights["bossDead"] = 0.0
-      florinaPrimOweights["allEnemiesDead"] = 0.0
-
-      florinaPrimOweights["numArchersInRange"] = 0.0
-      florinaPrimOweights["numAxeUsersInRange"] = 0.0
-      florinaPrimOweights["numLanceUsersInRange"] = 0.0
-      florinaPrimOweights["numSwordUsersInRange"] = 0.0
-      florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      florinaPrimOweights["inRangeOfOneUnit"] = 0.0
-      florinaPrimOweights["inRangeOfTwoUnits"] = 0.0
-      florinaPrimOweights["inRangeOfThreeUnits"] = 0.0
-      florinaPrimOweights["inRangeOfFourUnits"] = 0.0
-      florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      florinaPrimOweights["nearestEnemyDistance"] = 0.0
-      florinaPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim def weights
-      florinaPrimDweights["terrainDefBonus"] = 0.0
-      florinaPrimDweights["terrainAvoidBonus"] = 0.0
-
-      florinaPrimDweights["expectedDeath"] = 0.0
-      florinaPrimDweights["expectedKill"] = 0.0
-      florinaPrimDweights["damageGiven"] = 0.0
-      florinaPrimDweights["damageTaken"] = 0.0
-      florinaPrimDweights["bossDead"] = 0.0
-      florinaPrimDweights["allEnemiesDead"] = 0.0
-
-      florinaPrimDweights["numArchersInRange"] = 0.0
-      florinaPrimDweights["numAxeUsersInRange"] = 0.0
-      florinaPrimDweights["numLanceUsersInRange"] = 0.0
-      florinaPrimDweights["numSwordUsersInRange"] = 0.0
-      florinaPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      florinaPrimDweights["inRangeOfOneUnit"] = 0.0
-      florinaPrimDweights["inRangeOfTwoUnits"] = 0.0
-      florinaPrimDweights["inRangeOfThreeUnits"] = 0.0
-      florinaPrimDweights["inRangeOfFourUnits"] = 0.0
-      florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      florinaPrimDweights["nearestEnemyDistance"] = 0.0
-      florinaPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["florinaPrimOweights"] = florinaPrimOweights
-      weights["florinaPrimDweights"] = florinaPrimDweights
-      weights["florinaSecOweights"] = florinaSecOweights
-      weights["florinaSecDweights"] = florinaSecDweights
-
-      return weights
-
-
-
-def createWeights():
-
-      weights = util.Counter()
-
-      #lyn
-      lynPrimOweights = util.Counter()
-      lynPrimDweights = util.Counter()
-      lynSecOweights = None
-      lynSecDweights = None
-
-      # offensive (normal) weights
-      lynPrimOweights["terrainDefBonus"] = 0.0
-      lynPrimOweights["terrainAvoidBonus"] = 0.0
-
-      lynPrimOweights["expectedDeath"] = 0.0
-      lynPrimOweights["expectedKill"] = 0.0
-      lynPrimOweights["damageGiven"] = 0.0
-      lynPrimOweights["damageTaken"] = 0.0
-      lynPrimOweights["bossDead"] = 0.0
-      lynPrimOweights["allEnemiesDead"] = 0.0
-
-      lynPrimOweights["numArchersInRange"] = 0.0
-      lynPrimOweights["numAxeUsersInRange"] = 0.0
-      lynPrimOweights["numLanceUsersInRange"] = 0.0
-      lynPrimOweights["numSwordUsersInRange"] = 0.0
-      lynPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      lynPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      lynPrimOweights["inRangeOfOneUnit"] = 0.0
-      lynPrimOweights["inRangeOfTwoUnits"] = 0.0
-      lynPrimOweights["inRangeOfThreeUnits"] = 0.0
-      lynPrimOweights["inRangeOfFourUnits"] = 0.0
-      lynPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      lynPrimOweights["nearestEnemyDistance"] = 0.0
-
-      lynPrimOweights["adjacentToEnemy"] = 0.0
-
-
-      # defensive weights
-      lynPrimDweights["terrainDefBonus"] = 0.0
-      lynPrimDweights["terrainAvoidBonus"] = 0.0
-
-      lynPrimDweights["expectedDeath"] = 0.0
-      lynPrimDweights["expectedKill"] = 0.0
-      lynPrimDweights["damageGiven"] = 0.0
-      lynPrimDweights["damageTaken"] = 0.0
-      lynPrimDweights["bossDead"] = 0.0
-      lynPrimDweights["allEnemiesDead"] = 0.0
-
-      lynPrimDweights["numArchersInRange"] = 0.0
-      lynPrimDweights["numAxeUsersInRange"] = 0.0
-      lynPrimDweights["numLanceUsersInRange"] = 0.0
-      lynPrimDweights["numSwordUsersInRange"] = 0.0
-      lynPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      lynPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      lynPrimDweights["inRangeOfOneUnit"] = 0.0
-      lynPrimDweights["inRangeOfTwoUnits"] = 0.0
-      lynPrimDweights["inRangeOfThreeUnits"] = 0.0
-      lynPrimDweights["inRangeOfFourUnits"] = 0.0
-      lynPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      lynPrimDweights["nearestEnemyDistance"] = 0.0
-      lynPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["lynPrimOweights"] = lynPrimOweights
-      weights["lynPrimDweights"] = lynPrimDweights
-      weights["lynSecOweights"] = lynSecOweights
-      weights["lynSecDweights"] = lynSecDweights
-
-
-      # kent
-      kentPrimOweights = util.Counter()
-      kentPrimDweights = util.Counter()
-      kentSecOweights = util.Counter()
-      kentSecDweights = util.Counter()
-
-      # prim off weights
-      kentPrimOweights["terrainDefBonus"] = 0.0
-      kentPrimOweights["terrainAvoidBonus"] = 0.0
-
-      kentPrimOweights["expectedDeath"] = 0.0
-      kentPrimOweights["expectedKill"] = 0.0
-      kentPrimOweights["damageGiven"] = 0.0
-      kentPrimOweights["damageTaken"] = 0.0
-      kentPrimOweights["bossDead"] = 0.0
-      kentPrimOweights["allEnemiesDead"] = 0.0
-
-      kentPrimOweights["numArchersInRange"] = 0.0
-      kentPrimOweights["numAxeUsersInRange"] = 0.0
-      kentPrimOweights["numLanceUsersInRange"] = 0.0
-      kentPrimOweights["numSwordUsersInRange"] = 0.0
-      kentPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentPrimOweights["inRangeOfOneUnit"] = 0.0
-      kentPrimOweights["inRangeOfTwoUnits"] = 0.0
-      kentPrimOweights["inRangeOfThreeUnits"] = 0.0
-      kentPrimOweights["inRangeOfFourUnits"] = 0.0
-      kentPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentPrimOweights["nearestEnemyDistance"] = 0.0
-      kentPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim def
-      kentPrimDweights["terrainDefBonus"] = 0.0
-      kentPrimDweights["terrainAvoidBonus"] = 0.0
-
-      kentPrimDweights["expectedDeath"] = 0.0
-      kentPrimDweights["expectedKill"] = 0.0
-      kentPrimDweights["damageGiven"] = 0.0
-      kentPrimDweights["damageTaken"] = 0.0
-      kentPrimDweights["bossDead"] = 0.0
-      kentPrimDweights["allEnemiesDead"] = 0.0
-
-      kentPrimDweights["numArchersInRange"] = 0.0
-      kentPrimDweights["numAxeUsersInRange"] = 0.0
-      kentPrimDweights["numLanceUsersInRange"] = 0.0
-      kentPrimDweights["numSwordUsersInRange"] = 0.0
-      kentPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentPrimDweights["inRangeOfOneUnit"] = 0.0
-      kentPrimDweights["inRangeOfTwoUnits"] = 0.0
-      kentPrimDweights["inRangeOfThreeUnits"] = 0.0
-      kentPrimDweights["inRangeOfFourUnits"] = 0.0
-      kentPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentPrimDweights["nearestEnemyDistance"] = 0.0
-      kentPrimDweights["adjacentToEnemy"] = 0.0
-
-      #sec off
-      kentSecOweights["terrainDefBonus"] = 0.0
-      kentSecOweights["terrainAvoidBonus"] = 0.0
-
-      kentSecOweights["expectedDeath"] = 0.0
-      kentSecOweights["expectedKill"] = 0.0
-      kentSecOweights["damageGiven"] = 0.0
-      kentSecOweights["damageTaken"] = 0.0
-      kentSecOweights["bossDead"] = 0.0
-      kentSecOweights["allEnemiesDead"] = 0.0
-
-      kentSecOweights["numArchersInRange"] = 0.0
-      kentSecOweights["numAxeUsersInRange"] = 0.0
-      kentSecOweights["numLanceUsersInRange"] = 0.0
-      kentSecOweights["numSwordUsersInRange"] = 0.0
-      kentSecOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentSecOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentSecOweights["inRangeOfOneUnit"] = 0.0
-      kentSecOweights["inRangeOfTwoUnits"] = 0.0
-      kentSecOweights["inRangeOfThreeUnits"] = 0.0
-      kentSecOweights["inRangeOfFourUnits"] = 0.0
-      kentSecOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentSecOweights["nearestEnemyDistance"] = 0.0
-      kentSecOweights["adjacentToEnemy"] = 0.0
-
-      #sec def
-      kentSecDweights["terrainDefBonus"] = 0.0
-      kentSecDweights["terrainAvoidBonus"] = 0.0
-
-      kentSecDweights["expectedDeath"] = 0.0
-      kentSecDweights["expectedKill"] = 0.0
-      kentSecDweights["damageGiven"] = 0.0
-      kentSecDweights["damageTaken"] = 0.0
-      kentSecDweights["bossDead"] = 0.0
-      kentSecDweights["allEnemiesDead"] = 0.0
-
-      kentSecDweights["numArchersInRange"] = 0.0
-      kentSecDweights["numAxeUsersInRange"] = 0.0
-      kentSecDweights["numLanceUsersInRange"] = 0.0
-      kentSecDweights["numSwordUsersInRange"] = 0.0
-      kentSecDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      kentSecDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      kentSecDweights["inRangeOfOneUnit"] = 0.0
-      kentSecDweights["inRangeOfTwoUnits"] = 0.0
-      kentSecDweights["inRangeOfThreeUnits"] = 0.0
-      kentSecDweights["inRangeOfFourUnits"] = 0.0
-      kentSecDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      kentSecDweights["nearestEnemyDistance"] = 0.0
-      kentSecDweights["adjacentToEnemy"] = 0.0
-
-      weights["kentPrimOweights"] = kentPrimOweights
-      weights["kentPrimDweights"] = kentPrimDweights
-      weights["kentSecOweights"] = kentSecOweights
-      weights["kentSecDweights"] = kentSecDweights
-
-
-      # sain
-      sainPrimOweights = kentPrimOweights
-      sainPrimDweights = kentPrimDweights
-      sainSecOweights = kentSecOweights
-      sainSecDweights = kentSecDweights
-
-      weights["sainPrimOweights"] = sainPrimOweights
-      weights["sainPrimDweights"] = sainPrimDweights
-      weights["sainSecOweights"] = sainSecOweights
-      weights["sainSecDweights"] = sainSecDweights
-      
-
-
-      #wil
-      wilPrimOweights = util.Counter()
-      wilPrimDweights = util.Counter()
-      wilSecOweights = None
-      wilSecDweights = None
-
-      #prim off weights
-      wilPrimOweights["terrainDefBonus"] = 0.0
-      wilPrimOweights["terrainAvoidBonus"] = 0.0
-
-      wilPrimOweights["expectedDeath"] = 0.0
-      wilPrimOweights["expectedKill"] = 0.0
-      wilPrimOweights["damageGiven"] = 0.0
-      wilPrimOweights["damageTaken"] = 0.0
-      wilPrimOweights["bossDead"] = 0.0
-      wilPrimOweights["allEnemiesDead"] = 0.0
-
-      wilPrimOweights["numArchersInRange"] = 0.0
-      wilPrimOweights["numAxeUsersInRange"] = 0.0
-      wilPrimOweights["numLanceUsersInRange"] = 0.0
-      wilPrimOweights["numSwordUsersInRange"] = 0.0
-      wilPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      wilPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      wilPrimOweights["inRangeOfOneUnit"] = 0.0
-      wilPrimOweights["inRangeOfTwoUnits"] = 0.0
-      wilPrimOweights["inRangeOfThreeUnits"] = 0.0
-      wilPrimOweights["inRangeOfFourUnits"] = 0.0
-      wilPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      wilPrimOweights["nearestEnemyDistance"] = 0.0
-      wilPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim d weights
-      wilPrimDweights["terrainDefBonus"] = 0.0
-      wilPrimDweights["terrainAvoidBonus"] = 0.0
-
-      wilPrimDweights["expectedDeath"] = 0.0
-      wilPrimDweights["expectedKill"] = 0.0
-      wilPrimDweights["damageGiven"] = 0.0
-      wilPrimDweights["damageTaken"] = 0.0
-      wilPrimDweights["bossDead"] = 0.0
-      wilPrimDweights["allEnemiesDead"] = 0.0
-
-      wilPrimDweights["numArchersInRange"] = 0.0
-      wilPrimDweights["numAxeUsersInRange"] = 0.0
-      wilPrimDweights["numLanceUsersInRange"] = 0.0
-      wilPrimDweights["numSwordUsersInRange"] = 0.0
-      wilPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      wilPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      wilPrimDweights["inRangeOfOneUnit"] = 0.0
-      wilPrimDweights["inRangeOfTwoUnits"] = 0.0
-      wilPrimDweights["inRangeOfThreeUnits"] = 0.0
-      wilPrimDweights["inRangeOfFourUnits"] = 0.0
-      wilPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      wilPrimDweights["nearestEnemyDistance"] = 0.0
-      wilPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["wilPrimOweights"] = wilPrimOweights
-      weights["wilPrimDweights"] = wilPrimDweights
-      weights["wilSecOweights"] = wilSecOweights
-      weights["wilSecDweights"] = wilSecDweights
-
-      #florina
-      florinaPrimOweights = util.Counter()
-      florinaPrimDweights = util.Counter()
-      florinaSecOweights = None
-      florinaSecDweights = None
-
-      #prim off weights
-      florinaPrimOweights["terrainDefBonus"] = 0.0
-      florinaPrimOweights["terrainAvoidBonus"] = 0.0
-
-      florinaPrimOweights["expectedDeath"] = 0.0
-      florinaPrimOweights["expectedKill"] = 0.0
-      florinaPrimOweights["damageGiven"] = 0.0
-      florinaPrimOweights["damageTaken"] = 0.0
-      florinaPrimOweights["bossDead"] = 0.0
-      florinaPrimOweights["allEnemiesDead"] = 0.0
-
-      florinaPrimOweights["numArchersInRange"] = 0.0
-      florinaPrimOweights["numAxeUsersInRange"] = 0.0
-      florinaPrimOweights["numLanceUsersInRange"] = 0.0
-      florinaPrimOweights["numSwordUsersInRange"] = 0.0
-      florinaPrimOweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      florinaPrimOweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      florinaPrimOweights["inRangeOfOneUnit"] = 0.0
-      florinaPrimOweights["inRangeOfTwoUnits"] = 0.0
-      florinaPrimOweights["inRangeOfThreeUnits"] = 0.0
-      florinaPrimOweights["inRangeOfFourUnits"] = 0.0
-      florinaPrimOweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      florinaPrimOweights["nearestEnemyDistance"] = 0.0
-      florinaPrimOweights["adjacentToEnemy"] = 0.0
-
-      # prim def weights
-      florinaPrimDweights["terrainDefBonus"] = 0.0
-      florinaPrimDweights["terrainAvoidBonus"] = 0.0
-
-      florinaPrimDweights["expectedDeath"] = 0.0
-      florinaPrimDweights["expectedKill"] = 0.0
-      florinaPrimDweights["damageGiven"] = 0.0
-      florinaPrimDweights["damageTaken"] = 0.0
-      florinaPrimDweights["bossDead"] = 0.0
-      florinaPrimDweights["allEnemiesDead"] = 0.0
-
-      florinaPrimDweights["numArchersInRange"] = 0.0
-      florinaPrimDweights["numAxeUsersInRange"] = 0.0
-      florinaPrimDweights["numLanceUsersInRange"] = 0.0
-      florinaPrimDweights["numSwordUsersInRange"] = 0.0
-      florinaPrimDweights["bossInRangeWhileEnemiesStillAlive"] = 0.0
-      florinaPrimDweights["bossInRangeWhileEnemiesAllDead"] = 0.0
-
-      florinaPrimDweights["inRangeOfOneUnit"] = 0.0
-      florinaPrimDweights["inRangeOfTwoUnits"] = 0.0
-      florinaPrimDweights["inRangeOfThreeUnits"] = 0.0
-      florinaPrimDweights["inRangeOfFourUnits"] = 0.0
-      florinaPrimDweights["inRangeOfFiveUnitsOrMore"] = 0.0
-
-      florinaPrimDweights["nearestEnemyDistance"] = 0.0
-      florinaPrimDweights["adjacentToEnemy"] = 0.0
-
-      weights["florinaPrimOweights"] = florinaPrimOweights
-      weights["florinaPrimDweights"] = florinaPrimDweights
-      weights["florinaSecOweights"] = florinaSecOweights
-      weights["florinaSecDweights"] = florinaSecDweights
-
-      return weights
 
 def main():
       numGames = 0
@@ -970,15 +580,12 @@ def main():
 
       wins = 0
 
-
-      weights = createTestingWeights()
-
       while( numGames < maxGames):
 
             print "Starting Game ", numGames
 
             # start new game
-            game = runGame("bom", weights)
+            game = runGame("bom")
             #game.Display()
 
             turn = 0
@@ -990,18 +597,13 @@ def main():
                   allyCharacters = game.getAllyCharacters()        
                   enemyCharacters = game.getEnemyCharacters()
 
-  
 
-                  for character in allyCharacters:
-                        # damage given, damage taken, enemies killed, hero killed
-                        rewards[character.getName()] = (0, 0, 0, 0)
 
                   for allyCharacter in allyCharacters:
 
-                       result = game.ai.calculateMoveRL(allyCharacter)
+                        result = game.ai.calculateMoveRL(allyCharacter)
 
                         if result == None:
-                              #print "Already acted"
                               continue
 
                         position = result[0]
@@ -1071,6 +673,10 @@ def main():
                   #      print "FAIL"
 
 
+                  if turn >= maxTurns:
+                        break
+
+
                         
 
             numGames += 1
@@ -1079,7 +685,7 @@ def main():
       #output final statistics
       print "Wins: ", wins
       print "Losses: ", maxGames - wins
-      print "Win perentage: ", (float(wins)/(maxGames - wins))*100, "%"
+      #print "Win perentage: ", (float(wins)/(maxGames - wins))*100, "%"
 
 
 
